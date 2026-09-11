@@ -1,5 +1,13 @@
 # 第一问计算与交付复现
 
+## 第二问新增复现入口
+
+第二问输出位于\`outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2\`，论文位于\`docs/result/第二问求解与结果分析.md\`。使用同一Python/Node解释器；项目\`.local-deps\`另含scikit-learn、matplotlib及其依赖。
+
+复现顺序：运行\`tests/test_q2_solver.py\`；运行\`src/q2_solver.py predict\`；分别运行M0—M4的1月影子验证和334天回测；运行\`src/q2_analyze.py --bound\`及\`src/q2_analyze.py\`；运行Node脚本导出\`result2.xlsx\`；最后运行\`src/q2_verify_delivery.py\`。
+
+正式选型结果是M1。若模型或选型变化，需要同步更新复核器。M4是共享控制的受限场景模型，未实现完整时间联合自适应优化。各日优化限时30秒，失败即停止，不自动重试。
+
 ## 文件
 
 - `q1_solver.py`：读取典型日数据，求解LP，检查物理约束与原始—对偶最优性证据，保存全部10分钟决策与汇总。

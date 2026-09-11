@@ -1,0 +1,13 @@
+{
+  "plan_cells_checked": 48764,
+  "battery_days_checked": 334,
+  "emergency_event_count": 161,
+  "emergency_total_kwh": 116223.8087761259,
+  "paper_specified_dates": 4,
+  "midnight_reproduced_days": 334,
+  "maximum_purchase_reproduction_error_kwh": 2.5011104298755527e-12,
+  "maximum_lp_primal_dual_gap_yuan": 1.0186340659856796e-10,
+  "xlsx_sha256": "dbe757c293195bd4f270d599d4fd7b6eca0152ffe9f473cd7c6f2113c9c5c649",
+  "solver_source_sha256": "6d7192b0897d25bad46f0a933a99dda75e8592bb0751b4264738f3769566d248",
+  "paper_sha256": "b19d6a2de9d9242dae91303e609d3f9a8bf7886192524dea43c7cb8185a76c98"
+}

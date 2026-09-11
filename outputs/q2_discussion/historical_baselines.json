@@ -1,0 +1,176 @@
+{
+  "scope": "Exploratory retrospective benchmark, not unbiased final model selection. At each midnight only previous dates used. No attachment 3 or 4 used as predictor.",
+  "rows": 52560,
+  "days": 365,
+  "evaluation_days": 334,
+  "missing_core": 0,
+  "pv_zero_fraction": 0.447869101978691,
+  "metrics": [
+    {
+      "target": "load",
+      "method": "previous_day",
+      "mae_kw": 650.02006751497,
+      "rmse_kw": 1128.3912380310528,
+      "wape_pct": 14.079522453234969,
+      "bias_actual_minus_pred_kw": 5.461799538423155
+    },
+    {
+      "target": "load",
+      "method": "previous_week",
+      "mae_kw": 176.79572117223884,
+      "rmse_kw": 244.28661499529923,
+      "wape_pct": 3.8294191983897163,
+      "bias_actual_minus_pred_kw": -1.9494697043413223
+    },
+    {
+      "target": "load",
+      "method": "past_7_mean",
+      "mae_kw": 781.2110842648036,
+      "rmse_kw": 955.9245199188664,
+      "wape_pct": 16.921137594523618,
+      "bias_actual_minus_pred_kw": 1.3563980230016182
+    },
+    {
+      "target": "load",
+      "method": "past_7_median",
+      "mae_kw": 626.9387849363773,
+      "rmse_kw": 1095.1843819999551,
+      "wape_pct": 13.579578755254794,
+      "bias_actual_minus_pred_kw": -473.9773737587325
+    },
+    {
+      "target": "pv",
+      "method": "previous_day",
+      "mae_kw": 185.34649152736193,
+      "rmse_kw": 375.1748781365903,
+      "wape_pct": 7.791420877296701,
+      "bias_actual_minus_pred_kw": -0.7610173132900867,
+      "actual_active_mae_kw": 355.5448390355775,
+      "active_mask_note": "Actual PV > 1 kW: retrospective subgroup only, not a forecast feature."
+    },
+    {
+      "target": "pv",
+      "method": "previous_week",
+      "mae_kw": 214.68823137890885,
+      "rmse_kw": 419.9479682302922,
+      "wape_pct": 9.024861243886008,
+      "bias_actual_minus_pred_kw": -4.71353383233533,
+      "actual_active_mae_kw": 411.57959788608804,
+      "active_mask_note": "Actual PV > 1 kW: retrospective subgroup only, not a forecast feature."
+    },
+    {
+      "target": "pv",
+      "method": "past_7_mean",
+      "mae_kw": 153.39970672494297,
+      "rmse_kw": 303.85773925555964,
+      "wape_pct": 6.448472089753418,
+      "bias_actual_minus_pred_kw": -2.769202212539207,
+      "actual_active_mae_kw": 294.160369541435,
+      "active_mask_note": "Actual PV > 1 kW: retrospective subgroup only, not a forecast feature."
+    },
+    {
+      "target": "pv",
+      "method": "past_7_median",
+      "mae_kw": 157.83317780272787,
+      "rmse_kw": 312.02127184482134,
+      "wape_pct": 6.634842162527333,
+      "bias_actual_minus_pred_kw": -5.387659959248172,
+      "actual_active_mae_kw": 302.6861979778239,
+      "active_mask_note": "Actual PV > 1 kW: retrospective subgroup only, not a forecast feature."
+    },
+    {
+      "target": "net_load",
+      "method": "previous_day",
+      "mae_kw": 744.2247512703758,
+      "rmse_kw": 1187.2197461614771,
+      "wape_pct": 24.79974763783724,
+      "bias_actual_minus_pred_kw": 6.222816851713243
+    },
+    {
+      "target": "net_load",
+      "method": "previous_week",
+      "mae_kw": 327.7708114624917,
+      "rmse_kw": 486.4685254107146,
+      "wape_pct": 10.922283078389315,
+      "bias_actual_minus_pred_kw": 2.7640641279940223
+    },
+    {
+      "target": "net_load",
+      "method": "past_7_mean",
+      "mae_kw": 794.968243845345,
+      "rmse_kw": 1006.5250674095903,
+      "wape_pct": 26.49066937616104,
+      "bias_actual_minus_pred_kw": 4.125600235540824
+    },
+    {
+      "target": "net_load",
+      "method": "past_7_median",
+      "mae_kw": 702.8636887412675,
+      "rmse_kw": 1113.056061253663,
+      "wape_pct": 23.421475938322047,
+      "bias_actual_minus_pred_kw": -413.37990384855283
+    }
+  ],
+  "monthly_actual": [
+    {
+      "month": "2025-01",
+      "load_mean_kw": 4725.773469153226,
+      "pv_mean_kw": 1589.1838943548387
+    },
+    {
+      "month": "2025-02",
+      "load_mean_kw": 4516.8965253224205,
+      "pv_mean_kw": 1966.4803466517858
+    },
+    {
+      "month": "2025-03",
+      "load_mean_kw": 4355.698995407706,
+      "pv_mean_kw": 2304.1967555331544
+    },
+    {
+      "month": "2025-04",
+      "load_mean_kw": 4392.976799050925,
+      "pv_mean_kw": 2701.6856893287036
+    },
+    {
+      "month": "2025-05",
+      "load_mean_kw": 4401.677752688172,
+      "pv_mean_kw": 2806.502396550179
+    },
+    {
+      "month": "2025-06",
+      "load_mean_kw": 4800.372629444444,
+      "pv_mean_kw": 2369.8265653009257
+    },
+    {
+      "month": "2025-07",
+      "load_mean_kw": 5337.258656070789,
+      "pv_mean_kw": 2723.254275
+    },
+    {
+      "month": "2025-08",
+      "load_mean_kw": 5045.177050336021,
+      "pv_mean_kw": 2915.9930929883512
+    },
+    {
+      "month": "2025-09",
+      "load_mean_kw": 4535.910432824075,
+      "pv_mean_kw": 2607.5995060879627
+    },
+    {
+      "month": "2025-10",
+      "load_mean_kw": 4347.019491330645,
+      "pv_mean_kw": 2364.313051769713
+    },
+    {
+      "month": "2025-11",
+      "load_mean_kw": 4337.671346689815,
+      "pv_mean_kw": 1854.376335601852
+    },
+    {
+      "month": "2025-12",
+      "load_mean_kw": 4691.305896191756,
+      "pv_mean_kw": 1513.8368958781361
+    }
+  ]
+}
