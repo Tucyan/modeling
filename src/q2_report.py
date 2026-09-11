@@ -5,14 +5,21 @@ if __name__=='__main__' and '--legacy' not in sys.argv and (Path(__file__).resol
     runpy.run_path(str(Path(__file__).with_name('q2_review_report.py')),run_name='__main__')
     raise SystemExit(0)
 from q2_solver import ROOT, OUT
-import json, math
+import json, math, os
 import numpy as np,pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
-font_manager.fontManager.addfont('C:/Windows/Fonts/msyh.ttc')
-plt.rcParams['font.family']='Microsoft YaHei'; plt.rcParams['axes.unicode_minus']=False
+families = {'msyh', 'microsoftyahei', 'simhei', 'simsun', 'notosanscjk'}
+selected_font = None
+for candidate in font_manager.findSystemFonts(fontext='ttf'):
+    if Path(candidate).stem.lower().replace(' ', '') in families:
+        font_manager.fontManager.addfont(candidate)
+        selected_font = Path(candidate).stem
+        break
+plt.rcParams['font.family'] = selected_font or 'DejaVu Sans'
+plt.rcParams['axes.unicode_minus'] = False
 
 def table(headers,rows):
     return '| '+' | '.join(headers)+' |\n|'+'|'.join(['---']*len(headers))+'|\n'+''.join('| '+' | '.join(str(v) for v in r)+' |\n' for r in rows)+'\n'
@@ -29,7 +36,11 @@ qcal=pd.read_csv(OUT/'quantile_calibration.csv')
 bound=pd.read_csv(OUT/'perfect_information_monthly_bound.csv').bound.sum()
 chosen=comp.loc[name]; nos=comp.loc['R0']; point=comp.loc['M0']
 paper=ROOT/'docs/result/第二问求解与结果分析.md'
-base=ROOT.as_posix(); out=OUT.as_posix()
+def relative_url(path, start=None):
+    start = Path(start or paper.parent)
+    return Path(os.path.relpath(Path(path), start=start)).as_posix()
+base=relative_url(ROOT)
+out=relative_url(OUT)
 
 fig,ax=plt.subplots(figsize=(10,4.5))
 for m in ['R0','M0','M1','M3','M4']:

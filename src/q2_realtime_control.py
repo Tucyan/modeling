@@ -6,6 +6,7 @@ contract schedule; this controller only chooses storage actions.
 """
 
 from pathlib import Path
+import sysconfig
 import os
 import sys
 import time
@@ -14,7 +15,10 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / ".local-deps"))
+LOCAL_DEPS = ROOT / ".local-deps"
+abi_suffix = (sysconfig.get_config_var("EXT_SUFFIX") or "").lower()
+if abi_suffix and LOCAL_DEPS.exists() and any(str(p).lower().endswith(abi_suffix) for p in LOCAL_DEPS.rglob("*.pyd")):
+    sys.path.insert(0, str(LOCAL_DEPS))
 os.environ.setdefault("OMP_NUM_THREADS", "1")
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 

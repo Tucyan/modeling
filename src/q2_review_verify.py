@@ -90,9 +90,15 @@ def main():
     paper=ROOT/'docs/result/第二问求解与结果分析.md'; text=paper.read_text(encoding='utf8')
     check_paper_dates(text,payload['specified'])
     assert text.count('$$')%2==0
-    for path in re.findall(r'\]\((C:/[^)]+)\)',text):
-        if path.endswith('delivery_verification.json'): continue
-        assert Path(path).exists(),path
+    # Links are checked from the manuscript directory so the package remains
+    # valid after cloning or extracting it on another machine.
+    for target in re.findall(r'\]\(([^)]+)\)', text):
+        target = target.split('#', 1)[0]
+        if not target or target.startswith(('http://', 'https://', 'mailto:')):
+            continue
+        path = (paper.parent / target).resolve()
+        assert not Path(target).is_absolute(), target
+        assert path.exists(), target
     expected_cost=float((x.price*x.g+5*x.price*x.e).sum())
     assert f'{expected_cost:,.2f}' in text
     code=list((ROOT/'src').glob('q2*.py'))+[ROOT/'src/q2_workbook.mjs']

@@ -1,11 +1,15 @@
 """Q1 deterministic dispatch, with an LP certificate and physical checks."""
 from pathlib import Path
+import sysconfig
 import sys
 import json
 import hashlib
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / '.local-deps'))
+LOCAL_DEPS = ROOT / '.local-deps'
+abi_suffix = (sysconfig.get_config_var('EXT_SUFFIX') or '').lower()
+if abi_suffix and LOCAL_DEPS.exists() and any(str(p).lower().endswith(abi_suffix) for p in LOCAL_DEPS.rglob('*.pyd')):
+    sys.path.insert(0, str(LOCAL_DEPS))
 import numpy as np
 import pandas as pd
 import scipy

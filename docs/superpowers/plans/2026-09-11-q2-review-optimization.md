@@ -74,9 +74,9 @@ C_i=\sum_t p_tg_{i,t}+5\sum_t p_te_{i,t}.
 验收：本组不改变计划CSV或Excel数值；指定日显著事件数分别为0、0、1、0；报告重生成后错误不再出现。可用现有轻量运行命令执行：
 
 ```powershell
-& 'C:\Users\ALmerb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tests/test_q2_solver.py
-& 'C:\Users\ALmerb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' src/q2_report.py
-& 'C:\Users\ALmerb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' src/q2_verify_delivery.py
+python tests/test_q2_solver.py
+python src/q2_report.py
+python src/q2_verify_delivery.py
 ```
 
 ### B. P1：先建立隔离的实验入口

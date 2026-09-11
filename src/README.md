@@ -2,11 +2,11 @@
 
 ## 第二问新增复现入口
 
-第二问输出位于\`outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2\`，论文位于\`docs/result/第二问求解与结果分析.md\`。使用同一Python/Node解释器；项目\`.local-deps\`另含scikit-learn、matplotlib及其依赖。
+第二问正式输出位于 `outputs/q2_review_v2/`，论文位于 `docs/result/第二问求解与结果分析.md`。依赖写在仓库根目录的 `requirements.txt`；`.local-deps/` 和 `node_modules/` 仅是本机缓存或联接，不属于可移植交付。
 
 复现顺序：运行\`tests/test_q2_solver.py\`；运行\`src/q2_solver.py predict\`；分别运行M0—M4的1月影子验证和334天回测；运行\`src/q2_analyze.py --bound\`及\`src/q2_analyze.py\`；运行Node脚本导出\`result2.xlsx\`；最后运行\`src/q2_verify_delivery.py\`。
 
-正式选型结果是M1。若模型或选型变化，需要同步更新复核器。M4是共享控制的受限场景模型，未实现完整时间联合自适应优化。各日优化限时30秒，失败即停止，不自动重试。
+1月影子预选结果为M1，正式输出期采用月度滚动选择M1/M3/M4，最终标签记录在`selection_protocol.json`。若模型或选型变化，需要同步更新复核器。M4是共享控制的受限场景模型，未实现完整时间联合自适应优化。各日优化限时30秒，失败即停止，不自动重试。
 
 ## 文件
 
@@ -17,12 +17,14 @@
 
 ## 运行顺序
 
-从项目根目录运行，使用当前桌面环境的内置Python与Node。SciPy 1.18.1位于项目`.local-deps`，其他Python库来自内置环境；`node_modules`为指向内置依赖的目录联接，不包含自行复制的运行时。
+从项目根目录运行。建议先创建隔离环境并按 `requirements.txt` 安装依赖；网络较慢时可使用清华镜像。Node 导出脚本使用 `@oai/artifact-tool`，当前工作区的 `node_modules` 是本机运行时联接；换环境时需按可用的组织内 Node 运行时配置该包。
 
 ```powershell
-& 'C:\Users\ALmerb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' tests\test_q1_solver.py
-& 'C:\Users\ALmerb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' src\q1_solver.py
-& 'C:\Users\ALmerb\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' src\q1_workbook.mjs
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+.\.venv\Scripts\python.exe tests\test_q1_solver.py
+.\.venv\Scripts\python.exe src\q1_solver.py
+node src\q1_workbook.mjs
 ```
 
 输出目录为`outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q1/`，其中`result1.xlsx`为题目指定交付，`dispatch_10min.csv`为完整决策及状态明细，`solution.json`包含参数、数据哈希、汇总和最优性核查。`verification.json`记录本次对导出Excel、CSV与论文的独立交叉复核，重新生成结果后应重新做交付复核，不能把旧记录视为新结果的验证。
@@ -35,11 +37,10 @@
 
 ## 第二问v2：当前正式复现入口
 
-正式结果为 `outputs/q2_review_v2/result2.xlsx`，论文为 `docs/result/第二问求解与结果分析.md`（输出目录另存同版副本）。旧目录及旧Excel保留。以下命令从项目根目录执行，使用现有内置Python、Node及项目`.local-deps`，无需重新下载依赖。
+正式结果为 `outputs/q2_review_v2/result2.xlsx`，论文为 `docs/result/第二问求解与结果分析.md`（输出目录另存同版副本）。旧目录及旧Excel保留。以下命令从项目根目录执行，使用当前 Python、Node 和已安装的项目依赖。
 
 ```powershell
-$q2Python = 'C:/Users/ALmerb/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
-$q2Node = 'C:/Users/ALmerb/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe'
+$q2Python = '.\\.venv\\Scripts\\python.exe'
 & $q2Python -m unittest discover -s tests -p 'test_q2*.py'
 & $q2Python src/q2_review_experiments.py trial
 & $q2Python src/q2_review_experiments.py terminal
@@ -50,7 +51,7 @@ $q2Node = 'C:/Users/ALmerb/.cache/codex-runtimes/codex-primary-runtime/dependenc
 & $q2Python src/q2_rolling_validation.py
 & $q2Python -c 'import sys; sys.path.insert(0,"src"); from q2_review_experiments import *; save_run("trial_MPC",Config(controller="F1"),31,38)'
 & $q2Python src/q2_review_report.py
-& $q2Node src/q2_workbook.mjs --out outputs/q2_review_v2
+node src/q2_workbook.mjs --out outputs/q2_review_v2
 & $q2Python src/q2_review_verify.py
 ```
 

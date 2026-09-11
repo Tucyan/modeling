@@ -63,9 +63,13 @@ for date,day in p['specified'].items():
         assert f'{day[key]:,.2f}' in section,(date,key)
 for line in text.splitlines():
     if '](' not in line: continue
-    for path in re.findall(r'\]\((C:/[^)]+)\)',line):
-        if path.endswith('workbook_verification.json'): continue
-        assert __import__('pathlib').Path(path).exists(),path
+    for target in re.findall(r'\]\(([^)]+)\)', line):
+        target = target.split('#', 1)[0]
+        if not target or target.startswith(('http://', 'https://', 'mailto:')):
+            continue
+        path = (paper.parent / target).resolve()
+        assert not Path(target).is_absolute(), target
+        assert path.exists(), target
 result={'plan_cells_checked':334*146,'battery_days_checked':334,'emergency_event_count':events,
   'emergency_total_kwh':total,'paper_specified_dates':4,'midnight_reproduced_days':334,
   'maximum_purchase_reproduction_error_kwh':max_purchase_error,'maximum_lp_primal_dual_gap_yuan':max(gaps),

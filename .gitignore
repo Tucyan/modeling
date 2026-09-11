@@ -1,20 +1,35 @@
-# Local solver/runtime dependencies
+# Git internals and local runtime links
+.git/
 .local-deps/
 node_modules/
 
-# Temporary notes and generated previews
-temp/
-outputs/**/*.png
-outputs/**/*.inspect.ndjson
-
-# Python caches and local tooling
+# Python caches, environments, build products and test reports
 __pycache__/
 *.py[cod]
+*.pyo
 .pytest_cache/
 .coverage
+htmlcov/
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+*.egg-info/
+build/
+dist/
 
-# Editor and OS files
+# Temporary files, logs and editor metadata
+temp/
+*.log
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Large inspection dumps and disposable preview figures.
+# Delivery figures referenced by the manuscript remain trackable.
+outputs/**/*.inspect.ndjson
+outputs/**/result_*.png
+outputs/**/template_*.png

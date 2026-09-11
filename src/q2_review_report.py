@@ -1,20 +1,34 @@
 """Reconcile v2 runs, write template payload and Chinese manuscript."""
-import json,shutil,hashlib
+import json,shutil,hashlib,os
+from pathlib import Path
 from q2_review_experiments import *
 from q2_analyze import intervals
 
 def table(headers,rows):
     return '| '+' | '.join(headers)+' |\n|'+'|'.join(['---']*len(headers))+'|\n'+''.join('| '+' | '.join(map(str,r))+' |\n' for r in rows)+'\n'
 def fmt(x): return f'{x:,.2f}'
-def link(title,path): return f'[{title}]({path.as_posix()})'
+def relative_url(path, start=None):
+    """Return a POSIX relative URL so the manuscript works after moving the repo."""
+    start = Path(start or ROOT / 'docs' / 'result')
+    return Path(os.path.relpath(Path(path), start=start)).as_posix()
+
+def link(title, path, start=None):
+    return f'[{title}]({relative_url(path, start)})'
 
 def figures(monthly,comp):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from matplotlib import font_manager
-    font_manager.fontManager.addfont('C:/Windows/Fonts/msyh.ttc')
-    plt.rcParams['font.family']='Microsoft YaHei'; plt.rcParams['axes.unicode_minus']=False
+    families = {'msyh', 'microsoftyahei', 'simhei', 'simsun', 'notosanscjk'}
+    selected = None
+    for candidate in font_manager.findSystemFonts(fontext='ttf'):
+        if Path(candidate).stem.lower().replace(' ', '') in families:
+            font_manager.fontManager.addfont(candidate)
+            selected = Path(candidate).stem
+            break
+    plt.rcParams['font.family'] = selected or 'DejaVu Sans'
+    plt.rcParams['axes.unicode_minus'] = False
     fig,ax=plt.subplots(figsize=(9,4))
     for label,name in [('M1_T0','冻结M1'),('M3_T0','固定M3（事后对照）'),('Rolling_T0','月度滚动方案')]:
         z=monthly[monthly.model==label]; ax.plot(z.month.str[-2:].astype(int),z.cost/10000,'o-',label=name)
@@ -161,7 +175,7 @@ T1不要求实际每日首尾相等，两组各自传递实际SOC，不能将T0�
     labels=['R0_T0','M0_T0','M1_T0','M2_T0','M3_T0','M4_T0','Rolling_T0','Rolling_T1']
     text+=table(['方案','总费用（元）','紧急购电量（kWh）','紧急天数','合并事件数'],[[m,fmt(comp.loc[m,'cost']),fmt(comp.loc[m,'emergency_kwh']),int(comp.loc[m,'emergency_days']),int(comp.loc[m,'emergency_events'])] for m in labels])
     text+=f"主方案总费用为**{fmt(chosen.cost)}元**，其中计划费{fmt(chosen.plan_cost)}元、紧急费{fmt(chosen.emergency_cost)}元。相对同闭合规则冻结M1节约{fmt(base.cost-chosen.cost)}元（{100*(base.cost-chosen.cost)/base.cost:.3f}%），相对无储能R0节约{fmt(no.cost-chosen.cost)}元（{100*(no.cost-chosen.cost)/no.cost:.2f}%）。主方案紧急购电{int(chosen.emergency_days)}天，{int(chosen.emergency_events)}个合并事件，{int(chosen.emergency_slots)}个非零10分钟槽，三者不是同一统计量。\n\n"
-    text+=f"相对冻结M1，紧急购电总量减少{fmt(base.emergency_kwh-chosen.emergency_kwh)} kWh，但补购天数由{int(base.emergency_days)}增至{int(chosen.emergency_days)}，事件数由{int(base.emergency_events)}增至{int(chosen.emergency_events)}。本方案以总费用为首要指标，并非所有风险指标同时改善。\n\n![月度费用对比]({(OUT/'monthly_cost_v2.png').as_posix()})\n\n"
+    text+=f"相对冻结M1，紧急购电总量减少{fmt(base.emergency_kwh-chosen.emergency_kwh)} kWh，但补购天数由{int(base.emergency_days)}增至{int(chosen.emergency_days)}，事件数由{int(base.emergency_events)}增至{int(chosen.emergency_events)}。本方案以总费用为首要指标，并非所有风险指标同时改善。\n\n![月度费用对比]({relative_url(OUT/'monthly_cost_v2.png')})\n\n"
     text+=f"固定M3费用{fmt(comp.loc['M3_T0','cost'])}元，仍比滚动策略低{fmt(chosen.cost-comp.loc['M3_T0','cost'])}元。这表明滚动选择解决了使用历史动态选模的可实施性，但并未取得事后最优候选的全部收益；不能据此宣称滚动策略一定优于所有固定策略。\n\n"
     text+='## 6. 终端与参数敏感性\n\n### 6.1 固定6000与规划日循环\n\n'
     text+=table(['规则','总费用（元）','紧急电量（kWh）','低于2400日初SOC天数'],[[t,fmt(comp.loc['M1_'+t,'cost']),fmt(comp.loc['M1_'+t,'emergency_kwh']),int(comp.loc['M1_'+t,'low_initial_days'])] for t in ('T0','T1','T2','T3','T4')])
@@ -173,7 +187,7 @@ T1不要求实际每日首尾相等，两组各自传递实际SOC，不能将T0�
     text+='### 6.3 风险水平、初值与误差压力\n\n'
     text+=table(['分位数','T0费用（元）','T1费用（元）','T0紧急电量（kWh）'],[[str(a),fmt(comp.loc['M1_T0'+('' if a==.8 else f'_a{a}'),'cost']),fmt(comp.loc['M1_T1'+('' if a==.8 else f'_a{a}'),'cost']),fmt(comp.loc['M1_T0'+('' if a==.8 else f'_a{a}'),'emergency_kwh'])] for a in (.7,.75,.8,.85,.9)])
     text+='本次0.75的事后费用低于0.8；提高风险分位数减少补购，但增加付费未利用电量。费用曲线较平缓不能解释为风险电量也稳定；0.8为预设经济基准，不以这张输出期表反向调参。\n\n'
-    text+=f"![终端与风险参数敏感性]({(OUT/'terminal_risk_v2.png').as_posix()})\n\n"
+    text+=f"![终端与风险参数敏感性]({relative_url(OUT/'terminal_risk_v2.png')})\n\n"
     stress=[m for m in comp.index if '_initial' in m or '_scale' in m]
     text+=table(['压力配置','费用（元）','紧急电量（kWh）','期末SOC（kWh）'],[[m,fmt(comp.loc[m,'cost']),fmt(comp.loc[m,'emergency_kwh']),fmt(comp.loc[m,'last_E'])] for m in sorted(stress)])
     text+='初值3600/8400组均恢复各自初值，只能同初值配对比较，正式初值仍为6000。误差压力为P0预测加原历史误差的0.75或1.25倍，并对负载、光伏非负截断；预测缓存保持固定，只有此前合成实际进入残差校准。它是合成扰动下的离线稳健性诊断，不是额外真实观测。\n\n'
@@ -200,7 +214,23 @@ T1不要求实际每日首尾相等，两组各自传递实际SOC，不能将T0�
     for title,filename in [('正式结果result2.xlsx','result2.xlsx'),('完整10分钟执行账本','dispatch_10min.csv'),('每日费用与规划/实际SOC','daily_summary.csv'),('模型与敏感性对比','comparison.csv'),('逐月比较','monthly_comparison.csv'),('分季比较','seasonal_comparison.csv'),('事前信息约束与最终选择协议','selection_protocol.json'),('月度选择依据','rolling_selection_T0.csv'),('旧版重现及闭合规则差异','baseline_reproduction.json'),('导出Excel独立交付验证','delivery_verification.json'),('输入及代码哈希','source_hashes.json')]: text+='- '+link(title,OUT/filename)+'\n'
     text+='\n'+link('优化文献核查',ROOT/'docs/第二问优化文献核查.md')+'；'+link('场景自适应储能设计及门槛',ROOT/'docs/第二问场景自适应模型说明.md')+'。\n\n'+refs
     paper.write_text(text,encoding='utf8')
-    (OUT/'第二问求解与结果分析.md').write_text(text,encoding='utf8')
+    copy_text = text
+    linked_targets = [OUT / name for name in (
+        'monthly_cost_v2.png', 'terminal_risk_v2.png', 'result2.xlsx',
+        'dispatch_10min.csv', 'daily_summary.csv', 'comparison.csv',
+        'monthly_comparison.csv', 'seasonal_comparison.csv',
+        'selection_protocol.json', 'rolling_selection_T0.csv',
+        'baseline_reproduction.json', 'delivery_verification.json',
+        'source_hashes.json')]
+    linked_targets.extend([
+        ROOT / 'docs' / '第二问优化文献核查.md',
+        ROOT / 'docs' / '第二问场景自适应模型说明.md',
+    ])
+    for target in linked_targets:
+        copy_text = copy_text.replace(
+            f']({relative_url(target, paper.parent)})',
+            f']({relative_url(target, OUT)})')
+    (OUT/'第二问求解与结果分析.md').write_text(copy_text,encoding='utf8')
     print(json.dumps(dict(selected=label,cost=float(chosen.cost),specified=specified),ensure_ascii=True),flush=True)
 
 if __name__=='__main__': main()
