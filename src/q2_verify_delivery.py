@@ -1,3 +1,8 @@
+import sys,runpy
+from pathlib import Path
+if __name__=='__main__' and '--legacy' not in sys.argv and (Path(__file__).resolve().parents[1]/'outputs/q2_review_v2/selection_protocol.json').exists():
+    runpy.run_path(str(Path(__file__).with_name('q2_review_verify.py')),run_name='__main__')
+    raise SystemExit(0)
 from q2_solver import ROOT,OUT,DATA,read_data,optimize
 from q2_analyze import audit,intervals
 import openpyxl, numpy as np,pandas as pd,json,hashlib,re
@@ -47,13 +52,15 @@ for i in range(31,365):
     gaps.append(opt['gap'])
 assert max_purchase_error<1e-6
 assert max(gaps)<1e-5
-paper=ROOT/'docs/result/第二问求解与结果分析.md'
+paper=ROOT/'outputs/q2_review_v2/第二问原版论文_存档.md'
+if not paper.exists(): paper=ROOT/'docs/result/第二问求解与结果分析.md'
 text=paper.read_text(encoding='utf8')
 assert text.count('$$')%2==0
 for date,day in p['specified'].items():
     assert date in text
-    for key in ['plan_kwh','plan_cost','emergency_cost','total_cost','initial','terminal']:
-        assert f'{day[key]:,.2f}' in text,(date,key)
+    section=text.split('### '+date,1)[1].split('### ',1)[0]
+    for key in ['plan_kwh','plan_cost','emergency_kwh','emergency_cost','total_cost','initial','terminal']:
+        assert f'{day[key]:,.2f}' in section,(date,key)
 for line in text.splitlines():
     if '](' not in line: continue
     for path in re.findall(r'\]\((C:/[^)]+)\)',line):

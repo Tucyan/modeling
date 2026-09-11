@@ -1,4 +1,9 @@
 """Generate Q2 manuscript from independently reconciled experiment outputs."""
+import sys,runpy
+from pathlib import Path
+if __name__=='__main__' and '--legacy' not in sys.argv and (Path(__file__).resolve().parents[1]/'outputs/q2_review_v2/selection_protocol.json').exists():
+    runpy.run_path(str(Path(__file__).with_name('q2_review_report.py')),run_name='__main__')
+    raise SystemExit(0)
 from q2_solver import ROOT, OUT
 import json, math
 import numpy as np,pandas as pd
@@ -290,7 +295,9 @@ text=text.replace(r'b=x+d^{\mathrm{act}}-c^{\mathrm{act}}',r'B^{\mathrm{sur}}=x+
 text=text.replace(r'\max(-b,0)',r'\max(-B^{\mathrm{sur}},0)').replace(r'\max(b,0)',r'\max(B^{\mathrm{sur}},0)')
 text=text.replace('还剩$r$槽','还剩$n^{\\mathrm{rem}}$槽').replace(r'6000-r\,',r'6000-n^{\mathrm{rem}}\,').replace(r'6000+r\,',r'6000+n^{\mathrm{rem}}\,')
 text=text.replace('### 6.2 全年费用','### 6.2 输出期费用').replace('全年事后','输出期事后').replace('主方案全年充电','主方案输出期充电')
+event_dates=[date for date,values in payload['specified'].items() if values['emergency_kwh']>1e-7]
+event_summary='、'.join(event_dates) if event_dates else '无'
 text=text.replace('## 8. 约束核验与适用边界',
-    '四个指定日的紧急购电均为零，而完整输出期有104天发生紧急购电，不能用指定日代替全年风险评价。\n\n## 8. 约束核验与适用边界')
+    f"四个指定日中，发生紧急购电的日期为：{event_summary}；其余指定日为0。完整输出期有{int((daily.emergency_kwh>1e-7).sum())}天发生紧急购电，不能用指定日代替输出期风险评价。\n\n## 8. 约束核验与适用边界")
 paper.parent.mkdir(exist_ok=True,parents=True);paper.write_text(text,encoding='utf8')
 print('Saved manuscript',paper,'lines',len(text.splitlines()))

@@ -3,7 +3,9 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {FileBlob,SpreadsheetFile} from '@oai/artifact-tool';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const out=path.join(root,'outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2');
+const outputFlag=process.argv.indexOf('--out');
+const hasV2=await fs.access(path.join(root,'outputs/q2_review_v2/selection_protocol.json')).then(()=>true,()=>false);
+const out=outputFlag>=0?path.resolve(root,process.argv[outputFlag+1]):path.join(root,hasV2?'outputs/q2_review_v2':'outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2');
 await fs.mkdir(out,{recursive:true});
 const wb=await SpreadsheetFile.importXlsx(await FileBlob.load(path.join(root,'C题_标准化数据与修正模板/C_final_delivery/templates/result2.xlsx')));
 if(process.argv.includes('--preview-template')){
