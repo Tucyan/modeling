@@ -1,0 +1,12 @@
+{
+  "planning_terminal": "T0:6000",
+  "actual_terminal": "open",
+  "controller": "F0",
+  "alpha": 0.8,
+  "initial": 6000,
+  "shadow_start_day": 14,
+  "actual_start_day": 31,
+  "lookback": 56,
+  "selection": "Continuous candidate histories; February also selected from prior history",
+  "interpretation": "Retrospectively designed causal backtest, not an untouched holdout"
+}

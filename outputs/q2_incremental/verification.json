@@ -1,0 +1,20 @@
+{
+  "days": 334,
+  "slots": 48096,
+  "prefix_error_kwh": 1.8189894035458565e-12,
+  "reconstruction_error_kwh": 0.0,
+  "physical": {
+    "bus": 4.547473508864641e-13,
+    "state": 1.1368683772161603e-13,
+    "continuity": 0.0,
+    "bounds": 0.0,
+    "power": 9.094947017729282e-13,
+    "overlap": 0,
+    "negative": 0.0,
+    "disposal": 9.094947017729282e-13,
+    "cost": 1.862645149230957e-09,
+    "initial": 0.0,
+    "terminal": 0.0
+  },
+  "cost": 13945902.174892083
+}
