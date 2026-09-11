@@ -1,0 +1,20 @@
+# Local solver/runtime dependencies
+.local-deps/
+node_modules/
+
+# Temporary notes and generated previews
+temp/
+outputs/**/*.png
+outputs/**/*.inspect.ndjson
+
+# Python caches and local tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

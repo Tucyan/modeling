@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "intervals_verified": 144,
+  "storage_blocks_verified": 6,
+  "paper_values_verified": true,
+  "source_hash_verified": true,
+  "template_labels_preserved": true,
+  "worksheet_names_preserved": true,
+  "cost_yuan": 35126.948589289634,
+  "max_discharge_kw": 4293.9182,
+  "checks": [
+    "physical balance",
+    "state continuity",
+    "power and capacity limits",
+    "nonnegativity",
+    "mutual exclusivity",
+    "daily cycle",
+    "Excel all requested numeric cells",
+    "paper specified values and totals",
+    "unrelated cell values and merges preserved"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+  "lp_cost": 35126.94858928963,
+  "purchase_kwh": 59482.69899835391,
+  "charge_kwh": 20740.666131687245,
+  "discharge_kwh": 16799.939566666668,
+  "spill_kwh": 0.0,
+  "baseline_cost": 48052.04659084667,
+  "saving_yuan": 12925.098001557046,
+  "saving_fraction": 0.26898121762870175,
+  "checks": {
+    "balance_max_abs_kwh": 1.1368683772161603e-13,
+    "state_max_abs_kwh": 8.810729923425242e-13,
+    "simultaneous_count": 0,
+    "energy_min": 1200.0,
+    "energy_max": 10800.0,
+    "initial": 6000.0,
+    "terminal": 6000.0,
+    "charge_max": 833.3333333333334,
+    "discharge_max": 715.6530333333334,
+    "min_purchase": 0.0,
+    "spill_min": 0.0,
+    "spill_upper_violation": 0.0,
+    "daily_balance_error": 3.637978807091713e-12,
+    "efficiency_balance_error": 0.0
+  }
+}
