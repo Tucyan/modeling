@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import linprog, milp, Bounds, LinearConstraint
 from scipy.sparse import lil_matrix, vstack, hstack, csr_matrix
+from dispatch_control import f0_step
 OUT=ROOT/'outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2'
 DATA=ROOT/'C题_标准化数据与修正模板/C_final_delivery'
 CAP=5000/6
@@ -67,17 +68,31 @@ def execute(g,load,pv,initial,terminal=None,storage=True):
     E=np.zeros(n+1); E[0]=initial
     c,d,e,unused,spill=[np.zeros(n) for _ in range(5)]
     for t in range(n):
-        surplus=g[t]+pv[t]-load[t]
-        if storage:
-            delta=.9*max(surplus,0)-max(-surplus,0)/.9
-            floor=1200 if terminal is None else max(1200,terminal-(n-t-1)*.9*CAP)
-            ceiling=10800 if terminal is None else min(10800,terminal+(n-t-1)*CAP/.9)
-            nextE=np.clip(E[t]+delta,max(floor,E[t]-CAP/.9),min(ceiling,E[t]+.9*CAP))
-            c[t]=max(nextE-E[t],0)/.9; d[t]=max(E[t]-nextE,0)*.9
-        balance=surplus+d[t]-c[t]
-        e[t]=max(-balance,0); excess=max(balance,0)
-        unused[t]=min(g[t],excess); spill[t]=max(excess-unused[t],0)
-        E[t+1]=E[t]+.9*c[t]-d[t]/.9
+        if storage and terminal is None:
+            step = f0_step(g[t], load[t], pv[t], E[t],
+                           remaining_slots=n-t-1)
+            for key, values in (('c', c), ('d', d), ('e', e),
+                                ('unused', unused), ('spill', spill)):
+                values[t] = step[key]
+            E[t+1] = step['next_state']
+        elif storage:
+            # Historical legacy closure is preserved for archived experiments.
+            surplus = g[t] + pv[t] - load[t]
+            delta = .9*max(surplus,0)-max(-surplus,0)/.9
+            floor = max(1200,terminal-(n-t-1)*.9*CAP)
+            ceiling = min(10800,terminal+(n-t-1)*CAP/.9)
+            nextE = np.clip(E[t]+delta,max(floor,E[t]-CAP/.9),
+                            min(ceiling,E[t]+.9*CAP))
+            c[t] = max(nextE-E[t],0)/.9; d[t] = max(E[t]-nextE,0)*.9
+            balance = surplus+d[t]-c[t]
+            e[t] = max(-balance,0); excess = max(balance,0)
+            unused[t] = min(g[t],excess); spill[t] = max(excess-unused[t],0)
+            E[t+1] = E[t]+.9*c[t]-d[t]/.9
+        else:
+            surplus = g[t] + pv[t] - load[t]
+            e[t] = max(-surplus, 0.); excess = max(surplus, 0.)
+            unused[t] = min(g[t], excess); spill[t] = max(excess-unused[t], 0.)
+            E[t+1] = E[t]
     return dict(g=g,c=c,d=d,e=e,unused=unused,spill=spill,E=E)
 
 def features(y,i,kind):

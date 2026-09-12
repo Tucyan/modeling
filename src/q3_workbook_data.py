@@ -41,7 +41,7 @@ def interval_time(boundary):
     return f'{minutes // 60:02d}:{minutes % 60:02d}'
 
 
-def _matrix(dispatch, value, cost_kind):
+def _matrix(dispatch, value, cost_kind, settlement='N0'):
     matrix = dispatch.pivot(index='date', columns='interval_id', values=value)
     expected_dates = pd.date_range('2025-02-01', '2025-12-31').strftime('%Y-%m-%d')
     if list(matrix.index) != list(expected_dates) or list(matrix.columns) != list(range(144)):
@@ -54,17 +54,20 @@ def _matrix(dispatch, value, cost_kind):
         day = dispatch[dispatch.date == date]
         if cost_kind == 'plan':
             cost = float((day.price * day.g).sum())
-        elif cost_kind == 'adjustment_n0':
+        elif cost_kind == 'adjustment':
+            down = .5 if settlement == 'N0' else -.5
             cost = float((day.price * (day.g
                          + 1.5*np.maximum(day.q-day.g, 0)
-                         + .5*np.maximum(day.g-day.q, 0))).sum())
+                         + down*np.maximum(day.g-day.q, 0))).sum())
         else:
             raise ValueError('Unknown workbook cost kind')
         rows.append(values[index].tolist() + [float(values[index].sum()), cost])
     return rows
 
 
-def build_payload(dispatch_path=None):
+def build_payload(dispatch_path=None, settlement='N0'):
+    if settlement not in ('N0', 'N1'):
+        raise ValueError('Supported settlements are N0 and N1')
     path = OUT / 'dispatch_10min.csv' if dispatch_path is None else Path(dispatch_path)
     dispatch = pd.read_csv(path)
     required = {'date', 'interval_id', 'g', 'q', 'c', 'd', 'e', 'E_start', 'E_end'}
@@ -99,15 +102,23 @@ def build_payload(dispatch_path=None):
             ])
         else:
             emergency.append([date, '无', 0.])
-    return {'plan': _matrix(dispatch, 'g', 'plan'),
-            'adjustment': _matrix(dispatch, 'q', 'adjustment_n0'),
+    return {'settlement': settlement,
+            'plan': _matrix(dispatch, 'g', 'plan', settlement),
+            'adjustment': _matrix(dispatch, 'q', 'adjustment', settlement),
             'battery': battery, 'emergency': emergency}
 
 
 def main():
-    OUT.mkdir(parents=True, exist_ok=True)
-    payload = build_payload()
-    (OUT / 'workbook_payload.json').write_text(
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', dest='dispatch_path')
+    parser.add_argument('--output', default=str(OUT))
+    parser.add_argument('--settlement', default='N0')
+    args = parser.parse_args()
+    output = Path(args.output)
+    output.mkdir(parents=True, exist_ok=True)
+    payload = build_payload(args.dispatch_path, args.settlement)
+    (output / 'workbook_payload.json').write_text(
         json.dumps(payload, ensure_ascii=False), encoding='utf-8')
     print(json.dumps({'plan_rows': len(payload['plan']),
                       'battery_rows': len(payload['battery']),

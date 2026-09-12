@@ -1,0 +1,31 @@
+{
+  "label": "calibrated_R6_12",
+  "settlement": "N1",
+  "updates": [
+    6,
+    12
+  ],
+  "risk_pair": {
+    "alpha0": 0.7,
+    "alpha_update": 0.65
+  },
+  "days": 334,
+  "cost": 13688854.087097595,
+  "plan_cost": 13130414.901042553,
+  "up_cost": 233944.3917251026,
+  "down_fee": 295937.4619205209,
+  "refund": 591874.9238410417,
+  "emergency_cost": 620432.2562504616,
+  "emergency_kwh": 100972.06646163063,
+  "emergency_days": 202,
+  "emergency_events": 357,
+  "emergency_slots": 908,
+  "unused_kwh": 493963.89022107434,
+  "spill_kwh": 1189111.0366883352,
+  "final_soc": 6000.0,
+  "max_lp_gap": 7.275957614183426e-11,
+  "max_mip_gap": 0.0,
+  "milp_solves": 0,
+  "max_seconds": 0.06589460000395775,
+  "mean_seconds": 0.0426359997009984
+}

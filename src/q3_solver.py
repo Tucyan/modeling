@@ -11,6 +11,7 @@ import pandas as pd
 from scipy.optimize import linprog, milp, Bounds, LinearConstraint
 from scipy.sparse import lil_matrix, hstack, csr_matrix
 from q3_forecast import pv_release_10min
+from dispatch_control import f0_step
 
 CAP = 5000 / 6
 DATA = ROOT / 'C题_标准化数据与修正模板/C_final_delivery/data_csv'
@@ -130,17 +131,27 @@ def _planning_components(forecast_load, forecast_pv, net_reserve):
 
 def simulate_day(day, load, pv, forecast_load, hourly, price, initial,
                  updates=(6,12,18), settlement='N0', terminal=None,
-                 reserve_by_issue=None):
+                 reserve_by_issue=None, original_contract=None,
+                 planning_target=6000.):
     if any(h not in (6,12,18) for h in updates):
         raise ValueError('Invalid update time')
-    first_pv = pv_at_issue(hourly,day,0)
-    first_load, first_pv = _planning_components(
-        forecast_load, first_pv, _reserve_at_issue(reserve_by_issue, 0, 144))
-    first = optimize(first_load,first_pv,price,initial)
-    g,q = first['q'].copy(),first['q'].copy()
+    if len(load) != 144 or len(pv) != 144 or len(forecast_load) != 144 or len(price) != 144:
+        raise ValueError('simulate_day expects exactly 144 slots')
+    if original_contract is None:
+        first_pv = pv_at_issue(hourly,day,0)
+        first_load, first_pv = _planning_components(
+            forecast_load, first_pv, _reserve_at_issue(reserve_by_issue, 0, 144))
+        first = optimize(first_load,first_pv,price,initial,target=planning_target)
+        g,q = first['q'].copy(),first['q'].copy()
+        solves = [first]
+    else:
+        g = np.asarray(original_contract, dtype=float).copy()
+        if g.shape != (144,) or not np.isfinite(g).all() or np.any(g < 0):
+            raise ValueError('original_contract must be 144 finite nonnegative values')
+        q = g.copy(); solves = []
     flows = {k:np.zeros(144) for k in ('c','d','e','unused','spill')}
     E = np.zeros(145); E[0] = initial
-    versions,solves = [],[first]
+    versions = []
     for t in range(144):
         hour = t//6
         if t%36 == 0 and hour in updates:
@@ -149,26 +160,16 @@ def simulate_day(day, load, pv, forecast_load, hourly, price, initial,
                 forecast_load[t:], update_pv,
                 _reserve_at_issue(reserve_by_issue, hour, 144-t))
             solved = optimize(adjusted_load,update_pv,price[t:],
-                              E[t],original=g[t:],settlement=settlement)
+                              E[t],original=g[t:],settlement=settlement,
+                              target=planning_target)
             prev = q[t:].copy(); q[t:] = solved['q']; solves.append(solved)
             versions.extend(dict(issue_hour=hour,interval_id=j,original_g=float(g[j]),
                                  previous_q=float(prev[j-t]),q=float(q[j]),
                                  delta=float(q[j]-g[j]),change=float(q[j]-prev[j-t])) for j in range(t,144))
-        state = E[t]; surplus = q[t]+pv[t]-load[t]
-        if terminal is not None and state>terminal:
-            c,d = 0.,min(CAP,load[t],.9*(state-terminal))
-        else:
-            floor = 1200 if terminal is None else max(1200,terminal-(143-t)*.9*CAP)
-            ceiling = 10800 if terminal is None else terminal
-            nxt = np.clip(state+.9*max(surplus,0)-max(-surplus,0)/.9,
-                          max(floor,state-CAP/.9),min(ceiling,state+.9*CAP))
-            c,d = max(nxt-state,0)/.9,max(state-nxt,0)*.9
-        balance = surplus+d-c
-        e,excess = max(-balance,0),max(balance,0)
-        w = min(q[t],excess); s = max(excess-w,0)
-        for k,v in zip(flows,(c,d,e,w,s)):
-            flows[k][t] = v
-        E[t+1] = state+.9*c-d/.9
+        step = f0_step(q[t], load[t], pv[t], E[t],
+                       remaining_slots=143-t, closing_target=terminal)
+        for key in flows: flows[key][t] = step[key]
+        E[t+1] = step['next_state']
     if terminal is not None and abs(E[-1]-terminal)>1e-6:
         raise RuntimeError('Closing SOC unreachable without illegal disposal')
     r = dict(g=g,q=q,E=E,versions=versions,**flows)

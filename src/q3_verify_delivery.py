@@ -21,7 +21,8 @@ def sha256(path):
 
 
 def _assert_small(checks, tolerance=EPS):
-    bad = {name: value for name, value in checks.items() if value > tolerance}
+    bad = {name: value for name, value in checks.items()
+           if not np.isfinite(float(value)) or float(value) > tolerance}
     if bad:
         raise AssertionError(f'Verification residuals exceed tolerance: {bad}')
 
@@ -50,23 +51,53 @@ def _reconstruct_contracts(dispatch, versions):
     return reconstructed
 
 
-def verify_dispatch(daily, dispatch, versions, settlement='N0'):
-    if settlement != 'N0':
-        raise ValueError('Canonical delivery must use N0')
+def verify_dispatch(daily, dispatch, versions, settlement='N0',
+                    expected_start='2025-02-01', expected_end='2025-12-31'):
+    if settlement not in ('N0', 'N1'):
+        raise ValueError('Supported settlements are N0 and N1')
     required = {'date', 'interval_id', 'g', 'q', 'c', 'd', 'e', 'unused',
                 'spill', 'E_start', 'E_end', 'load', 'pv', 'price'}
     if required - set(dispatch.columns):
         raise AssertionError(f'Missing dispatch fields: {sorted(required-set(dispatch.columns))}')
-    if len(daily) != 334 or len(dispatch) != 334 * 144:
-        raise AssertionError('Canonical delivery has incomplete dates or slots')
+    expected_dates = pd.date_range(expected_start, expected_end).strftime('%Y-%m-%d').tolist()
+    if len(daily) != len(expected_dates) or len(dispatch) != len(expected_dates) * 144:
+        raise AssertionError('Delivery has incomplete dates or slots')
+    if 'date' not in daily.columns or daily.date.astype(str).tolist() != expected_dates:
+        raise AssertionError('Daily dates must be complete and ordered')
+    if dispatch.date.astype(str).nunique() != len(expected_dates):
+        raise AssertionError('Dispatch dates are incomplete')
+    if dispatch.date.astype(str).tolist() != list(np.repeat(expected_dates, 144)):
+        raise AssertionError('Dispatch dates must be complete and ordered')
+    numeric_columns = [column for column in required if column not in ('date', 'interval_id')]
+    if not np.isfinite(dispatch[numeric_columns].to_numpy(dtype=float)).all():
+        raise AssertionError('Dispatch contains non-finite numeric values')
+    version_required = {'date','issue_hour','interval_id','original_g',
+                        'previous_q','q','delta','change'}
+    if version_required - set(versions.columns):
+        raise AssertionError('Contract versions are missing required fields')
+    if len(versions):
+        numeric_versions = versions[list(version_required-{'date'})].to_numpy(dtype=float)
+        if not np.isfinite(numeric_versions).all():
+            raise AssertionError('Contract versions contain non-finite numeric values')
+        if versions.date.isna().any() or not set(versions.date.astype(str)).issubset(expected_dates):
+            raise AssertionError('Contract versions contain unknown dates')
+        if versions.duplicated(['date','issue_hour','interval_id']).any():
+            raise AssertionError('Duplicate contract version keys')
+        issue_hours = versions.issue_hour.to_numpy(dtype=float)
+        if (not np.equal(issue_hours, np.floor(issue_hours)).all()
+                or not set(issue_hours.astype(int)).issubset({0, 6, 12, 18})):
+            raise AssertionError('Contract versions contain an unsupported issue hour')
+    if 'cost' not in daily.columns or not np.isfinite(daily.cost.to_numpy(dtype=float)).all():
+        raise AssertionError('Daily summary contains non-finite cost values')
     if dispatch.duplicated(['date', 'interval_id']).any():
         raise AssertionError('Duplicate dispatch keys')
-    if not np.array_equal(dispatch.interval_id.to_numpy(), np.tile(np.arange(144), 334)):
+    if not np.array_equal(dispatch.interval_id.to_numpy(), np.tile(np.arange(144), len(expected_dates))):
         raise AssertionError('Incorrect interval order')
     reconstructed = _reconstruct_contracts(dispatch, versions)
+    down_coefficient = .5 if settlement == 'N0' else -.5
     regular = dispatch.price * (
         dispatch.g + 1.5*np.maximum(dispatch.q-dispatch.g, 0)
-        + .5*np.maximum(dispatch.g-dispatch.q, 0))
+        + down_coefficient*np.maximum(dispatch.g-dispatch.q, 0))
     recomputed_cost = float(regular.sum() + (5*dispatch.price*dispatch.e).sum())
     residuals = {
         'bus': float(abs(dispatch.q-dispatch.unused+dispatch.e+dispatch.pv
@@ -124,7 +155,9 @@ def _expected_emergency(dispatch):
     return rows
 
 
-def verify_workbook(workbook_path, dispatch):
+def verify_workbook(workbook_path, dispatch, settlement='N0'):
+    if settlement not in ('N0', 'N1'):
+        raise ValueError('Supported settlements are N0 and N1')
     workbook = load_workbook(workbook_path, data_only=True, read_only=False)
     if workbook.sheetnames != ['计划购电量', '调整购电量', '充放电量', '紧急购电量']:
         raise AssertionError('Workbook sheet structure changed')
@@ -135,6 +168,8 @@ def verify_workbook(workbook_path, dispatch):
                        for row in range(2, 336)], dtype=float)
     adjustment = np.asarray([[adjust_sheet.cell(row, col).value for col in range(2, 146)]
                              for row in range(2, 336)], dtype=float)
+    if not np.isfinite(plan).all() or not np.isfinite(adjustment).all():
+        raise AssertionError('Workbook plan/adjustment matrix contains non-finite values')
     checks = {'plan_matrix': float(np.max(abs(plan-g))),
               'adjustment_matrix': float(np.max(abs(adjustment-q)))}
     for index, (_, day) in enumerate(dispatch.groupby('date', sort=True), start=2):
@@ -142,8 +177,11 @@ def verify_workbook(workbook_path, dispatch):
         plan_cost = float(plan_sheet.cell(index, 147).value)
         adjustment_total = float(adjust_sheet.cell(index, 146).value)
         adjustment_cost = float(adjust_sheet.cell(index, 147).value)
+        if not np.isfinite((plan_total, plan_cost, adjustment_total, adjustment_cost)).all():
+            raise AssertionError('Workbook totals contain non-finite values')
+        down = .5 if settlement == 'N0' else -.5
         regular = day.price * (day.g + 1.5*np.maximum(day.q-day.g, 0)
-                               + .5*np.maximum(day.g-day.q, 0))
+                               + down*np.maximum(day.g-day.q, 0))
         checks['plan_total'] = max(checks.get('plan_total', 0), abs(plan_total-day.g.sum()))
         checks['plan_cost'] = max(checks.get('plan_cost', 0), abs(plan_cost-(day.price*day.g).sum()))
         checks['adjustment_total'] = max(checks.get('adjustment_total', 0), abs(adjustment_total-day.q.sum()))
@@ -154,26 +192,41 @@ def verify_workbook(workbook_path, dispatch):
         for block in range(6):
             part = day.iloc[block*24:(block+1)*24]
             expected = (float(part.c.sum()), float(part.d.sum()))
+            charge = float(battery.cell(row, 3).value)
+            discharge = float(battery.cell(row, 4).value)
+            if not np.isfinite((charge, discharge)).all():
+                raise AssertionError('Workbook battery table contains non-finite values')
             checks['battery_charge'] = max(checks.get('battery_charge', 0),
-                                            abs(float(battery.cell(row, 3).value)-expected[0]))
+                                            abs(charge-expected[0]))
             checks['battery_discharge'] = max(checks.get('battery_discharge', 0),
-                                               abs(float(battery.cell(row, 4).value)-expected[1]))
+                                               abs(discharge-expected[1]))
             if block == 0 and _date_text(battery.cell(row, 1).value) != date:
                 raise AssertionError('Battery date mismatch')
             row += 1
     if row != 2006:
         raise AssertionError('Battery row count mismatch')
+    if any(battery.cell(tail, col).value is not None
+           for tail in range(row, battery.max_row+1) for col in range(1, 5)):
+        raise AssertionError('Battery table contains trailing rows')
     emergency_sheet = workbook['紧急购电量']
     expected_rows = _expected_emergency(dispatch)
-    actual_rows = [[_date_text(emergency_sheet.cell(index, 1).value),
-                    emergency_sheet.cell(index, 2).value,
-                    float(emergency_sheet.cell(index, 3).value)]
-                   for index in range(2, 2+len(expected_rows))]
+    actual_rows = []
+    for index in range(2, 2+len(expected_rows)):
+        kwh = float(emergency_sheet.cell(index, 3).value)
+        if not np.isfinite(kwh):
+            raise AssertionError('Workbook emergency table contains non-finite values')
+        actual_rows.append([_date_text(emergency_sheet.cell(index, 1).value),
+                            emergency_sheet.cell(index, 2).value, kwh])
     for expected, actual in zip(expected_rows, actual_rows):
         if expected[:2] != actual[:2]:
             raise AssertionError(f'Emergency event mismatch: {expected[:2]} != {actual[:2]}')
         checks['emergency_kwh'] = max(checks.get('emergency_kwh', 0),
                                       abs(expected[2]-actual[2]))
+    emergency_end = 2 + len(expected_rows)
+    if any(emergency_sheet.cell(tail, col).value is not None
+           for tail in range(emergency_end, emergency_sheet.max_row+1)
+           for col in range(1, 4)):
+        raise AssertionError('Emergency table contains trailing rows')
     errors = []
     for sheet in workbook:
         for cells in sheet.iter_rows():
@@ -198,7 +251,8 @@ def verify_delivery(root=ROOT):
     if protocol['last_history_day'] >= protocol['decision_day']:
         raise AssertionError('Protocol contains future selection data')
     dispatch_checks = verify_dispatch(daily, dispatch, versions, protocol['settlement'])
-    workbook_checks = verify_workbook(out / 'result3.xlsx', dispatch)
+    workbook_checks = verify_workbook(out / 'result3.xlsx', dispatch,
+                                      protocol['settlement'])
     q2_record = json.loads((root / 'outputs/q2_review_v2/delivery_verification.json').read_text())
     q2_paper = root / 'docs/result/第二问求解与结果分析.md'
     q2_workbook = root / 'outputs/q2_review_v2/result2.xlsx'
@@ -230,12 +284,117 @@ def verify_delivery(root=ROOT):
     return result
 
 
+def verify_unified_delivery(output, root=ROOT):
+    """Verify both unified settlement deliveries and all saved ablations."""
+    output = Path(output).resolve(); root = Path(root).resolve()
+    stage_path = output / 'stage_unified-ablations.json'
+    if not stage_path.is_file():
+        raise AssertionError('Unified ablation stage manifest is missing')
+    stage = json.loads(stage_path.read_text(encoding='utf-8'))
+    if stage.get('status') != 'complete':
+        raise AssertionError('Unified ablation stage is incomplete')
+    for relative, expected in stage.get('artifacts', {}).items():
+        artifact = output / relative
+        if not artifact.is_file() or sha256(artifact) != expected:
+            raise AssertionError(f'Unified stage artifact is stale: {relative}')
+    results = {'output': str(output), 'stage_manifest_verified': True,
+               'settlements': {}}
+    for settlement in ('N0', 'N1'):
+        folder = output / settlement
+        protocol = json.loads((folder / 'selection_protocol.json').read_text(encoding='utf-8'))
+        if protocol['settlement'] != settlement:
+            raise AssertionError('Protocol settlement mismatch')
+        if protocol['last_history_day'] >= protocol['decision_day'] or len(protocol['scores']) != 48:
+            raise AssertionError('Protocol is not a complete strictly historical selection')
+        daily = pd.read_csv(folder / 'daily_summary.csv')
+        dispatch = pd.read_csv(folder / 'dispatch_10min.csv')
+        versions = pd.read_csv(folder / 'contract_versions.csv')
+        main = verify_dispatch(daily, dispatch, versions, settlement)
+        workbook = verify_workbook(folder / 'result3.xlsx', dispatch, settlement)
+        policies = {}
+        selected_label = f"calibrated_{protocol['selected']['release_name']}"
+        for label in (f'calibrated_{name}' for name in
+                      ('R0','R6','R12','R18','R6_12','R6_18','R12_18','Rall')):
+            base = folder if label == selected_label else folder / 'release_ablations'
+            d = pd.read_csv(base / f'{label}_daily.csv')
+            x = pd.read_csv(base / f'{label}_dispatch.csv')
+            v = pd.read_csv(base / f'{label}_versions.csv')
+            policies[label] = verify_dispatch(d, x, v, settlement)
+        comparison = pd.read_csv(folder / 'comparison.csv').set_index('label')
+        expected_comparison = set(policies) | {'Q2_frozen'}
+        if set(comparison.index) != expected_comparison:
+            raise AssertionError('Comparison table does not match release ablations')
+        _assert_small({f'comparison_{label}':
+                       abs(float(comparison.loc[label, 'cost'])-check['cost'])
+                       for label, check in policies.items()})
+        label = 'Q2_day_ahead_with_updates'
+        adapter_daily = pd.read_csv(folder / f'{label}_daily.csv')
+        adapter_dispatch = pd.read_csv(folder / f'{label}_dispatch.csv')
+        policies[label] = verify_dispatch(
+            adapter_daily, adapter_dispatch,
+            pd.read_csv(folder / f'{label}_versions.csv'), settlement)
+        adapter_summary = json.loads((folder / f'{label}.json').read_text(encoding='utf-8'))
+        _assert_small({'adapter_summary':
+                       abs(adapter_summary['cost']-policies[label]['cost'])})
+        fixed = json.loads((folder / 'fixed_ledger_repricing.json').read_text(encoding='utf-8'))
+        for other in ('N0', 'N1'):
+            down = .5 if other == 'N0' else -.5
+            regular = dispatch.price * (
+                dispatch.g + 1.5*np.maximum(dispatch.q-dispatch.g, 0)
+                + down*np.maximum(dispatch.g-dispatch.q, 0))
+            recomputed = float(regular.sum()+(5*dispatch.price*dispatch.e).sum())
+            _assert_small({f'fixed_repricing_{other}': abs(fixed[other]-recomputed)})
+        results['settlements'][settlement] = dict(
+            selected=protocol['selected'], main=main, workbook=workbook,
+            policies=policies)
+    q2_daily = pd.read_csv(output / 'Q2_frozen_daily.csv')
+    q2_dispatch = pd.read_csv(output / 'Q2_frozen_dispatch.csv')
+    q2_versions = pd.read_csv(output / 'Q2_frozen_versions.csv')
+    results['q2_frozen'] = {
+        settlement: verify_dispatch(q2_daily, q2_dispatch, q2_versions, settlement)
+        for settlement in ('N0', 'N1')}
+    for settlement in ('N0', 'N1'):
+        comparison = pd.read_csv(output/settlement/'comparison.csv').set_index('label')
+        _assert_small({f'q2_comparison_{settlement}':
+                       abs(float(comparison.loc['Q2_frozen', 'cost'])
+                           - results['q2_frozen'][settlement]['cost'])})
+    cross = json.loads((output/'cross_protocols.json').read_text(encoding='utf-8'))
+    selected_same = (results['settlements']['N0']['selected']
+                     == results['settlements']['N1']['selected'])
+    if bool(cross.get('protocols_identical')) != selected_same:
+        raise AssertionError('Cross-settlement protocol record is inconsistent')
+    if selected_same and not cross.get('intentional_reuse'):
+        raise AssertionError('Identical cross-settlement protocols were not explicitly recorded')
+    if not selected_same and len(cross.get('evaluations', [])) != 2:
+        raise AssertionError('Different protocols require two cross-settlement evaluations')
+    results['cross_protocols'] = cross
+    results['sha256'] = {
+        str(path.relative_to(root)): sha256(path)
+        for path in sorted(output.rglob('*')) if path.is_file()
+        and path.suffix in ('.csv', '.json', '.xlsx')
+        and path.name != 'delivery_verification.json'}
+    (output / 'delivery_verification.json').write_text(
+        json.dumps(results, ensure_ascii=False, indent=2), encoding='utf-8')
+    return results
+
+
 def main():
-    result = verify_delivery()
-    print(json.dumps({'selected': result['selected'],
-                      'cost': result['dispatch']['cost'],
-                      'maximum_cell_error': result['workbook']['maximum_cell_error'],
-                      'q2_unchanged': result['q2_unchanged']}, ensure_ascii=False))
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output')
+    args = parser.parse_args()
+    if args.output:
+        result = verify_unified_delivery(args.output)
+        print(json.dumps({settlement: {
+            'selected': value['selected'], 'cost': value['main']['cost'],
+            'maximum_cell_error': value['workbook']['maximum_cell_error']}
+            for settlement, value in result['settlements'].items()}, ensure_ascii=False))
+    else:
+        result = verify_delivery()
+        print(json.dumps({'selected': result['selected'],
+                          'cost': result['dispatch']['cost'],
+                          'maximum_cell_error': result['workbook']['maximum_cell_error'],
+                          'q2_unchanged': result['q2_unchanged']}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

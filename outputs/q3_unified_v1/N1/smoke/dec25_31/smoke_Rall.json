@@ -1,0 +1,32 @@
+{
+  "label": "smoke_Rall",
+  "settlement": "N1",
+  "updates": [
+    6,
+    12,
+    18
+  ],
+  "risk_pair": {
+    "alpha0": 0.8,
+    "alpha_update": 0.7
+  },
+  "days": 7,
+  "cost": 385002.16002213384,
+  "plan_cost": 366360.01315556845,
+  "up_cost": 14454.578275824631,
+  "down_fee": 6123.188727309048,
+  "refund": 12246.377454618096,
+  "emergency_cost": 10310.75731804985,
+  "emergency_kwh": 2085.3906322586427,
+  "emergency_days": 3,
+  "emergency_events": 6,
+  "emergency_slots": 11,
+  "unused_kwh": 29569.553475016324,
+  "spill_kwh": 324.3938943723115,
+  "final_soc": 6000.0,
+  "max_lp_gap": 6.548361852765083e-11,
+  "max_mip_gap": 0.0,
+  "milp_solves": 0,
+  "max_seconds": 0.10219700000016019,
+  "mean_seconds": 0.08755195714184083
+}

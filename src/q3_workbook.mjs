@@ -5,7 +5,9 @@ import { FileBlob, SpreadsheetFile } from "@oai/artifact-tool";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const templatePath = path.join(root, "C题_标准化数据与修正模板", "C_final_delivery", "templates", "result3.xlsx");
-const outputDir = path.join(root, "outputs", "q3_final");
+const outputArg = process.argv.find((value) => value.startsWith("--output="));
+const outputDir = outputArg ? path.resolve(root, outputArg.slice("--output=".length))
+                            : path.join(root, "outputs", "q3_final");
 const previewDir = path.join(root, "outputs", "q3_modeling", "workbook_previews");
 const expectedSheets = ["计划购电量", "调整购电量", "充放电量", "紧急购电量"];
 
@@ -86,6 +88,7 @@ async function buildWorkbook() {
   workbook.worksheets.getItem("调整购电量").getRange("B2:EQ335").setNumberFormat("0.000000");
   writeBattery(workbook.worksheets.getItem("充放电量"), payload.battery);
   writeEmergency(workbook.worksheets.getItem("紧急购电量"), payload.emergency);
+  workbook.recalculate();
 
   const planCheck = await workbook.inspect({
     kind: "table", range: "计划购电量!A1:H6", include: "values,formulas",
@@ -100,7 +103,7 @@ async function buildWorkbook() {
     options: {useRegex: true, maxResults: 300}, summary: "final formula error scan",
   });
   process.stdout.write(`${planCheck.ndjson}\n${storageCheck.ndjson}\n${errors.ndjson}\n`);
-  await renderAll(workbook, "final");
+  await renderAll(workbook, `final_${path.basename(outputDir)}`);
   await fs.mkdir(outputDir, {recursive: true});
   const output = await SpreadsheetFile.exportXlsx(workbook);
   await output.save(path.join(outputDir, "result3.xlsx"));

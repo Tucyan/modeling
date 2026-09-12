@@ -1,8 +1,8 @@
 # 第一问计算与交付复现
 
-## 第三问：2026-09-12修复并入工作区
+## 第三问：Q2→Q3统一版（2026-09-12）
 
-当前`q3_*`代码已修复预报时距错配及报告固定结论，使用本工作区的既有虚拟环境和依赖。旧第三问附件归档到`../outputs/q3_legacy_before_fix/`，修复后的正式结果位于`../outputs/q3_final/`，主论文位于`../docs/result/第三问求解与结果分析.md`。
+当前统一版新增共享F0/评价末端闭合、Q2_frozen退化基准、原合同注入、N0/N1独立历史选型和非有限账本拒绝。新版结果隔离在`../outputs/q3_unified_v1/`，旧`q3_final/`与Q1/Q2附件未覆盖；主论文已同步到`../docs/result/第三问求解与结果分析.md`。
 
 先从项目根目录验证代码：
 
@@ -10,19 +10,23 @@
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p 'test_q3*.py' -v
 ```
 
-需要生成新的正式结果时，从项目根目录依次执行：
+需要完整复现统一版时，从项目根目录依次执行：
 
 ```powershell
-.\.venv\Scripts\python.exe src/q3_experiments.py --stage formal
-.\.venv\Scripts\python.exe src/q3_workbook_data.py
-node src/q3_workbook.mjs
-.\.venv\Scripts\python.exe src/q3_report.py
-.\.venv\Scripts\python.exe src/q3_verify_delivery.py
+.\.venv\Scripts\python.exe src/q3_experiments.py --stage unified-smoke --output outputs/q3_unified_v1
+.\.venv\Scripts\python.exe src/q3_experiments.py --stage unified-formal --output outputs/q3_unified_v1
+.\.venv\Scripts\python.exe src/q3_experiments.py --stage unified-ablations --output outputs/q3_unified_v1
+.\.venv\Scripts\python.exe src/q3_workbook_data.py --input outputs/q3_unified_v1/N0/dispatch_10min.csv --output outputs/q3_unified_v1/N0 --settlement N0
+.\.venv\Scripts\python.exe src/q3_workbook_data.py --input outputs/q3_unified_v1/N1/dispatch_10min.csv --output outputs/q3_unified_v1/N1 --settlement N1
+node src/q3_workbook.mjs --output=outputs/q3_unified_v1/N0
+node src/q3_workbook.mjs --output=outputs/q3_unified_v1/N1
+.\.venv\Scripts\python.exe src/q3_report.py --unified-output outputs/q3_unified_v1
+.\.venv\Scripts\python.exe src/q3_verify_delivery.py --output outputs/q3_unified_v1
 ```
 
-上述命令已完成修复后的正式重算：重新选择全部48个1月候选并生成334天对照，结果写入`outputs/q3_final/`，报告读取实际获选策略、费用及选择日期。当前获选为Rall、风险分位数0.70/0.65，总费用13,669,905.31元。Excel导出沿用本工作区可用的`@oai/artifact-tool`运行时；不加载压缩包作者电脑的绝对路径或运行时。
+N0、N1均使用1月15—31日的48候选独立选择，恰好都选中Rall、风险分位数0.70/0.65；全年费用分别为13,669,905.31元和13,492,611.13元。`Q2_frozen`两种结算均为13,991,435.14元。统一验证器已逐字段拒绝NaN/Inf，并验证完整日期、合同版本、物理约束、费用和两份Excel。
 
-第三问复用现有`outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2/forecasts.npz`中的因果负载预测。输入数据、模板及Q1/Q2代码保持原样。未实现的NaN验证修复仍见[合并说明](../docs/第三问修复与合并说明.md)，当前验证器通过不代表所有审查问题已关闭。
+第三问复用现有`outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2/forecasts.npz`中的因果负载预测。N0仍是主解释，N1仅是题意歧义敏感性；低费用不表示低紧急购电风险。Q2日前规则+日内更新是冻结协议下的消融，不按输出期结果回退或替换正式策略。
 
 ## 第二问新增复现入口
 

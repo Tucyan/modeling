@@ -2,6 +2,7 @@
 from dataclasses import dataclass, asdict, replace
 import argparse, hashlib, json, time
 from q2_solver import ROOT, OUT as OLD, DATA, np, pd, optimize, execute, read_data
+from dispatch_control import f0_step
 
 OUT=ROOT/'outputs/q2_review_v2'
 EPS=1e-7
@@ -23,19 +24,10 @@ def execute_closed(g,load,pv,initial,terminal):
     n=len(g); state=initial; E=[state]
     flows={key:[] for key in ('c','d','e','unused','spill')}
     for t in range(n):
-        surplus=g[t]+pv[t]-load[t]
-        floor=max(1200.,terminal-(n-t-1)*.9*5000/6)
-        if state>terminal:
-            c=0.; d=min(5000/6,load[t],.9*(state-terminal))
-        else:
-            next_state=np.clip(state+.9*max(surplus,0)-max(-surplus,0)/.9,
-                max(floor,state-5000/6/.9),min(terminal,state+.9*5000/6))
-            c=max(next_state-state,0)/.9; d=max(state-next_state,0)*.9
-        balance=surplus+d-c; e=max(-balance,0); excess=max(balance,0)
-        unused=min(g[t],excess); spill=max(0,excess-unused)
-        if spill>pv[t]+1e-6: raise ValueError('Terminal restoration would dump battery energy')
-        state+=.9*c-d/.9; E.append(state)
-        for key,value in zip(flows,(c,d,e,unused,spill)): flows[key].append(value)
+        step = f0_step(g[t], load[t], pv[t], state,
+                       remaining_slots=n-t-1, closing_target=terminal)
+        state = step['next_state']; E.append(state)
+        for key in flows: flows[key].append(step[key])
     if abs(state-terminal)>1e-6: raise ValueError('Terminal target unreachable under observed demand; no artificial discharge allowed')
     return dict(g=np.asarray(g),E=np.asarray(E),**{k:np.asarray(v) for k,v in flows.items()})
 

@@ -1,0 +1,29 @@
+{
+  "label": "Q2_frozen",
+  "settlement": "N0",
+  "updates": [],
+  "days": 334,
+  "rows": 48096,
+  "cost_n0": 13991435.140429746,
+  "cost_n1": 13991435.140429746,
+  "plan_cost": 13260497.39217493,
+  "emergency_cost": 730937.7482548167,
+  "emergency_kwh": 119025.32286885733,
+  "emergency_days": 118,
+  "emergency_events": 187,
+  "emergency_slots": 618,
+  "unused_kwh": 1192709.3682624437,
+  "spill_kwh": 1428390.4408455975,
+  "max_controller_replay_error_kwh": 7.275957614183426e-12,
+  "controller_replay_error_by_field": {
+    "c": 6.0822458181064576e-12,
+    "d": 5.002220859751105e-12,
+    "e": 5.002220859751105e-12,
+    "unused": 4.206412995699793e-12,
+    "spill": 6.0822458181064576e-12,
+    "E_start": 7.275957614183426e-12,
+    "E_end": 7.275957614183426e-12
+  },
+  "source_cost_error_yuan": 0.0,
+  "source": "outputs/q2_review_v2/experiments/Rolling_T0_dispatch.csv"
+}

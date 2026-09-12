@@ -41,6 +41,19 @@ class Q3ReportTests(unittest.TestCase):
         self.assertIn('未来实际', text)
         self.assertIn('result3.xlsx', text)
 
+    def test_report_treats_q2_as_a_feasible_frozen_baseline(self):
+        text = render_report(minimal_payload())
+        self.assertIn('Q2_frozen', text)
+        self.assertIn('可行退化基准', text)
+        self.assertNotIn('冒充为第三问可行解', text)
+
+    def test_unified_output_links_are_rendered(self):
+        payload = minimal_payload()
+        payload['output_root'] = '../../outputs/q3_unified_v1'
+        text = render_report(payload)
+        self.assertIn('../../outputs/q3_unified_v1/N0/result3.xlsx', text)
+        self.assertNotIn('{output_root}', text)
+
     def test_report_does_not_claim_every_release_is_necessary(self):
         """A rejected intraday release set cannot be described as necessary."""
         text = render_report(minimal_payload())
@@ -89,6 +102,21 @@ class Q3ReportTests(unittest.TestCase):
         text = render_report(payload)
         self.assertIn('费用持平', text)
         self.assertNotIn('减少 0.00 元', text)
+
+    def test_independent_n1_result_uses_its_full_selected_protocol(self):
+        payload = minimal_payload()
+        payload['selected'].update(release_name='Rall', updates=[6, 12, 18])
+        payload['comparison'][1]['cost'] = 80.
+        payload['n1_selection'] = {
+            'selected': {'risk_pair': {'alpha0': .70, 'alpha_update': .65},
+                         'release_name': 'R12', 'updates': [12]}}
+        payload['n1_summary'] = {'cost': 70., 'emergency_kwh': 1.,
+                                 'emergency_days': 1, 'emergency_events': 1}
+        text = render_report(payload)
+        self.assertIn('选中 R12、风险分位数0.70/0.65', text)
+        self.assertIn('总费用为 70.00 元', text)
+        self.assertIn('完整协议不同', text)
+        self.assertNotIn('同一所选策略 Rall', text)
 
     def test_protocol_dates_are_not_hardcoded(self):
         payload = minimal_payload()

@@ -1,0 +1,31 @@
+{
+  "label": "smoke_R6_18",
+  "settlement": "N1",
+  "updates": [
+    6,
+    18
+  ],
+  "risk_pair": {
+    "alpha0": 0.8,
+    "alpha_update": 0.7
+  },
+  "days": 7,
+  "cost": 353219.22603461327,
+  "plan_cost": 348073.4086424506,
+  "up_cost": 12683.6565778517,
+  "down_fee": 10854.062668885708,
+  "refund": 21708.125337771417,
+  "emergency_cost": 3316.2234831966794,
+  "emergency_kwh": 528.3181047284929,
+  "emergency_days": 3,
+  "emergency_events": 5,
+  "emergency_slots": 11,
+  "unused_kwh": 37852.86327824464,
+  "spill_kwh": 10117.790351451073,
+  "final_soc": 6000.0,
+  "max_lp_gap": 5.093170329928398e-11,
+  "max_mip_gap": 0.0,
+  "milp_solves": 0,
+  "max_seconds": 0.04034849998424761,
+  "mean_seconds": 0.03718209999247587
+}

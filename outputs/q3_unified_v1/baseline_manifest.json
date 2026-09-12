@@ -1,0 +1,21 @@
+{
+  "captured_date": "2026-09-12",
+  "baseline_git_head": "6868c6a68d570cfd32dc18782bcdca897c316059",
+  "baseline_tests": {"count": 66, "failures": 0},
+  "q2_link_diagnostic": {"rows": 48096, "days": 334, "cost_yuan": 13991435.140429746},
+  "protected_sha256": {
+    "C题_标准化数据与修正模板/C_final_delivery/data_csv/annual_actual_10min.csv": "e06868f0004ef9ccaa6257fa72af976ac591158ead0594f0dd3e8e014ffce6a0",
+    "C题_标准化数据与修正模板/C_final_delivery/data_csv/pv_forecast_hourly.csv": "6bf884e021e53762ee8f85b5d891ee70475f814a796b0123bba620c3c96b5d0b",
+    "C题_标准化数据与修正模板/C_final_delivery/data_csv/typical_day_10min.csv": "fc53f07b105523ae846368b4b25d342b404bf07d3638282047dde2570df14f96",
+    "outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q1/result1.xlsx": "78db99032ec5cf48dc30467f096afdcf67b5efcc96cdba1f939d0c18ffd583cd",
+    "docs/result/第一问求解与结果分析.md": "6944a05b43cca7ff649a9bca787da7c2cc822ba4e0cb675c726e8f1d7cfb0842",
+    "outputs/q2_review_v2/result2.xlsx": "a40da3664e98de9dbbd58c496002583cda7649c6f505de27d250e99158ea6282",
+    "docs/result/第二问求解与结果分析.md": "6714a0d885a7cca299e5ee58b7fb0d0644e7507b689be93c6852cc34abf8252c",
+    "outputs/q3_final/result3.xlsx": "17fa8124b740391fc1c273e09e7919093b0b582fd49d98935a08f25583d84ec2",
+    "docs/result/第三问求解与结果分析.md": "d1d44a58c1a4897118ed768218dbc688bd690bf2c761a7e699f5d5b6dceaebef"
+  },
+  "write_policy": {
+    "new_outputs": "outputs/q3_unified_v1/",
+    "preserved": ["standardized inputs", "Q1 delivery", "Q2 delivery", "outputs/q3_final/"]
+  }
+}

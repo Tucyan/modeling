@@ -1,0 +1,39 @@
+{
+  "q2_as_q3_no_adjustment": {
+    "rows": 48096,
+    "days": 334,
+    "max_residuals_kwh": {
+      "bus": 6.821210263296962e-13,
+      "state": 3.751665644813329e-12,
+      "continuity": 0.0,
+      "bounds": 0.0,
+      "power": 9.094947017729282e-13,
+      "disposal": 9.094947017729282e-13,
+      "negative": 0.0,
+      "contract_reconstruction": 0.0
+    },
+    "overlap_slots": 0,
+    "cost": 13991435.140429746,
+    "cost_error_yuan": 0.0,
+    "all_contract_versions_reconstructed": true
+  },
+  "q2_N1_cost": 13991435.140429746,
+  "all_334_days_controller_replay_max_error_kwh": 7.275957614183426e-12,
+  "q3_costs": {
+    "calibrated_R0": {
+      "cost": 14049281.738755597,
+      "emergency_kwh": 149184.42847562794
+    },
+    "calibrated_Rall": {
+      "cost": 13669905.305916533,
+      "emergency_kwh": 47809.208179664536
+    },
+    "N1_Rall": {
+      "cost": 13492611.130418347,
+      "emergency_kwh": 56916.14145416475
+    }
+  },
+  "q3_R0_minus_q2_yuan": 57846.59832585044,
+  "q3_Rall_saving_vs_own_R0_yuan": 379376.4328390639,
+  "N0_to_N1_saving_yuan": 177294.17549818568
+}

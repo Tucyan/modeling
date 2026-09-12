@@ -1,0 +1,32 @@
+{
+  "label": "calibrated_Rall",
+  "settlement": "N1",
+  "updates": [
+    6,
+    12,
+    18
+  ],
+  "risk_pair": {
+    "alpha0": 0.7,
+    "alpha_update": 0.65
+  },
+  "days": 334,
+  "cost": 13492611.130418347,
+  "plan_cost": 13125270.323342968,
+  "up_cost": 339019.51268484903,
+  "down_fee": 295819.87708569545,
+  "refund": 591639.7541713909,
+  "emergency_cost": 324141.1714762249,
+  "emergency_kwh": 56916.14145416475,
+  "emergency_days": 172,
+  "emergency_events": 310,
+  "emergency_slots": 754,
+  "unused_kwh": 493201.544612907,
+  "spill_kwh": 1189133.3962752756,
+  "final_soc": 6000.0,
+  "max_lp_gap": 8.003553375601768e-11,
+  "max_mip_gap": 0.0,
+  "milp_solves": 0,
+  "max_seconds": 0.08512630002223887,
+  "mean_seconds": 0.05077881167698889
+}

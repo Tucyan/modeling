@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass, asdict
 from pathlib import Path
 import argparse
+import hashlib
 import json
 import shutil
 import time
@@ -12,7 +13,9 @@ import numpy as np
 import pandas as pd
 
 from q3_forecast import residual_samples, risk_reserve
-from q3_solver import ROOT, DATA, simulate_day
+from q3_solver import ROOT, DATA, settle, simulate_day
+from q3_q2_bridge import (load_q2_frozen, map_q2_dispatch, q2_day_ahead,
+                          q2_frozen_cost, replay_q2_frozen)
 
 
 Q2_FORECASTS = ROOT / 'outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2/forecasts.npz'
@@ -64,7 +67,13 @@ def choose_protocol(scores, last_history_day, decision_day):
 
 def load_inputs():
     actual = pd.read_csv(DATA / 'annual_actual_10min.csv')
-    if len(actual) != 365 * 144 or actual.duplicated(['date', 'interval_id']).any():
+    expected_dates = np.repeat(pd.date_range('2025-01-01', '2025-12-31')
+                               .strftime('%Y-%m-%d').to_numpy(), 144)
+    expected_intervals = np.tile(np.arange(144), 365)
+    if (len(actual) != 365 * 144
+            or actual.duplicated(['date', 'interval_id']).any()
+            or not np.array_equal(actual.date.astype(str).to_numpy(), expected_dates)
+            or not np.array_equal(actual.interval_id.to_numpy(), expected_intervals)):
         raise ValueError('Invalid actual-data keys')
     load = actual.load_kwh_10min.to_numpy(dtype=float).reshape(365, 144)
     pv = actual.pv_actual_kwh_10min.to_numpy(dtype=float).reshape(365, 144)
@@ -74,7 +83,14 @@ def load_inputs():
     release = pd.read_csv(DATA / 'pv_forecast_hourly.csv')
     release['day'] = (pd.to_datetime(release.issue_date) - pd.Timestamp('2025-01-01')).dt.days
     release['row'] = release.issue_time.str.split(':').str[0].astype(int) // 6
-    if len(release) != 35040 or release.duplicated(['day', 'row', 'horizon_hour']).any():
+    expected_release_keys = pd.MultiIndex.from_product(
+        [range(365), range(4), range(1, 25)],
+        names=['day', 'row', 'horizon_hour'])
+    actual_release_keys = pd.MultiIndex.from_frame(
+        release[['day', 'row', 'horizon_hour']])
+    if (len(release) != 35040
+            or release.duplicated(['day', 'row', 'horizon_hour']).any()
+            or not actual_release_keys.equals(expected_release_keys)):
         raise ValueError('Invalid forecast-release keys')
     hourly = np.full((365, 4, 24), np.nan)
     hourly[release.day, release.row, release.horizon_hour - 1] = release.pv_forecast_kw
@@ -119,12 +135,13 @@ def _summary(daily, dispatch):
         max_seconds=float(daily.seconds.max()), mean_seconds=float(daily.seconds.mean()))
 
 
-def simulate_policy(inputs, updates, risk_pair, settlement='N0', start=31, end=365):
+def simulate_policy(inputs, updates, risk_pair, settlement='N0', start=31, end=365,
+                    initial=6000., planning_target=6000.):
     if not 7 < start < end <= 365:
         raise ValueError('Invalid evaluation range')
     if tuple(updates) not in RELEASE_SETS.values():
         raise ValueError('Unknown release subset')
-    state = 6000.
+    state = float(initial)
     days, chunks, versions = [], [], []
     for day in range(start, end):
         tick = time.perf_counter()
@@ -133,7 +150,7 @@ def simulate_policy(inputs, updates, risk_pair, settlement='N0', start=31, end=3
             day, inputs.load[day], inputs.pv[day], inputs.load_forecast[day],
             inputs.hourly_pv, inputs.price, state, updates=updates,
             settlement=settlement, terminal=6000. if day == end - 1 else None,
-            reserve_by_issue=reserves)
+            reserve_by_issue=reserves, planning_target=planning_target)
         date = (pd.Timestamp('2025-01-01') + pd.Timedelta(days=day)).strftime('%Y-%m-%d')
         plan_cost = float(inputs.price @ result['g'])
         up_cost = float(1.5 * inputs.price @ np.maximum(result['q'] - result['g'], 0))
@@ -170,16 +187,18 @@ def simulate_policy(inputs, updates, risk_pair, settlement='N0', start=31, end=3
     if not np.allclose(dispatch.E_end.to_numpy()[:-1],
                        dispatch.E_start.to_numpy()[1:], atol=1e-6, rtol=0):
         raise AssertionError('State discontinuity')
-    if abs(state - 6000) > 1e-6:
+    if abs(state - planning_target) > 1e-6:
         raise AssertionError('Final state is not closed')
     return daily, dispatch, version_frame
 
 
 def save_policy(folder, label, inputs, updates, risk_pair,
-                settlement='N0', start=31, end=365):
+                settlement='N0', start=31, end=365, initial=6000.,
+                planning_target=6000.):
     folder.mkdir(parents=True, exist_ok=True)
     daily, dispatch, versions = simulate_policy(
-        inputs, updates, risk_pair, settlement, start, end)
+        inputs, updates, risk_pair, settlement, start, end, initial,
+        planning_target)
     daily.to_csv(folder / f'{label}_daily.csv', index=False)
     dispatch.to_csv(folder / f'{label}_dispatch.csv', index=False)
     versions.to_csv(folder / f'{label}_versions.csv', index=False)
@@ -191,20 +210,22 @@ def save_policy(folder, label, inputs, updates, risk_pair,
     return summary, daily, dispatch, versions
 
 
-def select_january_protocol(inputs):
+def select_january_protocol(inputs, settlement='N0'):
+    if settlement not in ('N0', 'N1'):
+        raise ValueError('Supported settlements are N0 and N1')
     scores, definitions = {}, {}
     for risk_pair in RISK_PAIRS:
         for release_name, updates in RELEASE_SETS.items():
             label = f'{risk_pair.name}__{release_name}'
             daily, dispatch, _ = simulate_policy(
-                inputs, updates, risk_pair, 'N0', start=14, end=31)
+                inputs, updates, risk_pair, settlement, start=14, end=31)
             scores[label] = _summary(daily, dispatch)
             definitions[label] = dict(risk_pair=asdict(risk_pair),
                                       release_name=release_name, updates=list(updates))
     winner = choose_protocol(scores, last_history_day=30, decision_day=31)
     return dict(
         calibration_start_day=14, calibration_end_exclusive=31,
-        last_history_day=30, decision_day=31, settlement='N0',
+        last_history_day=30, decision_day=31, settlement=settlement,
         risk_pairs=[asdict(pair) for pair in RISK_PAIRS],
         release_sets={name: list(hours) for name, hours in RELEASE_SETS.items()},
         scores=scores, definitions=definitions, winner=winner,
@@ -218,6 +239,57 @@ def _copy_canonical(selected_files):
     names = ('daily_summary.csv', 'dispatch_10min.csv', 'contract_versions.csv')
     for source, name in zip(selected_files, names):
         shutil.copy2(source, FINAL_OUT / name)
+
+
+def _sha256(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _stage_signature():
+    """Fingerprint every protected input and implementation used by the stages."""
+    paths = (
+        DATA / 'annual_actual_10min.csv', DATA / 'pv_forecast_hourly.csv',
+        DATA / 'typical_day_10min.csv', Q2_FORECASTS,
+        ROOT / 'outputs/q2_review_v2/rolling_selection_T0.csv',
+        ROOT / 'outputs/q2_review_v2/experiments/Rolling_T0_daily.csv',
+        ROOT / 'outputs/q2_review_v2/experiments/Rolling_T0_dispatch.csv',
+        *(ROOT / 'src' / name for name in (
+            'dispatch_control.py', 'q2_solver.py', 'q2_review_experiments.py',
+            'q3_solver.py', 'q3_forecast.py', 'q3_q2_bridge.py',
+            'q3_experiments.py')),
+    )
+    files = {str(path.relative_to(ROOT)).replace('\\', '/'): _sha256(path)
+             for path in paths}
+    aggregate = hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
+    return {'aggregate_sha256': aggregate, 'files': files}
+
+
+def _complete_stage(output, stage, artifacts):
+    output = Path(output)
+    artifact_hashes = {
+        str(Path(path).relative_to(output)).replace('\\', '/'): _sha256(path)
+        for path in sorted({Path(path) for path in artifacts})}
+    manifest = {'stage': stage, 'status': 'complete',
+                'source_signature': _stage_signature(),
+                'artifacts': artifact_hashes}
+    path = output / f'stage_{stage}.json'
+    path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
+    return manifest
+
+
+def _require_stage(output, stage):
+    output = Path(output)
+    path = output / f'stage_{stage}.json'
+    if not path.exists():
+        raise RuntimeError(f'Required stage is missing: {stage}')
+    manifest = json.loads(path.read_text(encoding='utf-8'))
+    if manifest.get('status') != 'complete' or manifest.get('source_signature') != _stage_signature():
+        raise RuntimeError(f'Required stage is stale or incomplete: {stage}')
+    for relative, expected in manifest.get('artifacts', {}).items():
+        artifact = output / relative
+        if not artifact.is_file() or _sha256(artifact) != expected:
+            raise RuntimeError(f'Required stage artifact changed: {relative}')
+    return manifest
 
 
 def run_formal():
@@ -272,13 +344,332 @@ def run_smoke(start, end):
                      ensure_ascii=False), flush=True)
 
 
+def _write_q2_frozen(folder):
+    source_daily, source_dispatch = load_q2_frozen(ROOT)
+    daily, dispatch = replay_q2_frozen(ROOT)
+    source_summary = json.loads((ROOT / 'outputs/q2_review_v2/experiments/Rolling_T0.json')
+                                .read_text(encoding='utf-8'))
+    errors = {
+        key: float(np.max(abs(dispatch[key].to_numpy()-source_dispatch[key].to_numpy())))
+        for key in ('c','d','e','unused','spill','E_start','E_end')}
+    cost_n0 = q2_frozen_cost(dispatch, 'N0')
+    cost_n1 = q2_frozen_cost(dispatch, 'N1')
+    cost_error = abs(cost_n0-float(source_summary['cost']))
+    if max(errors.values()) > 1e-6 or cost_error > 1e-6:
+        raise AssertionError('Q2 frozen replay is not equivalent to the formal Q2 ledger')
+    summary = dict(label='Q2_frozen', settlement='N0', updates=[],
+                   days=int(dispatch.date.nunique()), rows=int(len(dispatch)),
+                   cost_n0=cost_n0, cost_n1=cost_n1,
+                   plan_cost=float(source_summary['plan_cost']),
+                   emergency_cost=float(source_summary['emergency_cost']),
+                   emergency_kwh=float(source_summary['emergency_kwh']),
+                   emergency_days=int(source_summary['emergency_days']),
+                   emergency_events=int(source_summary['emergency_events']),
+                   emergency_slots=int(source_summary['emergency_slots']),
+                   unused_kwh=float(source_summary['unused_kwh']),
+                   spill_kwh=float(source_summary['spill_kwh']),
+                   max_controller_replay_error_kwh=max(errors.values()),
+                   controller_replay_error_by_field=errors,
+                   source_cost_error_yuan=cost_error,
+                   source='outputs/q2_review_v2/experiments/Rolling_T0_dispatch.csv')
+    folder.mkdir(parents=True, exist_ok=True)
+    daily.to_csv(folder / 'Q2_frozen_daily.csv', index=False)
+    dispatch.to_csv(folder / 'Q2_frozen_dispatch.csv', index=False)
+    pd.DataFrame(columns=('date', 'issue_hour', 'interval_id', 'original_g',
+                          'previous_q', 'q', 'delta', 'change')).to_csv(
+                              folder / 'Q2_frozen_versions.csv', index=False)
+    (folder / 'Q2_frozen.json').write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
+    return summary
+
+
+def _q2_comparison_row(summary, settlement):
+    return dict(label='Q2_frozen', settlement=settlement, updates=[], risk_pair=None,
+                days=summary['days'], cost=summary[f'cost_{settlement.lower()}'],
+                plan_cost=summary['plan_cost'], up_cost=0., down_fee=0., refund=0.,
+                emergency_cost=summary['emergency_cost'],
+                emergency_kwh=summary['emergency_kwh'],
+                emergency_days=summary['emergency_days'],
+                emergency_events=summary['emergency_events'],
+                emergency_slots=summary['emergency_slots'],
+                unused_kwh=summary['unused_kwh'], spill_kwh=summary['spill_kwh'],
+                final_soc=6000.)
+
+
+def _q2_choices():
+    choices = {day: 'M1' for day in range(31, 365)}
+    records = pd.read_csv(ROOT / 'outputs/q2_review_v2/rolling_selection_T0.csv')
+    for record in records.itertuples(index=False):
+        start = int(record.decision_day)
+        stop = 365 if int(record.month) == 12 else int(
+            (pd.Timestamp(2025, int(record.month) + 1, 1)
+             - pd.Timestamp(2025, 1, 1)).days)
+        choices.update({day: record.winner for day in range(start, stop)})
+    return choices
+
+
+def simulate_q2_adapter_policy(inputs, updates, risk_pair, settlement='N0',
+                               start=31, end=365):
+    """Use Q2's causal day-ahead rule and Q3 updates on the strategy's own SOC."""
+    with np.load(Q2_FORECASTS) as stored:
+        forecasts = {key: stored[key].copy() for key in ('P0', 'P1')}
+    choices = _q2_choices()
+    state = 6000.; days, chunks, versions = [], [], []
+    for day in range(start, end):
+        tick = time.perf_counter()
+        contract = q2_day_ahead(inputs.load, inputs.pv, inputs.price, forecasts,
+                                day, choices[day], initial=state)
+        reserves = reserves_for_day(inputs, day, updates, risk_pair)
+        result = simulate_day(
+            day, inputs.load[day], inputs.pv[day], inputs.load_forecast[day],
+            inputs.hourly_pv, inputs.price, state, updates=updates,
+            settlement=settlement, terminal=6000. if day == end - 1 else None,
+            reserve_by_issue=reserves, original_contract=contract,
+            planning_target=6000.)
+        date = (pd.Timestamp('2025-01-01') + pd.Timedelta(days=day)).strftime('%Y-%m-%d')
+        plan_cost = float(inputs.price @ result['g'])
+        up_cost = float(1.5 * inputs.price @ np.maximum(result['q'] - result['g'], 0))
+        down_fee = float(.5 * inputs.price @ np.maximum(result['g'] - result['q'], 0))
+        refund = 2 * down_fee if settlement == 'N1' else 0.
+        emergency_cost = float(5 * inputs.price @ result['e'])
+        days.append(dict(
+            day=day, date=date, settlement=settlement, updates='|'.join(map(str, updates)),
+            risk_pair='none' if risk_pair is None else risk_pair.name,
+            day_ahead_model=choices[day],
+            cost=result['cost'], plan_cost=plan_cost, up_cost=up_cost,
+            down_fee=down_fee, refund=refund, emergency_cost=emergency_cost,
+            emergency_kwh=float(result['e'].sum()), initial=state,
+            terminal=float(result['E'][-1]), max_lp_gap=result['max_lp_gap'],
+            max_mip_gap=result['max_mip_gap'], milp_solves=result['milp_solves'],
+            seconds=time.perf_counter()-tick))
+        frame = pd.DataFrame({key: result[key] for key in
+                              ('g','q','c','d','e','unused','spill','actual_grid')})
+        frame.insert(0, 'interval_id', np.arange(144)); frame.insert(0, 'date', date)
+        frame['E_start'], frame['E_end'] = result['E'][:-1], result['E'][1:]
+        frame['load'], frame['pv'], frame['price'] = inputs.load[day], inputs.pv[day], inputs.price
+        frame['delta'] = frame.q-frame.g; chunks.append(frame)
+        versions.extend(dict(date=date, **record) for record in result['versions'])
+        state = float(result['E'][-1])
+    daily = pd.DataFrame(days); dispatch = pd.concat(chunks, ignore_index=True)
+    version_frame = pd.DataFrame(versions, columns=('date','issue_hour','interval_id',
+                                 'original_g','previous_q','q','delta','change'))
+    if abs(state-6000.) > 1e-6:
+        raise AssertionError('Q2 adapter final state is not closed')
+    return daily, dispatch, version_frame
+
+
+def _fixed_ledger_cost(dispatch, settlement):
+    return float(settle(dispatch.g, dispatch.q, dispatch.price, settlement).sum()
+                 + 5 * dispatch.price.to_numpy(dtype=float) @ dispatch.e.to_numpy(dtype=float))
+
+
+def run_unified_ablations(output):
+    inputs = load_inputs(); output = Path(output); _require_stage(output, 'unified-formal')
+    q2_summary = _write_q2_frozen(output)
+    _, q2_source = load_q2_frozen(ROOT)
+    _, q2_rebuilt, _ = simulate_q2_adapter_policy(inputs, (), None, 'N0')
+    equivalence = {key: float(np.max(abs(q2_rebuilt[key].to_numpy()
+                                               - q2_source[key].to_numpy())))
+                   for key in ('g','c','d','e','unused','spill','E_start','E_end')}
+    if max(equivalence.values()) > 1e-6:
+        raise AssertionError('Q2 day-ahead adapter does not reproduce the frozen Q2 ledger')
+    (output / 'q2_adapter_no_updates_equivalence.json').write_text(
+        json.dumps({'max_error_by_field': equivalence,
+                    'max_error_kwh': max(equivalence.values())}, indent=2),
+        encoding='utf-8')
+    results = []; protocols = {}
+    for settlement in ('N0', 'N1'):
+        folder = output / settlement
+        protocol = json.loads((folder / 'selection_protocol.json').read_text(encoding='utf-8'))
+        protocols[settlement] = protocol
+        selected = protocol['selected']; pair = RiskPair(**selected['risk_pair'])
+        ablation_folder = folder / 'release_ablations'
+        for release_name, updates in RELEASE_SETS.items():
+            label = f'calibrated_{release_name}'
+            if release_name == selected['release_name']:
+                summary = json.loads((folder / f'{label}.json').read_text(encoding='utf-8'))
+            else:
+                summary, _, _, _ = save_policy(
+                    ablation_folder, label, inputs, updates, pair,
+                    settlement=settlement)
+            results.append(summary)
+        settlement_rows = [_q2_comparison_row(q2_summary, settlement)] + [
+            r for r in results if r['settlement'] == settlement]
+        pd.DataFrame(settlement_rows).to_csv(
+            folder / 'comparison.csv', index=False)
+        daily, dispatch, versions = simulate_q2_adapter_policy(
+            inputs, tuple(selected['updates']), pair, settlement)
+        label = 'Q2_day_ahead_with_updates'
+        daily.to_csv(folder / f'{label}_daily.csv', index=False)
+        dispatch.to_csv(folder / f'{label}_dispatch.csv', index=False)
+        versions.to_csv(folder / f'{label}_versions.csv', index=False)
+        adapter_summary = dict(label=label, settlement=settlement,
+                               updates=selected['updates'], risk_pair=selected['risk_pair'],
+                               **_summary(daily, dispatch))
+        (folder / f'{label}.json').write_text(
+            json.dumps(adapter_summary, ensure_ascii=False, indent=2), encoding='utf-8')
+        selected_dispatch = pd.read_csv(folder / 'dispatch_10min.csv')
+        fixed = {other: _fixed_ledger_cost(selected_dispatch, other)
+                 for other in ('N0', 'N1')}
+        (folder / 'fixed_ledger_repricing.json').write_text(
+            json.dumps(fixed, ensure_ascii=False, indent=2), encoding='utf-8')
+    cross = {'protocols_identical': protocols['N0']['selected'] == protocols['N1']['selected'],
+             'N0_selected': protocols['N0']['selected'],
+             'N1_selected': protocols['N1']['selected'], 'evaluations': []}
+    if cross['protocols_identical']:
+        cross['intentional_reuse'] = True
+        for source, target in (('N0', 'N1'), ('N1', 'N0')):
+            summary = json.loads((output/target/'summary.json').read_text(encoding='utf-8'))
+            cross['evaluations'].append(dict(source_protocol=source,
+                                             target_settlement=target,
+                                             cost=summary['cost'],
+                                             artifact=f'{target}/summary.json'))
+    else:
+        cross['intentional_reuse'] = False
+        cross_folder = output / 'cross_protocols'
+        for source, target in (('N0', 'N1'), ('N1', 'N0')):
+            selected = protocols[source]['selected']
+            summary, _, _, _ = save_policy(
+                cross_folder, f'{source}_protocol_under_{target}', inputs,
+                tuple(selected['updates']), RiskPair(**selected['risk_pair']),
+                settlement=target)
+            cross['evaluations'].append(dict(source_protocol=source,
+                                             target_settlement=target,
+                                             cost=summary['cost'],
+                                             artifact=f'cross_protocols/{source}_protocol_under_{target}.json'))
+    (output / 'cross_protocols.json').write_text(
+        json.dumps(cross, ensure_ascii=False, indent=2), encoding='utf-8')
+    unified_rows = [_q2_comparison_row(q2_summary, settlement)
+                    for settlement in ('N0', 'N1')] + results
+    (output / 'unified_comparison.csv').write_text(
+        pd.DataFrame(unified_rows).to_csv(index=False), encoding='utf-8')
+    artifacts = [
+        *(output.glob('Q2_frozen*')),
+        output/'q2_adapter_no_updates_equivalence.json',
+        output/'unified_comparison.csv', output/'cross_protocols.json',
+        output/'stage_unified-formal.json',
+    ]
+    for settlement in ('N0', 'N1'):
+        folder = output/settlement
+        artifacts.extend((folder/'comparison.csv',
+                          folder/'Q2_day_ahead_with_updates_daily.csv',
+                          folder/'Q2_day_ahead_with_updates_dispatch.csv',
+                          folder/'Q2_day_ahead_with_updates_versions.csv',
+                          folder/'Q2_day_ahead_with_updates.json',
+                          folder/'fixed_ledger_repricing.json'))
+        artifacts.extend((folder/'release_ablations').glob('*'))
+    artifacts.extend((output/'cross_protocols').glob('*')
+                     if (output/'cross_protocols').exists() else [])
+    _complete_stage(output, 'unified-ablations', artifacts)
+    print(json.dumps({'stage':'unified-ablations','policies':len(results),
+                      'q2_adapters':2}, ensure_ascii=False), flush=True)
+
+
+def run_unified_smoke(output):
+    """Run February, year-end and month-boundary gates for both settlements."""
+    inputs = load_inputs()
+    output = Path(output)
+    q2_summary = _write_q2_frozen(output)
+    _, q2_dispatch = replay_q2_frozen(ROOT)
+    summaries = []
+    for window_name, start, end in (('feb01_07',31,38),
+                                    ('dec25_31',358,365),
+                                    ('feb28_mar02',58,61)):
+        for settlement in ('N0', 'N1'):
+            folder = output / settlement / 'smoke' / window_name
+            start_date = (pd.Timestamp('2025-01-01') + pd.Timedelta(days=start)).strftime('%Y-%m-%d')
+            end_date = (pd.Timestamp('2025-01-01') + pd.Timedelta(days=end-1)).strftime('%Y-%m-%d')
+            q2_window = q2_dispatch[(q2_dispatch.date >= start_date)
+                                    & (q2_dispatch.date <= end_date)]
+            if len(q2_window) != (end-start)*144:
+                raise AssertionError('Q2 frozen smoke window is incomplete')
+            summaries.append(dict(label='Q2_frozen', settlement=settlement,
+                                  window=window_name, start=start, end=end,
+                                  rows=len(q2_window), physical_gate=True,
+                                  cost=_fixed_ledger_cost(q2_window, settlement),
+                                  full_replay_error_kwh=q2_summary['max_controller_replay_error_kwh']))
+            adapter_daily, adapter_dispatch, adapter_versions = simulate_q2_adapter_policy(
+                inputs, (6, 12, 18), RiskPair(.80, .70), settlement, start, end)
+            adapter_daily.to_csv(folder/'Q2_adapter_daily.csv', index=False)
+            adapter_dispatch.to_csv(folder/'Q2_adapter_dispatch.csv', index=False)
+            adapter_versions.to_csv(folder/'Q2_adapter_versions.csv', index=False)
+            adapter_summary = dict(label='Q2_adapter', settlement=settlement,
+                                   window=window_name, start=start, end=end,
+                                   **_summary(adapter_daily, adapter_dispatch))
+            (folder/'Q2_adapter.json').write_text(
+                json.dumps(adapter_summary, ensure_ascii=False, indent=2), encoding='utf-8')
+            summaries.append(adapter_summary)
+            for release_name, updates in RELEASE_SETS.items():
+                summary, _, _, _ = save_policy(
+                    folder, f'smoke_{release_name}', inputs, updates,
+                    RiskPair(.80, .70), settlement=settlement, start=start, end=end)
+                summary.update(window=window_name, start=start, end=end)
+                summaries.append(summary)
+    (output / 'unified_smoke_summary.json').write_text(
+        json.dumps(summaries, ensure_ascii=False, indent=2), encoding='utf-8')
+    smoke_artifacts = [path for path in output.rglob('*') if path.is_file()
+                       and ('/smoke/' in str(path).replace('\\', '/')
+                            or path.name.startswith('Q2_frozen')
+                            or path.name == 'unified_smoke_summary.json')]
+    _complete_stage(output, 'unified-smoke', smoke_artifacts)
+    print(json.dumps({'stage': 'unified-smoke', 'windows': 3,
+                      'policies': len(summaries)}, ensure_ascii=False), flush=True)
+
+
+def run_unified_formal(output):
+    """Select N0/N1 independently and write isolated formal ledgers."""
+    inputs = load_inputs()
+    output = Path(output)
+    _require_stage(output, 'unified-smoke')
+    _write_q2_frozen(output)
+    all_results = []
+    for settlement in ('N0', 'N1'):
+        protocol = select_january_protocol(inputs, settlement=settlement)
+        protocol['source_signature'] = _stage_signature()
+        folder = output / settlement
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / 'selection_protocol.json').write_text(
+            json.dumps(protocol, ensure_ascii=False, indent=2), encoding='utf-8')
+        selected = protocol['selected']
+        pair = RiskPair(**selected['risk_pair'])
+        label = f"calibrated_{selected['release_name']}"
+        summary, daily, dispatch, versions = save_policy(
+            folder, label, inputs, tuple(selected['updates']), pair,
+            settlement=settlement)
+        daily.to_csv(folder / 'daily_summary.csv', index=False)
+        dispatch.to_csv(folder / 'dispatch_10min.csv', index=False)
+        versions.to_csv(folder / 'contract_versions.csv', index=False)
+        (folder / 'summary.json').write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
+        all_results.append(dict(settlement=settlement, protocol=protocol,
+                                summary=summary))
+    (output / 'unified_formal_summary.json').write_text(
+        json.dumps(all_results, ensure_ascii=False, indent=2), encoding='utf-8')
+    formal_names = {'selection_protocol.json', 'summary.json', 'daily_summary.csv',
+                    'dispatch_10min.csv', 'contract_versions.csv',
+                    'unified_formal_summary.json'}
+    artifacts = [path for path in output.rglob('*') if path.is_file()
+                 and path.name in formal_names]
+    _complete_stage(output, 'unified-formal', artifacts)
+    print(json.dumps({'stage': 'unified-formal', 'settlements': ['N0', 'N1']},
+                     ensure_ascii=False), flush=True)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--stage', choices=('smoke', 'formal'), required=True)
+    parser.add_argument('--stage', choices=('smoke', 'formal', 'unified-smoke',
+                                             'unified-formal', 'unified-ablations'), required=True)
     parser.add_argument('--start', type=int, default=31)
     parser.add_argument('--end', type=int, default=365)
+    parser.add_argument('--output', default=str(MODEL_OUT / 'q3_unified_v1'))
     arguments = parser.parse_args()
-    if arguments.stage == 'smoke':
+    if arguments.stage == 'unified-ablations':
+        run_unified_ablations(arguments.output)
+    elif arguments.stage == 'unified-smoke':
+        run_unified_smoke(arguments.output)
+    elif arguments.stage == 'unified-formal':
+        run_unified_formal(arguments.output)
+    elif arguments.stage == 'smoke':
         run_smoke(arguments.start, arguments.end)
     else:
         run_formal()

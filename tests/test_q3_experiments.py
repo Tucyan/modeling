@@ -7,8 +7,11 @@ sys.path[:0] = [str(Path(__file__).resolve().parents[1] / p)
                 for p in ('src',)]
 
 import numpy as np
+import pandas as pd
+from unittest.mock import patch
 
-from q3_experiments import RELEASE_SETS, choose_protocol, load_inputs
+from q3_experiments import (RELEASE_SETS, choose_protocol, load_inputs,
+                            select_january_protocol)
 
 
 class Q3ExperimentTests(unittest.TestCase):
@@ -40,6 +43,21 @@ class Q3ExperimentTests(unittest.TestCase):
         inputs = load_inputs()
         self.assertTrue(np.isnan(inputs.load_forecast[:7]).all())
         self.assertTrue(np.isfinite(inputs.load_forecast[7:]).all())
+
+    def test_n1_selection_scores_every_candidate_under_n1(self):
+        daily = pd.DataFrame([dict(
+            cost=1., plan_cost=1., up_cost=0., down_fee=0., refund=0.,
+            emergency_cost=0., emergency_kwh=0., terminal=6000.,
+            max_lp_gap=0., max_mip_gap=0., milp_solves=0, seconds=0.)])
+        dispatch = pd.DataFrame([dict(interval_id=0, e=0., unused=0., spill=0.)])
+        seen = []
+        def fake(*args, **kwargs):
+            seen.append(args[3] if len(args) > 3 else kwargs['settlement'])
+            return daily, dispatch, pd.DataFrame()
+        with patch('q3_experiments.simulate_policy', side_effect=fake):
+            protocol = select_january_protocol(object(), settlement='N1')
+        self.assertEqual(protocol['settlement'], 'N1')
+        self.assertEqual(seen, ['N1'] * 48)
 
 
 if __name__ == '__main__':
