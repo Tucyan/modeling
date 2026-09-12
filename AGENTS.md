@@ -54,7 +54,7 @@
 
 ## 验证与交付
 
-- Git 状态（2026-09-12 复查）：当前分支为 `main`，工作区干净，跟踪 `origin/main`，最新本地提交为 `a43cb53`（`Clarify Q4 P1p and reproduction workflow`）。本次已将本地分支 `codex/q4-p0-fixes`（提交 `9396e95`、`a43cb53`）快进合并进 `main`，并连同此前未推送的 `f87f4ec` 一并推送；`main`、`origin/main`、`origin/codex/q4-p0-fixes` 三者均指向 `a43cb53`，`.venv` 下 81 个单元测试全部通过。远程地址仍为 `https://github.com/Tucyan/modeling.git`；用户指定的新仓库名 `2026MathModeling` 于 2026-09-12 再次核查仍不存在（`git ls-remote` 返回 repository not found），故暂不修改 `origin`，待远程名称可验证后再更新。
+- Git 状态（2026-09-12 复查）：当前分支为 `main`，工作区干净，跟踪 `origin/main`，最新提交为更新本记录的 `39254a3`。此前已将本地分支 `codex/q4-p0-fixes`（`9396e95`、`a43cb53`）快进合并进 `main`（合并后 `main` 为 `a43cb53`），并连同此前未推送的 `f87f4ec` 一并推送，`.venv` 下 81 个单元测试全部通过；合并后该分支已从本地和云端删除。当前本地保留 `codex/q2-review-v2`、`codex/q2-review-v2-final`，云端保留 `main` 与 `codex/q2-review-v2-final`。远程地址仍为 `https://github.com/Tucyan/modeling.git`；用户指定的新仓库名 `2026MathModeling` 于 2026-09-12 核查仍不存在（`git ls-remote` 返回 repository not found），故暂不修改 `origin`，待远程名称可验证后再更新。
 - 第一问已交付论文 `docs/result/第一问求解与结果分析.md` 与 `outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q1/result1.xlsx`。复现入口与当前适用边界见 `src/README.md`；修改模型或输入后须重算并同步更新论文与结果文件。
 - 求解后检查求解状态、最优性界/间隙、功率与储能边界、充放电互斥、逐时能量平衡、日末条件和费用复算。
 - 第一问与无储能直接购电基准比较；验证全天能量收支和损耗，不能仅凭求解器成功宣称正确。
