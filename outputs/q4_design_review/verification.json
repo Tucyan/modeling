@@ -1,0 +1,17 @@
+{
+  "scope": "Design document structural and constructed-example review only; no Q4 optimization or annual replay",
+  "document": "docs/第四问数学模型设计说明.md",
+  "document_sha256": "69460121958df9b8d0f8ad8a7d369a3ac8f1a38f45f3db57dad00ef3ef403ac1",
+  "numbered_equations": 34,
+  "display_math_blocks": 36,
+  "local_links_checked": 6,
+  "settlement_examples": 3,
+  "f0_constructed_cases": 7,
+  "f0_max_error_kwh": 1.8474111129762605e-13,
+  "unreachable_terminal_rejected": true,
+  "n0_dominance_examples": 3,
+  "cvar_constructed_example": true,
+  "energy_identity_constructed_cases": 7,
+  "protected_source_input_hashes_matched": 14,
+  "markdown_tables_checked": 8
+}

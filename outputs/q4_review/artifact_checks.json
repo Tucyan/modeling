@@ -1,0 +1,30 @@
+{
+  "N0/q4-2": {
+    "cost": 14654856.782340739,
+    "energy_residual_kwh": -7.698872650507838e-10,
+    "max_workbook_numeric_error": 1.8189894035458565e-12,
+    "emergency_rows": 400,
+    "main_copy_identical": true
+  },
+  "N0/q4-3": {
+    "cost": 14432178.603594402,
+    "energy_residual_kwh": -7.471498975064605e-10,
+    "max_workbook_numeric_error": 4.547473508864641e-13,
+    "emergency_rows": 433,
+    "main_copy_identical": true
+  },
+  "N1/q4-2": {
+    "cost": 14654856.782340739,
+    "energy_residual_kwh": -7.698872650507838e-10,
+    "max_workbook_numeric_error": 1.8189894035458565e-12,
+    "emergency_rows": 400,
+    "main_copy_identical": null
+  },
+  "N1/q4-3": {
+    "cost": 14238366.975460954,
+    "energy_residual_kwh": -7.121343514882028e-10,
+    "max_workbook_numeric_error": 4.547473508864641e-13,
+    "emergency_rows": 470,
+    "main_copy_identical": null
+  }
+}

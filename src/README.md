@@ -94,3 +94,22 @@ MPC（F1）已通过解析测试并完成7天，费用增加，未扩大到334�
 报告及验证旧入口在检测到v2协议时默认转到v2；旧版核验可显式加`--legacy`，读取存档论文。Excel脚本默认v2，可用`--out`显式指定历史输出路径。数值结果为求解器生成的静态交付，并非Excel内重新优化公式；修改数据需重新求解、导出和验证。
 
 每个LP/MILP限时30秒，失败立即停止、不自动重试。长期命令若实际超时，按用户约定交由用户执行。输出session id仅表示进程仍在运行，不等于超时错误。
+
+## 第四问（Q4）
+
+`q4_forecast.py`只使用已完成历史价格生成P0p/P1p/P2p；`q4_solver.py`将规划价格、实际结算价、Q4-2冻结合同和Q4-3日内版本更新分开，并复用共享F0。`q4_experiments.py`先用1月15—31日冻结N0/N1协议，再回放2月1—12月31日。完整结果位于`outputs/q4_final/`，N0主工作簿为`result4-2.xlsx`、`result4-3.xlsx`，N1副本在`outputs/q4_final/N1/`。
+
+复现顺序如下（使用项目`.venv`）：
+
+```powershell
+.venv\Scripts\python.exe -m pytest tests/test_q4_forecast.py tests/test_q4_solver.py
+.venv\Scripts\python.exe src/q4_experiments.py --stage smoke --output outputs/q4_final
+.venv\Scripts\python.exe src/q4_experiments.py --stage formal --output outputs/q4_final
+.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_final/N0/q4-2_dispatch_10min.csv --output outputs/q4_final/N0/q4-2_payload --settlement N0
+.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_final/N0/q4-3_dispatch_10min.csv --output outputs/q4_final/N0/q4-3_payload --settlement N0
+node src/q4_workbook.mjs --mode=q4-2 --output=outputs/q4_final/N0/q4-2_payload
+node src/q4_workbook.mjs --mode=q4-3 --output=outputs/q4_final/N0/q4-3_payload
+.venv\Scripts\python.exe src/q4_verify_delivery.py --output outputs/q4_final
+```
+
+正式回测属于已知2025数据上的因果历史回测；价格预测与交付时段实际价格严格分离。独立交付核验会拒绝缺日、非有限值、物理残差超门槛、合同版本回写已执行区间或工作簿工作表/尺寸不匹配。
