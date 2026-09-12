@@ -1,0 +1,27 @@
+{
+  "selected": "Rolling_T0",
+  "days": 334,
+  "dispatch_slots": 48096,
+  "plan_numeric_cells": 48764,
+  "experiments_audited": 33,
+  "physical": {
+    "bus": 7.958078640513122e-13,
+    "state": 3.751665644813329e-12,
+    "continuity": 0.0,
+    "bounds": 0.0,
+    "power": 9.094947017729282e-13,
+    "overlap": 0,
+    "negative": 0.0,
+    "disposal": 9.094947017729282e-13,
+    "cost": 0.0,
+    "initial": 0.0,
+    "terminal": 0.0
+  },
+  "maximum_midnight_plan_error_kwh": 2.2737367544323206e-13,
+  "maximum_execution_reproduction_error_kwh": 2.2737367544323206e-13,
+  "cost": 13991435.140429746,
+  "emergency_kwh": 119025.32286885734,
+  "emergency_events": 187,
+  "paper_sha256": "6714a0d885a7cca299e5ee58b7fb0d0644e7507b689be93c6852cc34abf8252c",
+  "xlsx_sha256": "a40da3664e98de9dbbd58c496002583cda7649c6f505de27d250e99158ea6282"
+}

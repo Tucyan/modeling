@@ -26,6 +26,10 @@
 
 ## 数据与文件
 
+- 根目录 `final_results/` 为面向展示与复现的干净成果目录。其固定结构为 `data/`（标准化输入与模板）、`problem/`（赛题）、`code/`（最终复现链源码快照）、`papers/`（四问最终论文）和 `results/`（最新正式 Excel、摘要、选型协议与独立核验记录）。
+- `final_results/` 只允许收录最新且已完成独立核验、与论文口径一致的成果；旧版本、测试套件、讨论草稿、smoke/ablation 试验、inspect 中间文件和大体积逐时回放留在原目录，不复制进成果目录。
+- 更新成果目录前，必须先在原始 `outputs/` 完成求解、报告生成和 `*_verify_delivery.py` 核验，再整体替换对应问题的文件，禁止混用不同版本的论文、工作簿、摘要和核验 JSON。更新后同步修改 `final_results/README.md`，并记录 Git 变更。
+- `final_results/code/` 仅维护 Q1-Q4 最终复现链的直接依赖；探索脚本、敏感性实验脚本和单元测试不进入该目录。输入快照 `final_results/data/` 不得被脚本静默改写。
 - 输入目录：`C题_标准化数据与修正模板/C_final_delivery/`。
 - `data_csv/typical_day_10min.csv` 对应附件1；`annual_actual_10min.csv` 对应附件2和附件4；`pv_forecast_hourly.csv` 对应附件3。
 - `standardized_data.xlsx` 为核查版；`templates/` 为已修正时间轴的结果模板。

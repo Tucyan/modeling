@@ -1,0 +1,8 @@
+# Runtime dependencies for the Q1/Q2 solvers, analysis and delivery checks.
+# Install with: python -m pip install -r requirements.txt
+numpy>=1.26,<3
+pandas>=2.1,<3
+scipy>=1.11,<2
+scikit-learn>=1.3,<2
+matplotlib>=3.7,<4
+openpyxl>=3.1,<4

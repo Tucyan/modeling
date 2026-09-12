@@ -1,0 +1,15 @@
+﻿table,field,type,unit_or_format,description
+time_dimension_10min,interval_id,整数,0~143,标准10分钟区间编号；不依赖原Excel时间类型
+time_dimension_10min,interval_label,文本,HH:MM-HH:MM,统一为0:00起、24:00止
+typical_day_10min,price_yuan_per_kwh,数值,元/kWh,附件1电价原值
+typical_day_10min,load_kw,数值,kW,附件1小区负载原值
+typical_day_10min,pv_forecast_kw,数值,kW,附件1光伏预测功率原值
+annual_actual_10min,date,日期,YYYY-MM-DD,附件2/4日期标准化
+annual_actual_10min,load_kw,数值,kW,附件2实际负荷原值
+annual_actual_10min,pv_actual_kw,数值,kW,附件2实际光伏原值
+annual_actual_10min,price_yuan_per_kwh,数值,元/kWh,附件4实际电价原值
+annual_actual_10min,*_kwh_10min,数值,kWh,由kW×1/6h得到的10分钟区间电量
+pv_forecast_hourly,issue_datetime,时间,YYYY-MM-DD HH:MM,附件3预报发布日期+时刻
+pv_forecast_hourly,horizon_hour,整数,1~24,预报第1~24小时
+pv_forecast_hourly,forecast_window_start/end,时间,1小时窗口,"第h小时解释为[issue+h-1,issue+h)"
+pv_forecast_hourly,pv_forecast_kw,数值,kW,附件3预测功率原值
