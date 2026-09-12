@@ -1,0 +1,92 @@
+{
+  "N0/q4-2": {
+    "rows": 48096,
+    "days": 334,
+    "cost": 14654856.782340739,
+    "emergency_kwh": 95402.40882936385,
+    "max_bus_residual": 4.547473508864641e-13,
+    "max_state_residual": 3.751665644813329e-12,
+    "final_soc": 6000.0,
+    "versions": 0,
+    "forecast_records": 48096,
+    "workbook": {
+      "sheets": [
+        "计划购电量",
+        "充放电量",
+        "紧急购电量"
+      ],
+      "plan_shape": [
+        335,
+        147
+      ]
+    }
+  },
+  "N0/q4-3": {
+    "rows": 48096,
+    "days": 334,
+    "cost": 14432049.316081066,
+    "emergency_kwh": 47923.88533433041,
+    "max_bus_residual": 4.547473508864641e-13,
+    "max_state_residual": 3.751665644813329e-12,
+    "final_soc": 6000.0,
+    "versions": 72144,
+    "forecast_records": 120240,
+    "workbook": {
+      "sheets": [
+        "计划购电量",
+        "调整购电量",
+        "充放电量",
+        "紧急购电量"
+      ],
+      "plan_shape": [
+        335,
+        147
+      ]
+    }
+  },
+  "N1/q4-2": {
+    "rows": 48096,
+    "days": 334,
+    "cost": 14654856.782340739,
+    "emergency_kwh": 95402.40882936385,
+    "max_bus_residual": 4.547473508864641e-13,
+    "max_state_residual": 3.751665644813329e-12,
+    "final_soc": 6000.0,
+    "versions": 0,
+    "forecast_records": 48096,
+    "workbook": {
+      "sheets": [
+        "计划购电量",
+        "充放电量",
+        "紧急购电量"
+      ],
+      "plan_shape": [
+        335,
+        147
+      ]
+    }
+  },
+  "N1/q4-3": {
+    "rows": 48096,
+    "days": 334,
+    "cost": 14238158.262226593,
+    "emergency_kwh": 57344.17821906697,
+    "max_bus_residual": 4.831690603168681e-13,
+    "max_state_residual": 3.751665644813329e-12,
+    "final_soc": 6000.0,
+    "versions": 72144,
+    "forecast_records": 120240,
+    "workbook": {
+      "sheets": [
+        "计划购电量",
+        "调整购电量",
+        "充放电量",
+        "紧急购电量"
+      ],
+      "plan_shape": [
+        335,
+        147
+      ]
+    }
+  }
+}

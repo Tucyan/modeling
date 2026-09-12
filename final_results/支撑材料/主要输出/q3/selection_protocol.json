@@ -1,0 +1,1605 @@
+{
+  "calibration_start_day": 14,
+  "calibration_end_exclusive": 31,
+  "last_history_day": 30,
+  "decision_day": 31,
+  "settlement": "N0",
+  "risk_pairs": [
+    {
+      "alpha0": 0.7,
+      "alpha_update": 0.65
+    },
+    {
+      "alpha0": 0.75,
+      "alpha_update": 0.7
+    },
+    {
+      "alpha0": 0.8,
+      "alpha_update": 0.7
+    },
+    {
+      "alpha0": 0.8,
+      "alpha_update": 0.75
+    },
+    {
+      "alpha0": 0.85,
+      "alpha_update": 0.75
+    },
+    {
+      "alpha0": 0.9,
+      "alpha_update": 0.8
+    }
+  ],
+  "release_sets": {
+    "R0": [],
+    "R6": [
+      6
+    ],
+    "R12": [
+      12
+    ],
+    "R18": [
+      18
+    ],
+    "R6_12": [
+      6,
+      12
+    ],
+    "R6_18": [
+      6,
+      18
+    ],
+    "R12_18": [
+      12,
+      18
+    ],
+    "Rall": [
+      6,
+      12,
+      18
+    ]
+  },
+  "scores": {
+    "a0_0.70_au_0.65__R0": {
+      "days": 17,
+      "cost": 954971.2757475425,
+      "plan_cost": 829335.8107090737,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 125635.46503846884,
+      "emergency_kwh": 20953.990432528517,
+      "emergency_days": 12,
+      "emergency_events": 26,
+      "emergency_slots": 83,
+      "unused_kwh": 43977.82549893067,
+      "spill_kwh": 9275.955454720035,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.018401899986201897,
+      "mean_seconds": 0.01565604705726454
+    },
+    "a0_0.70_au_0.65__R6": {
+      "days": 17,
+      "cost": 906949.2919422974,
+      "plan_cost": 829195.989782565,
+      "up_cost": 31144.03253264458,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 46609.26962708772,
+      "emergency_kwh": 7058.38690173704,
+      "emergency_days": 11,
+      "emergency_events": 18,
+      "emergency_slots": 37,
+      "unused_kwh": 56065.005078226975,
+      "spill_kwh": 11941.906919084515,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.045082800003001466,
+      "mean_seconds": 0.03055456470568007
+    },
+    "a0_0.70_au_0.65__R12": {
+      "days": 17,
+      "cost": 918451.2302892128,
+      "plan_cost": 829250.2701823728,
+      "up_cost": 13882.83820430446,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 75318.1219025355,
+      "emergency_kwh": 13561.029537468079,
+      "emergency_days": 11,
+      "emergency_events": 23,
+      "emergency_slots": 71,
+      "unused_kwh": 49069.695611700976,
+      "spill_kwh": 9492.776423048785,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.02941740001551807,
+      "mean_seconds": 0.026982564710231277
+    },
+    "a0_0.70_au_0.65__R18": {
+      "days": 17,
+      "cost": 895834.4932872544,
+      "plan_cost": 829157.9326189219,
+      "up_cost": 25978.88642556151,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 40697.674242770954,
+      "emergency_kwh": 8435.153064255574,
+      "emergency_days": 11,
+      "emergency_events": 22,
+      "emergency_slots": 61,
+      "unused_kwh": 44280.710416367954,
+      "spill_kwh": 9275.955454720035,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.02592829999048263,
+      "mean_seconds": 0.022632988236556927
+    },
+    "a0_0.70_au_0.65__R6_12": {
+      "days": 17,
+      "cost": 897726.2402138938,
+      "plan_cost": 829250.2701823728,
+      "up_cost": 27484.631530909177,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 40991.33850061179,
+      "emergency_kwh": 6227.732862109458,
+      "emergency_days": 11,
+      "emergency_events": 17,
+      "emergency_slots": 36,
+      "unused_kwh": 52550.59223277796,
+      "spill_kwh": 11249.848081076336,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.04337369999848306,
+      "mean_seconds": 0.040502023527070004
+    },
+    "a0_0.70_au_0.65__R6_18": {
+      "days": 17,
+      "cost": 878875.7156568168,
+      "plan_cost": 829119.8549932231,
+      "up_cost": 43682.876157821505,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 6072.984505772263,
+      "emergency_kwh": 1057.253010805649,
+      "emergency_days": 10,
+      "emergency_events": 15,
+      "emergency_slots": 23,
+      "unused_kwh": 56367.889995664256,
+      "spill_kwh": 11941.906919084517,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.056455599988112226,
+      "mean_seconds": 0.03769285294145126
+    },
+    "a0_0.70_au_0.65__R12_18": {
+      "days": 17,
+      "cost": 894353.7395146934,
+      "plan_cost": 829120.519382936,
+      "up_cost": 24977.98136166842,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 40255.2387700889,
+      "emergency_kwh": 8371.730548102752,
+      "emergency_days": 11,
+      "emergency_events": 22,
+      "emergency_slots": 61,
+      "unused_kwh": 49372.58052913826,
+      "spill_kwh": 9492.776423048786,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.03503310002270155,
+      "mean_seconds": 0.03215037646826685
+    },
+    "a0_0.70_au_0.65__Rall": {
+      "days": 17,
+      "cost": 873747.6058602628,
+      "plan_cost": 829120.519382936,
+      "up_cost": 38532.110664705695,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 6094.975812621009,
+      "emergency_kwh": 1062.1473173050492,
+      "emergency_days": 10,
+      "emergency_events": 16,
+      "emergency_slots": 25,
+      "unused_kwh": 52853.477150215236,
+      "spill_kwh": 11249.848081076336,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.05313439999008551,
+      "mean_seconds": 0.04708395294180852
+    },
+    "a0_0.75_au_0.70__R0": {
+      "days": 17,
+      "cost": 940563.2428108176,
+      "plan_cost": 840249.9098358802,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 100313.3329749374,
+      "emergency_kwh": 16860.3738233911,
+      "emergency_days": 10,
+      "emergency_events": 17,
+      "emergency_slots": 66,
+      "unused_kwh": 53843.69836082951,
+      "spill_kwh": 10736.53536782042,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.016849100007675588,
+      "mean_seconds": 0.01582405294346459
+    },
+    "a0_0.75_au_0.70__R6": {
+      "days": 17,
+      "cost": 906876.8996692677,
+      "plan_cost": 840032.0892483271,
+      "up_cost": 28925.005339851963,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 37919.80508108874,
+      "emergency_kwh": 5733.888930817633,
+      "emergency_days": 9,
+      "emergency_events": 11,
+      "emergency_slots": 26,
+      "unused_kwh": 67133.55628343375,
+      "spill_kwh": 12928.40127677699,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.044417699973564595,
+      "mean_seconds": 0.031046870589146718
+    },
+    "a0_0.75_au_0.70__R12": {
+      "days": 17,
+      "cost": 916312.1643566095,
+      "plan_cost": 840034.0445110769,
+      "up_cost": 10889.387589039694,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 65388.73225649286,
+      "emergency_kwh": 11728.556072413077,
+      "emergency_days": 9,
+      "emergency_events": 15,
+      "emergency_slots": 57,
+      "unused_kwh": 58357.38184629381,
+      "spill_kwh": 10774.734389855672,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.031616799999028444,
+      "mean_seconds": 0.02774912941009354
+    },
+    "a0_0.75_au_0.70__R18": {
+      "days": 17,
+      "cost": 894480.9179739946,
+      "plan_cost": 840039.2412673526,
+      "up_cost": 20934.974737394878,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 33506.70196924722,
+      "emergency_kwh": 6998.570997964311,
+      "emergency_days": 9,
+      "emergency_events": 13,
+      "emergency_slots": 46,
+      "unused_kwh": 54217.463652496706,
+      "spill_kwh": 10736.53536782042,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.02458409999962896,
+      "mean_seconds": 0.022530411762144306
+    },
+    "a0_0.75_au_0.70__R6_12": {
+      "days": 17,
+      "cost": 898863.791268596,
+      "plan_cost": 840034.0445110769,
+      "up_cost": 23845.365229312098,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 34984.3815282071,
+      "emergency_kwh": 5302.267857518964,
+      "emergency_days": 9,
+      "emergency_events": 11,
+      "emergency_slots": 26,
+      "unused_kwh": 62313.44922402022,
+      "spill_kwh": 12285.589989855675,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.04359660000773147,
+      "mean_seconds": 0.0416296352940502
+    },
+    "a0_0.75_au_0.70__R6_18": {
+      "days": 17,
+      "cost": 883298.2871789399,
+      "plan_cost": 840015.1175667635,
+      "up_cost": 39523.35047732225,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 3759.819134854159,
+      "emergency_kwh": 666.5299008873799,
+      "emergency_days": 8,
+      "emergency_events": 9,
+      "emergency_slots": 15,
+      "unused_kwh": 67507.32157510094,
+      "spill_kwh": 12928.401276776991,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.06174900001497008,
+      "mean_seconds": 0.044564217649167404
+    },
+    "a0_0.75_au_0.70__R12_18": {
+      "days": 17,
+      "cost": 894357.6203822285,
+      "plan_cost": 839999.5288986007,
+      "up_cost": 20851.3895143807,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 33506.701969247195,
+      "emergency_kwh": 6998.5709979643,
+      "emergency_days": 9,
+      "emergency_events": 13,
+      "emergency_slots": 46,
+      "unused_kwh": 58731.14713796101,
+      "spill_kwh": 10774.734389855672,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.05287120002321899,
+      "mean_seconds": 0.03858931176364422
+    },
+    "a0_0.75_au_0.70__Rall": {
+      "days": 17,
+      "cost": 877415.8588277117,
+      "plan_cost": 839999.1007002717,
+      "up_cost": 33613.74097667971,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 3803.0171507603072,
+      "emergency_kwh": 672.722277020716,
+      "emergency_days": 8,
+      "emergency_events": 9,
+      "emergency_slots": 15,
+      "unused_kwh": 62687.21451568742,
+      "spill_kwh": 12285.589989855673,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.09256119999918155,
+      "mean_seconds": 0.058736405881491545
+    },
+    "a0_0.80_au_0.70__R0": {
+      "days": 17,
+      "cost": 938776.6597543731,
+      "plan_cost": 851702.9341467016,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 87073.72560767147,
+      "emergency_kwh": 14795.713110533303,
+      "emergency_days": 8,
+      "emergency_events": 15,
+      "emergency_slots": 60,
+      "unused_kwh": 66574.00600517132,
+      "spill_kwh": 12319.06114065684,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.05736479998449795,
+      "mean_seconds": 0.023721117649556082
+    },
+    "a0_0.80_au_0.70__R6": {
+      "days": 17,
+      "cost": 910110.5919067704,
+      "plan_cost": 851594.1652777385,
+      "up_cost": 22613.863611851284,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 35902.56301718065,
+      "emergency_kwh": 5438.34424839735,
+      "emergency_days": 8,
+      "emergency_events": 10,
+      "emergency_slots": 25,
+      "unused_kwh": 76251.30266955128,
+      "spill_kwh": 13840.29886889485,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.05412929999874905,
+      "mean_seconds": 0.034694435290636164
+    },
+    "a0_0.80_au_0.70__R12": {
+      "days": 17,
+      "cost": 920718.7907193904,
+      "plan_cost": 851589.8144178488,
+      "up_cost": 6709.981573472171,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 62418.994728069476,
+      "emergency_kwh": 11175.710153256052,
+      "emergency_days": 8,
+      "emergency_events": 14,
+      "emergency_slots": 55,
+      "unused_kwh": 68753.61454113964,
+      "spill_kwh": 12387.315390515627,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.03554630000144243,
+      "mean_seconds": 0.02915598823250655
+    },
+    "a0_0.80_au_0.70__R18": {
+      "days": 17,
+      "cost": 900104.1647793658,
+      "plan_cost": 851647.3912391663,
+      "up_cost": 17088.52273587024,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 31368.250804329324,
+      "emergency_kwh": 6569.51734678446,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 44,
+      "unused_kwh": 66947.77129683852,
+      "spill_kwh": 12319.061140656842,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0442967000126373,
+      "mean_seconds": 0.02533347059130285
+    },
+    "a0_0.80_au_0.70__R6_12": {
+      "days": 17,
+      "cost": 903118.7536316796,
+      "plan_cost": 851589.8144178488,
+      "up_cost": 18219.535381846745,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 33309.40383198397,
+      "emergency_kwh": 5059.971230039556,
+      "emergency_days": 8,
+      "emergency_events": 10,
+      "emergency_slots": 25,
+      "unused_kwh": 71638.9190406991,
+      "spill_kwh": 13603.916973560461,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.04402490000938997,
+      "mean_seconds": 0.04200081176959964
+    },
+    "a0_0.80_au_0.70__R6_18": {
+      "days": 17,
+      "cost": 887667.0652580924,
+      "plan_cost": 851586.8306954198,
+      "up_cost": 32696.474096018683,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 3383.760466653868,
+      "emergency_kwh": 615.0600403125175,
+      "emergency_days": 7,
+      "emergency_events": 8,
+      "emergency_slots": 14,
+      "unused_kwh": 76625.06796121848,
+      "spill_kwh": 13840.29886889485,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.06528859998797998,
+      "mean_seconds": 0.044844023530672794
+    },
+    "a0_0.80_au_0.70__R12_18": {
+      "days": 17,
+      "cost": 899338.6857872109,
+      "plan_cost": 851562.4768377446,
+      "up_cost": 16407.95814513712,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 31368.25080432932,
+      "emergency_kwh": 6569.517346784457,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 44,
+      "unused_kwh": 69127.37983280684,
+      "spill_kwh": 12387.315390515625,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.055153399996925145,
+      "mean_seconds": 0.03849269412389463
+    },
+    "a0_0.80_au_0.70__Rall": {
+      "days": 17,
+      "cost": 882787.9638140062,
+      "plan_cost": 851562.4768377446,
+      "up_cost": 27515.229511297315,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 3710.257464964294,
+      "emergency_kwh": 661.8629357125243,
+      "emergency_days": 7,
+      "emergency_events": 8,
+      "emergency_slots": 14,
+      "unused_kwh": 72012.68433236628,
+      "spill_kwh": 13603.91697356046,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.054313300002831966,
+      "mean_seconds": 0.047876282355419415
+    },
+    "a0_0.80_au_0.75__R0": {
+      "days": 17,
+      "cost": 938776.6597543731,
+      "plan_cost": 851702.9341467016,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 87073.72560767147,
+      "emergency_kwh": 14795.713110533303,
+      "emergency_days": 8,
+      "emergency_events": 15,
+      "emergency_slots": 60,
+      "unused_kwh": 66574.00600517132,
+      "spill_kwh": 12319.06114065684,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.016622499999357387,
+      "mean_seconds": 0.015375841179561308
+    },
+    "a0_0.80_au_0.75__R6": {
+      "days": 17,
+      "cost": 912622.4107198503,
+      "plan_cost": 851594.1652777385,
+      "up_cost": 26917.103590927432,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 34111.141851184475,
+      "emergency_kwh": 5144.490814928959,
+      "emergency_days": 8,
+      "emergency_events": 10,
+      "emergency_slots": 24,
+      "unused_kwh": 80018.42884879945,
+      "spill_kwh": 13994.173953425667,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.03228370001306757,
+      "mean_seconds": 0.029934664703700143
+    },
+    "a0_0.80_au_0.75__R12": {
+      "days": 17,
+      "cost": 919961.5324857723,
+      "plan_cost": 851589.8144178488,
+      "up_cost": 8374.812458831506,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 59996.905609091904,
+      "emergency_kwh": 10828.507011200782,
+      "emergency_days": 8,
+      "emergency_events": 14,
+      "emergency_slots": 55,
+      "unused_kwh": 69972.54824325797,
+      "spill_kwh": 12391.390973644568,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.031059800006914884,
+      "mean_seconds": 0.027875117646009827
+    },
+    "a0_0.80_au_0.75__R18": {
+      "days": 17,
+      "cost": 900180.4034710813,
+      "plan_cost": 851557.9671618757,
+      "up_cost": 17693.76201531788,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 30928.674293887725,
+      "emergency_kwh": 6506.50465893446,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 44,
+      "unused_kwh": 67024.17668164424,
+      "spill_kwh": 12319.061140656842,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.03389010002138093,
+      "mean_seconds": 0.02424128823708195
+    },
+    "a0_0.80_au_0.75__R6_12": {
+      "days": 17,
+      "cost": 903898.8997597087,
+      "plan_cost": 851529.9570621247,
+      "up_cost": 21317.906030869868,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 31051.03666671408,
+      "emergency_kwh": 4704.410941318111,
+      "emergency_days": 8,
+      "emergency_events": 9,
+      "emergency_slots": 22,
+      "unused_kwh": 74021.62259203235,
+      "spill_kwh": 13757.792058091276,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.05487610001000576,
+      "mean_seconds": 0.044191817650297546
+    },
+    "a0_0.80_au_0.75__R6_18": {
+      "days": 17,
+      "cost": 891133.638387779,
+      "plan_cost": 851556.0916061194,
+      "up_cost": 36938.1094760948,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 2639.4373055648925,
+      "emergency_kwh": 477.25020093529895,
+      "emergency_days": 7,
+      "emergency_events": 8,
+      "emergency_slots": 13,
+      "unused_kwh": 80468.59952527237,
+      "spill_kwh": 13994.173953425667,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.051105599995935336,
+      "mean_seconds": 0.03753382940982085
+    },
+    "a0_0.80_au_0.75__R12_18": {
+      "days": 17,
+      "cost": 900212.632675431,
+      "plan_cost": 851535.0426884439,
+      "up_cost": 17748.91569309932,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 30928.674293887707,
+      "emergency_kwh": 6506.504658934455,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 44,
+      "unused_kwh": 70422.71891973088,
+      "spill_kwh": 12391.390973644568,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0349082000029739,
+      "mean_seconds": 0.03286858235129758
+    },
+    "a0_0.80_au_0.75__Rall": {
+      "days": 17,
+      "cost": 884512.5586142177,
+      "plan_cost": 851529.9570621247,
+      "up_cost": 30295.388485594693,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 2687.2130664982546,
+      "emergency_kwh": 484.09879051863953,
+      "emergency_days": 7,
+      "emergency_events": 8,
+      "emergency_slots": 13,
+      "unused_kwh": 74471.79326850527,
+      "spill_kwh": 13757.792058091274,
+      "final_soc": 6000.0,
+      "max_lp_gap": 9.458744898438454e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.049669900006847456,
+      "mean_seconds": 0.047505835293764793
+    },
+    "a0_0.85_au_0.75__R0": {
+      "days": 17,
+      "cost": 938025.7399995654,
+      "plan_cost": 863745.8480618715,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 74279.89193769396,
+      "emergency_kwh": 12740.086961507823,
+      "emergency_days": 8,
+      "emergency_events": 15,
+      "emergency_slots": 56,
+      "unused_kwh": 79823.12061534624,
+      "spill_kwh": 14169.282281902693,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.01785939998808317,
+      "mean_seconds": 0.01649072940584601
+    },
+    "a0_0.85_au_0.75__R6": {
+      "days": 17,
+      "cost": 915347.5575746311,
+      "plan_cost": 863629.7620542352,
+      "up_cost": 20377.67144393767,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 31340.124076458367,
+      "emergency_kwh": 4741.084828708614,
+      "emergency_days": 7,
+      "emergency_events": 9,
+      "emergency_slots": 22,
+      "unused_kwh": 89136.69922455955,
+      "spill_kwh": 15147.410117006886,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.03412150000804104,
+      "mean_seconds": 0.03137137647375793
+    },
+    "a0_0.85_au_0.75__R12": {
+      "days": 17,
+      "cost": 924867.8619646679,
+      "plan_cost": 863622.8561377107,
+      "up_cost": 5163.497650000054,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 56081.508176957075,
+      "emergency_kwh": 10076.88249248627,
+      "emergency_days": 8,
+      "emergency_events": 13,
+      "emergency_slots": 51,
+      "unused_kwh": 81564.57794203216,
+      "spill_kwh": 14169.282281902693,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.030687799997394904,
+      "mean_seconds": 0.027344052945195204
+    },
+    "a0_0.85_au_0.75__R18": {
+      "days": 17,
+      "cost": 906370.1517090203,
+      "plan_cost": 863648.469941917,
+      "up_cost": 14555.34612876754,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 28166.335638335677,
+      "emergency_kwh": 5930.242870465949,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 42,
+      "unused_kwh": 80273.29129181916,
+      "spill_kwh": 14169.282281902691,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.028043500002240762,
+      "mean_seconds": 0.024154176468180272
+    },
+    "a0_0.85_au_0.75__R6_12": {
+      "days": 17,
+      "cost": 909827.219725815,
+      "plan_cost": 863533.7038205947,
+      "up_cost": 15760.60638845554,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 30532.90951676486,
+      "emergency_kwh": 4625.371732422278,
+      "emergency_days": 8,
+      "emergency_events": 9,
+      "emergency_slots": 22,
+      "unused_kwh": 84271.58843918267,
+      "spill_kwh": 15130.865347600082,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.07158899999922141,
+      "mean_seconds": 0.04961604117552804
+    },
+    "a0_0.85_au_0.75__R6_18": {
+      "days": 17,
+      "cost": 895708.1869024407,
+      "plan_cost": 863590.2029714277,
+      "up_cost": 29655.086295376324,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 2462.8976356367725,
+      "emergency_kwh": 456.53610373528466,
+      "emergency_days": 6,
+      "emergency_events": 7,
+      "emergency_slots": 12,
+      "unused_kwh": 89586.86990103246,
+      "spill_kwh": 15147.410117006886,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.07374500000150874,
+      "mean_seconds": 0.04741761176196365
+    },
+    "a0_0.85_au_0.75__R12_18": {
+      "days": 17,
+      "cost": 905934.3575665109,
+      "plan_cost": 863572.3187727683,
+      "up_cost": 14195.703155406974,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 28166.3356383357,
+      "emergency_kwh": 5930.242870465952,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 42,
+      "unused_kwh": 82014.74861850505,
+      "spill_kwh": 14169.282281902691,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.04666709998855367,
+      "mean_seconds": 0.03810050587772446
+    },
+    "a0_0.85_au_0.75__Rall": {
+      "days": 17,
+      "cost": 890783.0476412674,
+      "plan_cost": 863533.7038205947,
+      "up_cost": 24598.184298097265,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 2651.159522575478,
+      "emergency_kwh": 483.5231861519609,
+      "emergency_days": 7,
+      "emergency_events": 8,
+      "emergency_slots": 13,
+      "unused_kwh": 84721.75911565559,
+      "spill_kwh": 15130.86534760008,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.09475659998133779,
+      "mean_seconds": 0.054618217646801734
+    },
+    "a0_0.90_au_0.80__R0": {
+      "days": 17,
+      "cost": 940246.4566014183,
+      "plan_cost": 878158.3341341092,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 62088.122467309164,
+      "emergency_kwh": 10643.74761100026,
+      "emergency_days": 8,
+      "emergency_events": 12,
+      "emergency_slots": 47,
+      "unused_kwh": 95517.37704257769,
+      "spill_kwh": 15885.878991367827,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.030350999993970618,
+      "mean_seconds": 0.020792847060981917
+    },
+    "a0_0.90_au_0.80__R6": {
+      "days": 17,
+      "cost": 922537.5057171471,
+      "plan_cost": 878091.7388401303,
+      "up_cost": 17489.6530966649,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 26956.113780351978,
+      "emergency_kwh": 4063.574130877234,
+      "emergency_days": 7,
+      "emergency_events": 8,
+      "emergency_slots": 20,
+      "unused_kwh": 103835.36938267229,
+      "spill_kwh": 16647.494657905547,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.06766679999418557,
+      "mean_seconds": 0.045401300002327734
+    },
+    "a0_0.90_au_0.80__R12": {
+      "days": 17,
+      "cost": 932033.4484620338,
+      "plan_cost": 878007.2776296174,
+      "up_cost": 3888.7910420130997,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 50137.37979040319,
+      "emergency_kwh": 8901.685345358232,
+      "emergency_days": 8,
+      "emergency_events": 11,
+      "emergency_slots": 44,
+      "unused_kwh": 97006.97051728115,
+      "spill_kwh": 15885.878991367825,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.059728799998993054,
+      "mean_seconds": 0.035840570585980246
+    },
+    "a0_0.90_au_0.80__R18": {
+      "days": 17,
+      "cost": 914442.2998472735,
+      "plan_cost": 878067.8383493011,
+      "up_cost": 12317.396295008712,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 24057.065202963553,
+      "emergency_kwh": 5033.277712791827,
+      "emergency_days": 7,
+      "emergency_events": 9,
+      "emergency_slots": 34,
+      "unused_kwh": 96054.08974848251,
+      "spill_kwh": 15885.878991367827,
+      "final_soc": 6000.0,
+      "max_lp_gap": 5.820766091346741e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.04087270001764409,
+      "mean_seconds": 0.03029216470552937
+    },
+    "a0_0.90_au_0.80__R6_12": {
+      "days": 17,
+      "cost": 918897.5330659418,
+      "plan_cost": 878007.2776296174,
+      "up_cost": 13024.863071524745,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 27865.392364799587,
+      "emergency_kwh": 4193.917964656996,
+      "emergency_days": 8,
+      "emergency_events": 8,
+      "emergency_slots": 20,
+      "unused_kwh": 99440.74891211095,
+      "spill_kwh": 16647.494657905547,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0810635999951046,
+      "mean_seconds": 0.055957105878726855
+    },
+    "a0_0.90_au_0.80__R6_18": {
+      "days": 17,
+      "cost": 905838.6605249568,
+      "plan_cost": 878014.1075802512,
+      "up_cost": 25953.635054833663,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 1870.9178898718912,
+      "emergency_kwh": 337.815394090579,
+      "emergency_days": 6,
+      "emergency_events": 6,
+      "emergency_slots": 10,
+      "unused_kwh": 104372.0820885771,
+      "spill_kwh": 16647.494657905547,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.060145200026454404,
+      "mean_seconds": 0.04522347058553029
+    },
+    "a0_0.90_au_0.80__R12_18": {
+      "days": 17,
+      "cost": 914473.794951414,
+      "plan_cost": 877988.2621305435,
+      "up_cost": 12428.467617906845,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 24057.065202963524,
+      "emergency_kwh": 5033.27771279182,
+      "emergency_days": 7,
+      "emergency_events": 9,
+      "emergency_slots": 34,
+      "unused_kwh": 97543.68322318596,
+      "spill_kwh": 15885.878991367825,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.058987800002796575,
+      "mean_seconds": 0.04137425882714417
+    },
+    "a0_0.90_au_0.80__Rall": {
+      "days": 17,
+      "cost": 901398.8174587802,
+      "plan_cost": 877987.5045068149,
+      "up_cost": 21540.395062093477,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 1870.9178898718967,
+      "emergency_kwh": 337.8153940905813,
+      "emergency_days": 6,
+      "emergency_events": 6,
+      "emergency_slots": 10,
+      "unused_kwh": 99977.46161801575,
+      "spill_kwh": 16647.494657905547,
+      "final_soc": 6000.0,
+      "max_lp_gap": 6.548361852765083e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.10858150001149625,
+      "mean_seconds": 0.06892007058623302
+    }
+  },
+  "definitions": {
+    "a0_0.70_au_0.65__R0": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "a0_0.70_au_0.65__R6": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R6",
+      "updates": [
+        6
+      ]
+    },
+    "a0_0.70_au_0.65__R12": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R12",
+      "updates": [
+        12
+      ]
+    },
+    "a0_0.70_au_0.65__R18": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R18",
+      "updates": [
+        18
+      ]
+    },
+    "a0_0.70_au_0.65__R6_12": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R6_12",
+      "updates": [
+        6,
+        12
+      ]
+    },
+    "a0_0.70_au_0.65__R6_18": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R6_18",
+      "updates": [
+        6,
+        18
+      ]
+    },
+    "a0_0.70_au_0.65__R12_18": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "R12_18",
+      "updates": [
+        12,
+        18
+      ]
+    },
+    "a0_0.70_au_0.65__Rall": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    },
+    "a0_0.75_au_0.70__R0": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "a0_0.75_au_0.70__R6": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R6",
+      "updates": [
+        6
+      ]
+    },
+    "a0_0.75_au_0.70__R12": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R12",
+      "updates": [
+        12
+      ]
+    },
+    "a0_0.75_au_0.70__R18": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R18",
+      "updates": [
+        18
+      ]
+    },
+    "a0_0.75_au_0.70__R6_12": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R6_12",
+      "updates": [
+        6,
+        12
+      ]
+    },
+    "a0_0.75_au_0.70__R6_18": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R6_18",
+      "updates": [
+        6,
+        18
+      ]
+    },
+    "a0_0.75_au_0.70__R12_18": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "R12_18",
+      "updates": [
+        12,
+        18
+      ]
+    },
+    "a0_0.75_au_0.70__Rall": {
+      "risk_pair": {
+        "alpha0": 0.75,
+        "alpha_update": 0.7
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    },
+    "a0_0.80_au_0.70__R0": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "a0_0.80_au_0.70__R6": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R6",
+      "updates": [
+        6
+      ]
+    },
+    "a0_0.80_au_0.70__R12": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R12",
+      "updates": [
+        12
+      ]
+    },
+    "a0_0.80_au_0.70__R18": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R18",
+      "updates": [
+        18
+      ]
+    },
+    "a0_0.80_au_0.70__R6_12": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R6_12",
+      "updates": [
+        6,
+        12
+      ]
+    },
+    "a0_0.80_au_0.70__R6_18": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R6_18",
+      "updates": [
+        6,
+        18
+      ]
+    },
+    "a0_0.80_au_0.70__R12_18": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "R12_18",
+      "updates": [
+        12,
+        18
+      ]
+    },
+    "a0_0.80_au_0.70__Rall": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.7
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    },
+    "a0_0.80_au_0.75__R0": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "a0_0.80_au_0.75__R6": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R6",
+      "updates": [
+        6
+      ]
+    },
+    "a0_0.80_au_0.75__R12": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R12",
+      "updates": [
+        12
+      ]
+    },
+    "a0_0.80_au_0.75__R18": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R18",
+      "updates": [
+        18
+      ]
+    },
+    "a0_0.80_au_0.75__R6_12": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R6_12",
+      "updates": [
+        6,
+        12
+      ]
+    },
+    "a0_0.80_au_0.75__R6_18": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R6_18",
+      "updates": [
+        6,
+        18
+      ]
+    },
+    "a0_0.80_au_0.75__R12_18": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "R12_18",
+      "updates": [
+        12,
+        18
+      ]
+    },
+    "a0_0.80_au_0.75__Rall": {
+      "risk_pair": {
+        "alpha0": 0.8,
+        "alpha_update": 0.75
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    },
+    "a0_0.85_au_0.75__R0": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "a0_0.85_au_0.75__R6": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R6",
+      "updates": [
+        6
+      ]
+    },
+    "a0_0.85_au_0.75__R12": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R12",
+      "updates": [
+        12
+      ]
+    },
+    "a0_0.85_au_0.75__R18": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R18",
+      "updates": [
+        18
+      ]
+    },
+    "a0_0.85_au_0.75__R6_12": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R6_12",
+      "updates": [
+        6,
+        12
+      ]
+    },
+    "a0_0.85_au_0.75__R6_18": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R6_18",
+      "updates": [
+        6,
+        18
+      ]
+    },
+    "a0_0.85_au_0.75__R12_18": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R12_18",
+      "updates": [
+        12,
+        18
+      ]
+    },
+    "a0_0.85_au_0.75__Rall": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    },
+    "a0_0.90_au_0.80__R0": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "a0_0.90_au_0.80__R6": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R6",
+      "updates": [
+        6
+      ]
+    },
+    "a0_0.90_au_0.80__R12": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R12",
+      "updates": [
+        12
+      ]
+    },
+    "a0_0.90_au_0.80__R18": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R18",
+      "updates": [
+        18
+      ]
+    },
+    "a0_0.90_au_0.80__R6_12": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R6_12",
+      "updates": [
+        6,
+        12
+      ]
+    },
+    "a0_0.90_au_0.80__R6_18": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R6_18",
+      "updates": [
+        6,
+        18
+      ]
+    },
+    "a0_0.90_au_0.80__R12_18": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "R12_18",
+      "updates": [
+        12,
+        18
+      ]
+    },
+    "a0_0.90_au_0.80__Rall": {
+      "risk_pair": {
+        "alpha0": 0.9,
+        "alpha_update": 0.8
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    }
+  },
+  "winner": "a0_0.70_au_0.65__Rall",
+  "selected": {
+    "risk_pair": {
+      "alpha0": 0.7,
+      "alpha_update": 0.65
+    },
+    "release_name": "Rall",
+    "updates": [
+      6,
+      12,
+      18
+    ]
+  },
+  "interpretation": "Frozen by January 15-31 shadow backtest; February-December actuals are not used for selection",
+  "source_signature": {
+    "aggregate_sha256": "72b43d10a902e76fc98c75c851f66aedbf237bdae7f78c71f8a60bfdfa499d04",
+    "files": {
+      "C题_标准化数据与修正模板/C_final_delivery/data_csv/annual_actual_10min.csv": "e06868f0004ef9ccaa6257fa72af976ac591158ead0594f0dd3e8e014ffce6a0",
+      "C题_标准化数据与修正模板/C_final_delivery/data_csv/pv_forecast_hourly.csv": "6bf884e021e53762ee8f85b5d891ee70475f814a796b0123bba620c3c96b5d0b",
+      "C题_标准化数据与修正模板/C_final_delivery/data_csv/typical_day_10min.csv": "fc53f07b105523ae846368b4b25d342b404bf07d3638282047dde2570df14f96",
+      "outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2/forecasts.npz": "2c2763cbe7836b569035e9cce39f381868658c94d1e7b63bf1c29916baa784ac",
+      "outputs/q2_review_v2/rolling_selection_T0.csv": "34a3a053182b808714caed6d87f48a7062845624e90ebfb4aded11294384c7bc",
+      "outputs/q2_review_v2/experiments/Rolling_T0_daily.csv": "7d2044893e09cdc5da3310f75f57a6b167b9aaa136784654cffb438fc3b24836",
+      "outputs/q2_review_v2/experiments/Rolling_T0_dispatch.csv": "02e8073a4b28509e7aa779921e6831f9b3793f3dfd95d7a6d140882aa3e9f474",
+      "src/dispatch_control.py": "46d1f176f4b7b6e065e4a9f38b38831acd8d676ceb1c2108e33b6cb4c5fd8c9e",
+      "src/q2_solver.py": "771bbabe46663b4583dd4fb746b1d1e6b57ddfb6130b9fa03ffa50fb03bc9015",
+      "src/q2_review_experiments.py": "498165548e18f3cefa5228b0237b634650f6f56212e787f9acebbde52e0c08d5",
+      "src/q3_solver.py": "7aa4cb6fc196037f028140826dbbc6b2ee1338c76347fd13617b9fd7e3897026",
+      "src/q3_forecast.py": "af90b46e098fb9cbfe052aad80ebee8799ffea329ddf1ab20cd04495bb325c31",
+      "src/q3_q2_bridge.py": "e73f1c922709ed77cc3b5b2711dccc2cee3af4866cf39121f5c28209e93c0bff",
+      "src/q3_experiments.py": "75b25c5b9b1e56ca4dd5c8c488ccc448c2511dbe503ea00d618cbe5819c6252f"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "protocols_identical": true,
+  "N0_selected": {
+    "risk_pair": {
+      "alpha0": 0.7,
+      "alpha_update": 0.65
+    },
+    "release_name": "Rall",
+    "updates": [
+      6,
+      12,
+      18
+    ]
+  },
+  "N1_selected": {
+    "risk_pair": {
+      "alpha0": 0.7,
+      "alpha_update": 0.65
+    },
+    "release_name": "Rall",
+    "updates": [
+      6,
+      12,
+      18
+    ]
+  },
+  "evaluations": [
+    {
+      "source_protocol": "N0",
+      "target_settlement": "N1",
+      "cost": 13492611.130418347,
+      "artifact": "N1/summary.json"
+    },
+    {
+      "source_protocol": "N1",
+      "target_settlement": "N0",
+      "cost": 13669905.305916531,
+      "artifact": "N0/summary.json"
+    }
+  ],
+  "intentional_reuse": true
+}
