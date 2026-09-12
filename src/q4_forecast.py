@@ -37,7 +37,7 @@ def _base_forecast(values, day, model):
     if model == "P0p":
         return recent7.mean(axis=0)
     if model == "P1p":
-        # A stable ridge-like shrinkage between yesterday and the recent level.
+        # Fixed shrinkage between yesterday and the recent level; this is not Ridge.
         return 0.35 * yesterday + 0.65 * recent7.mean(axis=0)
     recent28 = _history(values, day, 28)
     weekday = day % 7

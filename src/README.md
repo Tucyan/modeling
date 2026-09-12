@@ -99,17 +99,33 @@ MPC（F1）已通过解析测试并完成7天，费用增加，未扩大到334�
 
 `q4_forecast.py`只使用已完成历史价格生成P0p/P1p/P2p；`q4_solver.py`将规划价格、实际结算价、Q4-2冻结合同和Q4-3日内版本更新分开，并复用共享F0。`q4_experiments.py`先用1月15—31日冻结N0/N1协议，再回放2月1—12月31日。完整结果位于`outputs/q4_final/`，N0主工作簿为`result4-2.xlsx`、`result4-3.xlsx`，N1副本在`outputs/q4_final/N1/`。
 
-复现顺序如下（使用项目`.venv`）：
+复现顺序如下（使用项目`.venv`）。为避免覆盖已核验交付，下面使用新的 `outputs/q4_repro/` 目录；正式回放完成后必须为 N0、N1 各生成两份工作簿，并把 payload 中的文件复制到结算目录根部，核验器读取的是根部文件。
 
 ```powershell
 .venv\Scripts\python.exe -m pytest tests/test_q4_forecast.py tests/test_q4_solver.py
-.venv\Scripts\python.exe src/q4_experiments.py --stage smoke --output outputs/q4_final
-.venv\Scripts\python.exe src/q4_experiments.py --stage formal --output outputs/q4_final
-.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_final/N0/q4-2_dispatch_10min.csv --output outputs/q4_final/N0/q4-2_payload --settlement N0
-.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_final/N0/q4-3_dispatch_10min.csv --output outputs/q4_final/N0/q4-3_payload --settlement N0
-node src/q4_workbook.mjs --mode=q4-2 --output=outputs/q4_final/N0/q4-2_payload
-node src/q4_workbook.mjs --mode=q4-3 --output=outputs/q4_final/N0/q4-3_payload
-.venv\Scripts\python.exe src/q4_verify_delivery.py --output outputs/q4_final
+.venv\Scripts\python.exe src/q4_experiments.py --stage smoke --output outputs/q4_repro
+.venv\Scripts\python.exe src/q4_experiments.py --stage formal --output outputs/q4_repro
+
+# N0 工作簿
+.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_repro/N0/q4-2_dispatch_10min.csv --output outputs/q4_repro/N0/q4-2_payload --settlement N0
+node src/q4_workbook.mjs --mode=q4-2 --output=outputs/q4_repro/N0/q4-2_payload
+Copy-Item outputs/q4_repro/N0/q4-2_payload/result4-2.xlsx outputs/q4_repro/N0/result4-2.xlsx -Force
+.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_repro/N0/q4-3_dispatch_10min.csv --output outputs/q4_repro/N0/q4-3_payload --settlement N0
+node src/q4_workbook.mjs --mode=q4-3 --output=outputs/q4_repro/N0/q4-3_payload
+Copy-Item outputs/q4_repro/N0/q4-3_payload/result4-3.xlsx outputs/q4_repro/N0/result4-3.xlsx -Force
+
+# N1 工作簿
+.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_repro/N1/q4-2_dispatch_10min.csv --output outputs/q4_repro/N1/q4-2_payload --settlement N1
+node src/q4_workbook.mjs --mode=q4-2 --output=outputs/q4_repro/N1/q4-2_payload
+Copy-Item outputs/q4_repro/N1/q4-2_payload/result4-2.xlsx outputs/q4_repro/N1/result4-2.xlsx -Force
+.venv\Scripts\python.exe src/q4_workbook_data.py --input outputs/q4_repro/N1/q4-3_dispatch_10min.csv --output outputs/q4_repro/N1/q4-3_payload --settlement N1
+node src/q4_workbook.mjs --mode=q4-3 --output=outputs/q4_repro/N1/q4-3_payload
+Copy-Item outputs/q4_repro/N1/q4-3_payload/result4-3.xlsx outputs/q4_repro/N1/result4-3.xlsx -Force
+
+# 根目录主交付文件取 N0 副本；然后核验 N0/N1 四套结果
+Copy-Item outputs/q4_repro/N0/result4-2.xlsx outputs/q4_repro/result4-2.xlsx -Force
+Copy-Item outputs/q4_repro/N0/result4-3.xlsx outputs/q4_repro/result4-3.xlsx -Force
+.venv\Scripts\python.exe src/q4_verify_delivery.py --output outputs/q4_repro
 ```
 
 正式回测属于已知2025数据上的因果历史回测；价格预测与交付时段实际价格严格分离。独立交付核验会拒绝缺日、非有限值、物理残差超门槛、合同版本回写已执行区间或工作簿工作表/尺寸不匹配。
