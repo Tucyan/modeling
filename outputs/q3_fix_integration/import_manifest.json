@@ -1,0 +1,104 @@
+{
+  "copied_source_and_tests": [
+    "src\\q3_experiments.py",
+    "src\\q3_forecast.py",
+    "src\\q3_report.py",
+    "src\\q3_solver.py",
+    "src\\q3_verify_delivery.py",
+    "src\\q3_workbook.mjs",
+    "src\\q3_workbook_data.py",
+    "tests\\test_q3_experiments.py",
+    "tests\\test_q3_forecast.py",
+    "tests\\test_q3_report.py",
+    "tests\\test_q3_solver.py",
+    "tests\\test_q3_verify_delivery.py",
+    "tests\\test_q3_workbook.py"
+  ],
+  "archive": "outputs/q3_legacy_before_fix",
+  "protected_files": 173,
+  "files": [
+    {
+      "path": "src\\q3_experiments.py",
+      "archive_source_sha256": "6780a61685bc33c760a5e9050a394834a8bfcae16c63a6043568e2388a6d11d2",
+      "integrated_sha256": "639d1a798dacc9305bb6b40e08f61d61800a23830d75f349e36e342c70b0be03",
+      "modified": true
+    },
+    {
+      "path": "src\\q3_forecast.py",
+      "archive_source_sha256": "995b67679bebdb6459762eb0e7daca58b390e0a28fd59111e7780ebc42aba7a8",
+      "integrated_sha256": "af90b46e098fb9cbfe052aad80ebee8799ffea329ddf1ab20cd04495bb325c31",
+      "modified": true
+    },
+    {
+      "path": "src\\q3_report.py",
+      "archive_source_sha256": "19b9e3bbd505f872ca6d895d1f73aeffdbaa0141f32ae54ce88dce10e51d30cf",
+      "integrated_sha256": "d0e4b61da4c66ae9a4e522fa962229f7bc900e0a52022d9f26ba5f6217982228",
+      "modified": true
+    },
+    {
+      "path": "src\\q3_solver.py",
+      "archive_source_sha256": "69349d193a2138d2845e5b41ae58301564d4d2f82ee016f11385489bce1512e4",
+      "integrated_sha256": "c55ebf2d2bc7d9e66e7bde0028acb74fcc98d71b8a5e5fd8d200088724a42a2d",
+      "modified": true
+    },
+    {
+      "path": "src\\q3_verify_delivery.py",
+      "archive_source_sha256": "d8e4a36182f0f3696dcfa27d404c2e23e27364afb9317d9d6525b9c1b709e356",
+      "integrated_sha256": "d8e4a36182f0f3696dcfa27d404c2e23e27364afb9317d9d6525b9c1b709e356",
+      "modified": false
+    },
+    {
+      "path": "src\\q3_workbook.mjs",
+      "archive_source_sha256": "a15ee1c1f82ea8e77bc43d8e444fa41fab413c02f3814cddc4eb32b540b94e05",
+      "integrated_sha256": "a15ee1c1f82ea8e77bc43d8e444fa41fab413c02f3814cddc4eb32b540b94e05",
+      "modified": false
+    },
+    {
+      "path": "src\\q3_workbook_data.py",
+      "archive_source_sha256": "1f8ae128e88da1f9080fc74cd9b88998a90e995ced439ce7823a69caec37c2ef",
+      "integrated_sha256": "1f8ae128e88da1f9080fc74cd9b88998a90e995ced439ce7823a69caec37c2ef",
+      "modified": false
+    },
+    {
+      "path": "tests\\test_q3_experiments.py",
+      "archive_source_sha256": "70ff56c16f9d5a894d948970ae4bae36cf2537ec7f7f8eb246c4754340f5d32a",
+      "integrated_sha256": "f3613c62417adebb51bafc64daef29bd31e5cb282a054bc81594833e6ef9ddfb",
+      "modified": true
+    },
+    {
+      "path": "tests\\test_q3_forecast.py",
+      "archive_source_sha256": "2069f4956c50ec5c90d241a57d2101a2a465d8598a1d0bcefc59d3d4074753f3",
+      "integrated_sha256": "b99ef10c9bd2bd0d20d2113c0745221f161159db32ee6b1f13900fdafc9a0fda",
+      "modified": true
+    },
+    {
+      "path": "tests\\test_q3_report.py",
+      "archive_source_sha256": "0f3c128afb0da78d3cefdeb110e4fa5da3d1d099f5bae3bb5e4c4915590824af",
+      "integrated_sha256": "fdd611e955c70b3534b92dc77066350b49aea738bac58ad2061d769e7b208995",
+      "modified": true
+    },
+    {
+      "path": "tests\\test_q3_solver.py",
+      "archive_source_sha256": "063ed6a9eb4ffcb94cf855d9a9c0c27622e6ef2459f81b3f905d0b0cbd59f14f",
+      "integrated_sha256": "8eb6165d15e8170eb07278a755b930da3f1203abc3b1edd6d7a3983f98b49595",
+      "modified": true
+    },
+    {
+      "path": "tests\\test_q3_verify_delivery.py",
+      "archive_source_sha256": "df695a2261ada59c3238d780b69da5ae0a7898ffcc3fd249841804f2f2b57def",
+      "integrated_sha256": "75156f072fd272ea4121ea1b47842830a94edc722bafc044907be1f404beddcb",
+      "modified": true
+    },
+    {
+      "path": "tests\\test_q3_workbook.py",
+      "archive_source_sha256": "c555578304920246e36d0e50c727b073c2d9f13994ccb37a6ab5d51839fd3db8",
+      "integrated_sha256": "c88b58a24bedf16181814f0e1494a4a81e717d691e0b44da340f0089adaf0cb1",
+      "modified": true
+    }
+  ],
+  "new_formal_results_generated": true,
+  "formal_result_directory": "outputs/q3_final",
+  "formal_selected": "a0_0.70_au_0.65__Rall",
+  "formal_cost_yuan": 13669905.30591653,
+  "formal_delivery_verification": "outputs/q3_final/delivery_verification.json"
+}

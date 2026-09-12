@@ -1,0 +1,48 @@
+{
+  "test_exit_code": 0,
+  "smoke": [
+    {
+      "policy": "R0",
+      "cost": 393688.06172313704,
+      "emergency_kwh": 6822.002783170999,
+      "bus_max": 2.2737367544323206e-13,
+      "state_max": 1.1368683772161603e-13,
+      "continuity_max": 0.0,
+      "initial": 6000.0,
+      "terminal": 6000.0,
+      "versions": 0
+    },
+    {
+      "policy": "Rall",
+      "cost": 366691.4185161416,
+      "emergency_kwh": 156.53874251817103,
+      "bus_max": 2.2737367544323206e-13,
+      "state_max": 1.1368683772161603e-13,
+      "continuity_max": 0.0,
+      "initial": 6000.0,
+      "terminal": 6000.0,
+      "versions": 1512
+    }
+  ],
+  "protected_files": 173,
+  "protected_changed": [],
+  "archive_files": 116,
+  "archive_changed": [],
+  "formal_rerun": true,
+  "formal_selected": {
+    "risk_pair": {
+      "alpha0": 0.7,
+      "alpha_update": 0.65
+    },
+    "release_name": "Rall",
+    "updates": [6, 12, 18]
+  },
+  "formal_cost_yuan": 13669905.30591653,
+  "formal_emergency_kwh": 47809.208179664536,
+  "formal_delivery_verification": "outputs/q3_final/delivery_verification.json",
+  "formal_comparison": "outputs/q3_fix_integration/final_comparison.json",
+  "independent_review": "no blocking findings",
+  "local_links_checked": 14,
+  "merged_into_current_workspace": true,
+  "git_commit_created": false
+}

@@ -33,3 +33,17 @@ desktop.ini
 outputs/**/*.inspect.ndjson
 outputs/**/result_*.png
 outputs/**/template_*.png
+
+# Q3 review archives and intermediate candidate runs stay local.
+outputs/q3_zip_review/
+outputs/q3_legacy_before_fix/
+outputs/q3_modeling/
+
+# Large Q2 experiment ledgers are reproducible intermediates, not delivery files.
+outputs/q2_review_v2/experiments/*_dispatch.csv
+outputs/01a08b78-ed6b-7e60-b40d-9f266855d1ef/q2/experiments/*_dispatch.csv
+outputs/q2_incremental/*_dispatch.csv
+!outputs/q2_incremental/Rolling_continuous_open_dispatch.csv
+
+# Initial failing-test transcript is local development evidence.
+outputs/q3_fix_integration/red_tests.txt

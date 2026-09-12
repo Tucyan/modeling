@@ -1,0 +1,53 @@
+test_input_loader_accepts_only_the_defined_seven_day_warmup_gap (test_q3_experiments.Q3ExperimentTests.test_input_loader_accepts_only_the_defined_seven_day_warmup_gap)
+Q2 forecasts intentionally start on day 7; later missing values are invalid. ... ok
+test_protocol_selection_rejects_current_or_future_scores (test_q3_experiments.Q3ExperimentTests.test_protocol_selection_rejects_current_or_future_scores)
+A policy cannot be selected with observations from its decision day. ... ok
+test_protocol_tie_break_is_deterministic (test_q3_experiments.Q3ExperimentTests.test_protocol_tie_break_is_deterministic)
+Equal historical performance must not depend on dictionary insertion order. ... ok
+test_release_sets_cover_every_unique_intraday_subset (test_q3_experiments.Q3ExperimentTests.test_release_sets_cover_every_unique_intraday_subset)
+Dropping or duplicating a release subset makes information-value claims incomplete. ... ok
+test_invalid_release_or_noncausal_history_is_rejected (test_q3_forecast.Q3ForecastTests.test_invalid_release_or_noncausal_history_is_rejected)
+Unsupported release times and an empty causal window are data errors. ... ok
+test_next_day_forecasts_do_not_change_todays_remainder (test_q3_forecast.Q3ForecastTests.test_next_day_forecasts_do_not_change_todays_remainder) ... ok
+test_perfect_release_forecasts_produce_zero_net_residual (test_q3_forecast.Q3ForecastTests.test_perfect_release_forecasts_produce_zero_net_residual) ... ok
+test_real_release_mapping_matches_standardized_time_windows (test_q3_forecast.Q3ForecastTests.test_real_release_mapping_matches_standardized_time_windows) ... ok
+test_release_horizons_start_at_one_for_every_issue (test_q3_forecast.Q3ForecastTests.test_release_horizons_start_at_one_for_every_issue) ... ok
+test_residual_history_excludes_decision_day_and_future (test_q3_forecast.Q3ForecastTests.test_residual_history_excludes_decision_day_and_future)
+Changing decision-day/future actuals must not change a past-only reserve. ... ok
+test_risk_reserve_is_horizon_specific_quantile (test_q3_forecast.Q3ForecastTests.test_risk_reserve_is_horizon_specific_quantile)
+Each remaining slot needs its own historical error quantile. ... ok
+test_unused_warmup_forecasts_may_be_missing (test_q3_forecast.Q3ForecastTests.test_unused_warmup_forecasts_may_be_missing)
+Missing forecasts before the first eligible history day must be ignored. ... ok
+test_equal_costs_are_not_described_as_a_saving (test_q3_report.Q3ReportTests.test_equal_costs_are_not_described_as_a_saving) ... ok
+test_intraday_winner_does_not_receive_r0_conclusions (test_q3_report.Q3ReportTests.test_intraday_winner_does_not_receive_r0_conclusions) ... ok
+test_missing_refund_experiment_is_reported_as_missing (test_q3_report.Q3ReportTests.test_missing_refund_experiment_is_reported_as_missing) ... ok
+test_protocol_dates_are_not_hardcoded (test_q3_report.Q3ReportTests.test_protocol_dates_are_not_hardcoded) ... ok
+test_r0_selection_is_distinguished_from_better_hindsight_policy (test_q3_report.Q3ReportTests.test_r0_selection_is_distinguished_from_better_hindsight_policy) ... ok
+test_refund_comparison_uses_actual_selected_policy_result (test_q3_report.Q3ReportTests.test_refund_comparison_uses_actual_selected_policy_result) ... ok
+test_report_does_not_claim_every_release_is_necessary (test_q3_report.Q3ReportTests.test_report_does_not_claim_every_release_is_necessary)
+A rejected intraday release set cannot be described as necessary. ... ok
+test_report_states_causal_selection_and_settlement_scope (test_q3_report.Q3ReportTests.test_report_states_causal_selection_and_settlement_scope)
+The paper must not hide the information boundary or mix settlement rules. ... ok
+test_ac_efficiency_and_terminal (test_q3_solver.Q3Tests.test_ac_efficiency_and_terminal) ... ok
+test_hourly_energy_and_release_boundary (test_q3_solver.Q3Tests.test_hourly_energy_and_release_boundary) ... ok
+test_negative_net_reserve_is_represented_without_negative_load (test_q3_solver.Q3Tests.test_negative_net_reserve_is_represented_without_negative_load) ... ok
+test_new_contract_is_full_one_point_five_price (test_q3_solver.Q3Tests.test_new_contract_is_full_one_point_five_price) ... ok
+test_no_refund_cannot_profit_from_reducing_original (test_q3_solver.Q3Tests.test_no_refund_cannot_profit_from_reducing_original) ... ok
+test_past_contract_frozen_and_continuous_state (test_q3_solver.Q3Tests.test_past_contract_frozen_and_continuous_state) ... ok
+test_positive_release_reserve_changes_only_unexecuted_contract (test_q3_solver.Q3Tests.test_positive_release_reserve_changes_only_unexecuted_contract) ... ok
+test_settlement_not_double_charged (test_q3_solver.Q3Tests.test_settlement_not_double_charged) ... ok
+test_zero_reserve_exactly_reproduces_uncalibrated_policy (test_q3_solver.Q3Tests.test_zero_reserve_exactly_reproduces_uncalibrated_policy) ... ok
+setUpClass (test_q3_verify_delivery.Q3VerifyTests) ... skipped 'formal Q3 output has not run'
+test_contiguous_emergency_slots_are_merged_and_summed (test_q3_workbook.Q3WorkbookTests.test_contiguous_emergency_slots_are_merged_and_summed)
+Separating adjacent slots would overstate the number of emergency events. ... ok
+test_formal_payload_contains_every_day_and_every_emergency_event (test_q3_workbook.Q3WorkbookTests.test_formal_payload_contains_every_day_and_every_emergency_event)
+The ellipsis rows in the template must expand to the complete 334-day result. ... skipped 'formal causal backtest has not run yet'
+test_template_shape_is_fixed (test_q3_workbook.Q3WorkbookTests.test_template_shape_is_fixed)
+Writing against a changed template must fail before cell offsets drift. ... ok
+test_zero_and_tiny_numerical_emergency_values_are_omitted (test_q3_workbook.Q3WorkbookTests.test_zero_and_tiny_numerical_emergency_values_are_omitted)
+Solver noise below the physical reporting tolerance is not an event. ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 1.066s
+
+OK (skipped=2)

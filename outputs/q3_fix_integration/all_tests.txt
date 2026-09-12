@@ -1,0 +1,84 @@
+test_dependency_manifest_covers_q2_runtime (test_portability.PortabilityTests.test_dependency_manifest_covers_q2_runtime) ... ok
+test_gitignore_keeps_delivery_figures_and_ignores_previews (test_portability.PortabilityTests.test_gitignore_keeps_delivery_figures_and_ignores_previews) ... ok
+test_q2_markdown_links_are_relative_and_resolve (test_portability.PortabilityTests.test_q2_markdown_links_are_relative_and_resolve) ... ok
+test_price_spread_does_not_cover_losses (test_q1_solver.Q1Tests.test_price_spread_does_not_cover_losses) ... ok
+test_storage_capacity_and_curtailment (test_q1_solver.Q1Tests.test_storage_capacity_and_curtailment) ... ok
+test_two_period_efficiency_arbitrage (test_q1_solver.Q1Tests.test_two_period_efficiency_arbitrage) ... ok
+test_future_cost_does_not_change_selection (test_q2_incremental.IncrementalTests.test_future_cost_does_not_change_selection) ... ok
+test_missing_history_rejected (test_q2_incremental.IncrementalTests.test_missing_history_rejected) ... ok
+test_quantile_score_units_and_ties (test_q2_incremental.IncrementalTests.test_quantile_score_units_and_ties) ... ok
+test_closure_can_buy_energy_at_penalty_price (test_q2_realtime_control.RealtimeMpcTests.test_closure_can_buy_energy_at_penalty_price) ... ok
+test_high_price_current_gap_is_served_before_cheaper_future_gap (test_q2_realtime_control.RealtimeMpcTests.test_high_price_current_gap_is_served_before_cheaper_future_gap) ... ok
+test_high_price_gap_saves_limited_storage_for_expensive_slot (test_q2_realtime_control.RealtimeMpcTests.test_high_price_gap_saves_limited_storage_for_expensive_slot) ... ok
+test_paid_contract_is_frozen_and_unusable_excess_is_reported (test_q2_realtime_control.RealtimeMpcTests.test_paid_contract_is_frozen_and_unusable_excess_is_reported) ... ok
+test_prefix_is_causal_to_future_actual_changes (test_q2_realtime_control.RealtimeMpcTests.test_prefix_is_causal_to_future_actual_changes) ... ok
+test_result_contains_solver_statistics_and_physical_balance (test_q2_realtime_control.RealtimeMpcTests.test_result_contains_solver_statistics_and_physical_balance) ... ok
+test_terminal_target_is_enforced_and_bounds_are_respected (test_q2_realtime_control.RealtimeMpcTests.test_terminal_target_is_enforced_and_bounds_are_respected) ... ok
+test_no_fixed_false_event_statement (test_q2_report_consistency.ReportTests.test_no_fixed_false_event_statement) ... ok
+test_causal_day_input (test_q2_review_experiments.ReviewTests.test_causal_day_input) ... ok
+test_date_window (test_q2_review_experiments.ReviewTests.test_date_window) ... ok
+test_execution_prefix (test_q2_review_experiments.ReviewTests.test_execution_prefix) ... ok
+test_terminal_cannot_dump_battery (test_q2_review_experiments.ReviewTests.test_terminal_cannot_dump_battery) ... ok
+test_terminal_rules (test_q2_review_experiments.ReviewTests.test_terminal_rules) ... ok
+test_unreachable_terminal_rejected (test_q2_review_experiments.ReviewTests.test_unreachable_terminal_rejected) ... ok
+test_wrong_date_value_is_rejected (test_q2_review_verify.VerifyTests.test_wrong_date_value_is_rejected) ... ok
+test_deterministic_tie (test_q2_rolling_validation.RollingTests.test_deterministic_tie) ... ok
+test_selection_strictly_past (test_q2_rolling_validation.RollingTests.test_selection_strictly_past) ... ok
+test_arbitrage (test_q2_solver.Q2Tests.test_arbitrage) ... ok
+test_causal_and_paid_excess (test_q2_solver.Q2Tests.test_causal_and_paid_excess) ... ok
+test_features_no_future (test_q2_solver.Q2Tests.test_features_no_future) ... ok
+test_newsvendor (test_q2_solver.Q2Tests.test_newsvendor) ... ok
+test_terminal_reachable (test_q2_solver.Q2Tests.test_terminal_reachable) ... ok
+test_input_loader_accepts_only_the_defined_seven_day_warmup_gap (test_q3_experiments.Q3ExperimentTests.test_input_loader_accepts_only_the_defined_seven_day_warmup_gap)
+Q2 forecasts intentionally start on day 7; later missing values are invalid. ... ok
+test_protocol_selection_rejects_current_or_future_scores (test_q3_experiments.Q3ExperimentTests.test_protocol_selection_rejects_current_or_future_scores)
+A policy cannot be selected with observations from its decision day. ... ok
+test_protocol_tie_break_is_deterministic (test_q3_experiments.Q3ExperimentTests.test_protocol_tie_break_is_deterministic)
+Equal historical performance must not depend on dictionary insertion order. ... ok
+test_release_sets_cover_every_unique_intraday_subset (test_q3_experiments.Q3ExperimentTests.test_release_sets_cover_every_unique_intraday_subset)
+Dropping or duplicating a release subset makes information-value claims incomplete. ... ok
+test_invalid_release_or_noncausal_history_is_rejected (test_q3_forecast.Q3ForecastTests.test_invalid_release_or_noncausal_history_is_rejected)
+Unsupported release times and an empty causal window are data errors. ... ok
+test_next_day_forecasts_do_not_change_todays_remainder (test_q3_forecast.Q3ForecastTests.test_next_day_forecasts_do_not_change_todays_remainder) ... ok
+test_perfect_release_forecasts_produce_zero_net_residual (test_q3_forecast.Q3ForecastTests.test_perfect_release_forecasts_produce_zero_net_residual) ... ok
+test_real_release_mapping_matches_standardized_time_windows (test_q3_forecast.Q3ForecastTests.test_real_release_mapping_matches_standardized_time_windows) ... ok
+test_release_horizons_start_at_one_for_every_issue (test_q3_forecast.Q3ForecastTests.test_release_horizons_start_at_one_for_every_issue) ... ok
+test_residual_history_excludes_decision_day_and_future (test_q3_forecast.Q3ForecastTests.test_residual_history_excludes_decision_day_and_future)
+Changing decision-day/future actuals must not change a past-only reserve. ... ok
+test_risk_reserve_is_horizon_specific_quantile (test_q3_forecast.Q3ForecastTests.test_risk_reserve_is_horizon_specific_quantile)
+Each remaining slot needs its own historical error quantile. ... ok
+test_unused_warmup_forecasts_may_be_missing (test_q3_forecast.Q3ForecastTests.test_unused_warmup_forecasts_may_be_missing)
+Missing forecasts before the first eligible history day must be ignored. ... ok
+test_equal_costs_are_not_described_as_a_saving (test_q3_report.Q3ReportTests.test_equal_costs_are_not_described_as_a_saving) ... ok
+test_intraday_winner_does_not_receive_r0_conclusions (test_q3_report.Q3ReportTests.test_intraday_winner_does_not_receive_r0_conclusions) ... ok
+test_missing_refund_experiment_is_reported_as_missing (test_q3_report.Q3ReportTests.test_missing_refund_experiment_is_reported_as_missing) ... ok
+test_protocol_dates_are_not_hardcoded (test_q3_report.Q3ReportTests.test_protocol_dates_are_not_hardcoded) ... ok
+test_r0_selection_is_distinguished_from_better_hindsight_policy (test_q3_report.Q3ReportTests.test_r0_selection_is_distinguished_from_better_hindsight_policy) ... ok
+test_refund_comparison_uses_actual_selected_policy_result (test_q3_report.Q3ReportTests.test_refund_comparison_uses_actual_selected_policy_result) ... ok
+test_report_does_not_claim_every_release_is_necessary (test_q3_report.Q3ReportTests.test_report_does_not_claim_every_release_is_necessary)
+A rejected intraday release set cannot be described as necessary. ... ok
+test_report_states_causal_selection_and_settlement_scope (test_q3_report.Q3ReportTests.test_report_states_causal_selection_and_settlement_scope)
+The paper must not hide the information boundary or mix settlement rules. ... ok
+test_ac_efficiency_and_terminal (test_q3_solver.Q3Tests.test_ac_efficiency_and_terminal) ... ok
+test_hourly_energy_and_release_boundary (test_q3_solver.Q3Tests.test_hourly_energy_and_release_boundary) ... ok
+test_negative_net_reserve_is_represented_without_negative_load (test_q3_solver.Q3Tests.test_negative_net_reserve_is_represented_without_negative_load) ... ok
+test_new_contract_is_full_one_point_five_price (test_q3_solver.Q3Tests.test_new_contract_is_full_one_point_five_price) ... ok
+test_no_refund_cannot_profit_from_reducing_original (test_q3_solver.Q3Tests.test_no_refund_cannot_profit_from_reducing_original) ... ok
+test_past_contract_frozen_and_continuous_state (test_q3_solver.Q3Tests.test_past_contract_frozen_and_continuous_state) ... ok
+test_positive_release_reserve_changes_only_unexecuted_contract (test_q3_solver.Q3Tests.test_positive_release_reserve_changes_only_unexecuted_contract) ... ok
+test_settlement_not_double_charged (test_q3_solver.Q3Tests.test_settlement_not_double_charged) ... ok
+test_zero_reserve_exactly_reproduces_uncalibrated_policy (test_q3_solver.Q3Tests.test_zero_reserve_exactly_reproduces_uncalibrated_policy) ... ok
+setUpClass (test_q3_verify_delivery.Q3VerifyTests) ... skipped 'formal Q3 output has not run'
+test_contiguous_emergency_slots_are_merged_and_summed (test_q3_workbook.Q3WorkbookTests.test_contiguous_emergency_slots_are_merged_and_summed)
+Separating adjacent slots would overstate the number of emergency events. ... ok
+test_formal_payload_contains_every_day_and_every_emergency_event (test_q3_workbook.Q3WorkbookTests.test_formal_payload_contains_every_day_and_every_emergency_event)
+The ellipsis rows in the template must expand to the complete 334-day result. ... skipped 'formal causal backtest has not run yet'
+test_template_shape_is_fixed (test_q3_workbook.Q3WorkbookTests.test_template_shape_is_fixed)
+Writing against a changed template must fail before cell offsets drift. ... ok
+test_zero_and_tiny_numerical_emergency_values_are_omitted (test_q3_workbook.Q3WorkbookTests.test_zero_and_tiny_numerical_emergency_values_are_omitted)
+Solver noise below the physical reporting tolerance is not an event. ... ok
+
+----------------------------------------------------------------------
+Ran 64 tests in 1.386s
+
+OK (skipped=2)

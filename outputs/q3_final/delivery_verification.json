@@ -1,0 +1,81 @@
+{
+  "selected": {
+    "risk_pair": {
+      "alpha0": 0.7,
+      "alpha_update": 0.65
+    },
+    "release_name": "Rall",
+    "updates": [
+      6,
+      12,
+      18
+    ]
+  },
+  "selection_winner": "a0_0.70_au_0.65__Rall",
+  "selection_is_strictly_historical": true,
+  "dispatch": {
+    "rows": 48096,
+    "days": 334,
+    "max_residuals_kwh": {
+      "bus": 4.547473508864641e-13,
+      "state": 3.751665644813329e-12,
+      "continuity": 0.0,
+      "bounds": 0.0,
+      "power": 9.094947017729282e-13,
+      "disposal": 9.094947017729282e-13,
+      "negative": 0.0,
+      "contract_reconstruction": 0.0
+    },
+    "overlap_slots": 0,
+    "cost": 13669905.30591653,
+    "cost_error_yuan": 0.0,
+    "all_contract_versions_reconstructed": true
+  },
+  "workbook": {
+    "sheet_dimensions": {
+      "计划购电量": "A1:EQ335",
+      "调整购电量": "A1:EQ335",
+      "充放电量": "A1:F2005",
+      "紧急购电量": "A1:C438"
+    },
+    "maximum_cell_error": 0.0,
+    "checks": {
+      "plan_matrix": 0.0,
+      "adjustment_matrix": 0.0,
+      "plan_total": 0,
+      "plan_cost": 0,
+      "adjustment_total": 0,
+      "adjustment_cost": 0,
+      "battery_charge": 0,
+      "battery_discharge": 0,
+      "emergency_kwh": 0
+    },
+    "formula_errors": 0,
+    "emergency_rows": 437
+  },
+  "q2_unchanged": true,
+  "q2_hashes": {
+    "paper_expected": "6714a0d885a7cca299e5ee58b7fb0d0644e7507b689be93c6852cc34abf8252c",
+    "paper_actual": "6714a0d885a7cca299e5ee58b7fb0d0644e7507b689be93c6852cc34abf8252c",
+    "xlsx_expected": "a40da3664e98de9dbbd58c496002583cda7649c6f505de27d250e99158ea6282",
+    "xlsx_actual": "a40da3664e98de9dbbd58c496002583cda7649c6f505de27d250e99158ea6282"
+  },
+  "sha256": {
+    "C题_标准化数据与修正模板\\C_final_delivery\\data_csv\\annual_actual_10min.csv": "e06868f0004ef9ccaa6257fa72af976ac591158ead0594f0dd3e8e014ffce6a0",
+    "C题_标准化数据与修正模板\\C_final_delivery\\data_csv\\pv_forecast_hourly.csv": "6bf884e021e53762ee8f85b5d891ee70475f814a796b0123bba620c3c96b5d0b",
+    "C题_标准化数据与修正模板\\C_final_delivery\\data_csv\\typical_day_10min.csv": "fc53f07b105523ae846368b4b25d342b404bf07d3638282047dde2570df14f96",
+    "src\\q3_solver.py": "c55ebf2d2bc7d9e66e7bde0028acb74fcc98d71b8a5e5fd8d200088724a42a2d",
+    "src\\q3_forecast.py": "af90b46e098fb9cbfe052aad80ebee8799ffea329ddf1ab20cd04495bb325c31",
+    "src\\q3_experiments.py": "639d1a798dacc9305bb6b40e08f61d61800a23830d75f349e36e342c70b0be03",
+    "src\\q3_workbook_data.py": "1f8ae128e88da1f9080fc74cd9b88998a90e995ced439ce7823a69caec37c2ef",
+    "src\\q3_workbook.mjs": "a15ee1c1f82ea8e77bc43d8e444fa41fab413c02f3814cddc4eb32b540b94e05",
+    "src\\q3_report.py": "d0e4b61da4c66ae9a4e522fa962229f7bc900e0a52022d9f26ba5f6217982228",
+    "outputs\\q3_final\\daily_summary.csv": "75d9c000434782fc472001dcad8a7e064415656d39364b0e803729adf65b7639",
+    "outputs\\q3_final\\dispatch_10min.csv": "f93aa717ae039bf8d22897ab4d305f73a7f4328ddd445e778f3b73ea0056da86",
+    "outputs\\q3_final\\contract_versions.csv": "d658c3ebc08df6ef1c7c3f9158d222a008679f737774f30815f22957ca8fd6b6",
+    "outputs\\q3_final\\comparison.csv": "25a336ca9a2caef1a51572304c113a20965b4d247ca806e6dd0f77c2038d9882",
+    "outputs\\q3_final\\selection_protocol.json": "f00e865b1a1dd1eeca01776b7de98e273a77014a291521b3d88167cfe28e2787",
+    "outputs\\q3_final\\result3.xlsx": "17fa8124b740391fc1c273e09e7919093b0b582fd49d98935a08f25583d84ec2",
+    "docs\\result\\第三问求解与结果分析.md": "d1d44a58c1a4897118ed768218dbc688bd690bf2c761a7e699f5d5b6dceaebef"
+  }
+}

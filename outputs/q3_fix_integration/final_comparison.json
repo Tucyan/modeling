@@ -1,0 +1,432 @@
+{
+  "old": {
+    "winner": "a0_0.85_au_0.75__R0",
+    "selected": {
+      "risk_pair": {
+        "alpha0": 0.85,
+        "alpha_update": 0.75
+      },
+      "release_name": "R0",
+      "updates": []
+    },
+    "days": 334,
+    "cost": 14216595.429129146,
+    "plan_cost": 13932542.20998197,
+    "up_cost": 0.0,
+    "down_fee": 0.0,
+    "emergency_cost": 284053.2191471758,
+    "emergency_kwh": 46156.2999200905,
+    "emergency_days": 94,
+    "emergency_events": 138,
+    "unused_kwh": 1934959.5177149728,
+    "spill_kwh": 1590486.226762667,
+    "initial": 6000.0,
+    "terminal": 6000.0
+  },
+  "new": {
+    "winner": "a0_0.70_au_0.65__Rall",
+    "selected": {
+      "risk_pair": {
+        "alpha0": 0.7,
+        "alpha_update": 0.65
+      },
+      "release_name": "Rall",
+      "updates": [
+        6,
+        12,
+        18
+      ]
+    },
+    "days": 334,
+    "cost": 13669905.30591653,
+    "plan_cost": 13109743.14662993,
+    "up_cost": 283737.7789049038,
+    "down_fee": 0.0,
+    "emergency_cost": 276424.38038169686,
+    "emergency_kwh": 47809.208179664536,
+    "emergency_days": 158,
+    "emergency_events": 261,
+    "unused_kwh": 1186638.5569921972,
+    "spill_kwh": 1384283.4485946633,
+    "initial": 6000.0,
+    "terminal": 6000.0
+  },
+  "delta": {
+    "cost": -546690.1232126169,
+    "plan_cost": -822799.063352041,
+    "up_cost": 283737.7789049038,
+    "down_fee": 0.0,
+    "emergency_cost": -7628.838765478926,
+    "emergency_kwh": 1652.9082595740329,
+    "unused_kwh": -748320.9607227757,
+    "spill_kwh": -206202.77816800377
+  },
+  "cost_delta_pct": -3.845436313763801,
+  "spec": {
+    "2025-03-20": {
+      "cost": {
+        "old": 47226.30748476612,
+        "new": 46060.06667676635,
+        "delta": -1166.2408079997695
+      },
+      "emergency_kwh": {
+        "old": 347.6156765807939,
+        "new": 515.0405057530771,
+        "delta": 167.42482917228324
+      },
+      "initial": {
+        "old": 6905.855145168031,
+        "new": 6584.65225612749,
+        "delta": -321.2028890405418
+      },
+      "terminal": {
+        "old": 6788.565438618077,
+        "new": 6464.820329591115,
+        "delta": -323.7451090269615
+      }
+    },
+    "2025-06-21": {
+      "cost": {
+        "old": 22095.17306471667,
+        "new": 20668.944532365003,
+        "delta": -1426.2285323516662
+      },
+      "emergency_kwh": {
+        "old": 1.2174927732644392e-11,
+        "new": 8.625988812127616e-12,
+        "delta": -3.5489389205167754e-12
+      },
+      "initial": {
+        "old": 7898.489692129925,
+        "new": 7090.642392960303,
+        "delta": -807.8472991696217
+      },
+      "terminal": {
+        "old": 8382.712412975272,
+        "new": 7602.02832833847,
+        "delta": -780.6840846368023
+      }
+    },
+    "2025-09-23": {
+      "cost": {
+        "old": 49248.30698752232,
+        "new": 45800.14582001603,
+        "delta": -3448.161167506296
+      },
+      "emergency_kwh": {
+        "old": 1.2715162256426991e-11,
+        "new": 6.37500000001214,
+        "delta": 6.3749999999994245
+      },
+      "initial": {
+        "old": 6904.176040089071,
+        "new": 6258.734439559103,
+        "delta": -645.4416005299681
+      },
+      "terminal": {
+        "old": 7193.24160985868,
+        "new": 6554.790681410116,
+        "delta": -638.4509284485639
+      }
+    },
+    "2025-12-21": {
+      "cost": {
+        "old": 65362.79629910965,
+        "new": 63058.561198886135,
+        "delta": -2304.2351002235155
+      },
+      "emergency_kwh": {
+        "old": 15.178177393166566,
+        "new": 36.595400411980506,
+        "delta": 21.417223018813942
+      },
+      "initial": {
+        "old": 6687.196377099724,
+        "new": 6189.538114793904,
+        "delta": -497.65826230581933
+      },
+      "terminal": {
+        "old": 6711.28560337998,
+        "new": 6330.086862834411,
+        "delta": -381.1987405455693
+      }
+    }
+  },
+  "new_comparison": [
+    {
+      "label": "calibrated_R0",
+      "settlement": "N0",
+      "updates": "[]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 14049281.738755597,
+      "plan_cost": 13117526.444360455,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 931755.294395138,
+      "emergency_kwh": 149184.42847562794,
+      "emergency_days": 201,
+      "emergency_events": 342,
+      "emergency_slots": 918,
+      "unused_kwh": 1076937.2652401412,
+      "spill_kwh": 1349984.821423511,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0431181000021752,
+      "mean_seconds": 0.0172641865273346
+    },
+    {
+      "label": "calibrated_R6",
+      "settlement": "N0",
+      "updates": "[6]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13880821.041714922,
+      "plan_cost": 13113611.01209976,
+      "up_cost": 303932.6842911699,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 463277.3453239919,
+      "emergency_kwh": 75546.1059566183,
+      "emergency_days": 177,
+      "emergency_events": 284,
+      "emergency_slots": 692,
+      "unused_kwh": 1267359.9803727872,
+      "spill_kwh": 1403755.716644127,
+      "final_soc": 6000.0,
+      "max_lp_gap": 8.003553375601767e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0613019000156782,
+      "mean_seconds": 0.0322079305387343
+    },
+    {
+      "label": "calibrated_R12",
+      "settlement": "N0",
+      "updates": "[12]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13776129.775952373,
+      "plan_cost": 13113415.45361857,
+      "up_cost": 136071.0995282356,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 526643.2228055664,
+      "emergency_kwh": 89821.00589995919,
+      "emergency_days": 181,
+      "emergency_events": 303,
+      "emergency_slots": 793,
+      "unused_kwh": 1136445.8445868352,
+      "spill_kwh": 1352532.1060463614,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0515608999994583,
+      "mean_seconds": 0.0278117407197313
+    },
+    {
+      "label": "calibrated_R18",
+      "settlement": "N0",
+      "updates": "[18]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13678157.0426497,
+      "plan_cost": 13108799.722155984,
+      "up_cost": 198320.3930638936,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 371036.9274298253,
+      "emergency_kwh": 66674.1992863457,
+      "emergency_days": 165,
+      "emergency_events": 280,
+      "emergency_slots": 719,
+      "unused_kwh": 1076856.1346840975,
+      "spill_kwh": 1350045.2219723356,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0528478000196628,
+      "mean_seconds": 0.0231945392212824
+    },
+    {
+      "label": "calibrated_R6_12",
+      "settlement": "N0",
+      "updates": "[6, 12]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13769758.055433862,
+      "plan_cost": 13113130.430128273,
+      "up_cost": 225477.3960146294,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 431150.2292909583,
+      "emergency_kwh": 70837.64618221004,
+      "emergency_days": 173,
+      "emergency_events": 278,
+      "emergency_slots": 679,
+      "unused_kwh": 1186638.7928806136,
+      "spill_kwh": 1384267.711042234,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0709099999803584,
+      "mean_seconds": 0.0433291215569821
+    },
+    {
+      "label": "calibrated_R6_18",
+      "settlement": "N0",
+      "updates": "[6, 18]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13758879.89564789,
+      "plan_cost": 13109872.55987721,
+      "up_cost": 373191.40571161045,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 275815.93005907035,
+      "emergency_kwh": 47730.69258365325,
+      "emergency_days": 157,
+      "emergency_events": 257,
+      "emergency_slots": 613,
+      "unused_kwh": 1267367.518748922,
+      "spill_kwh": 1403771.4541965562,
+      "final_soc": 6000.0,
+      "max_lp_gap": 8.003553375601767e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0664437999948859,
+      "mean_seconds": 0.0391964769465946
+    },
+    {
+      "label": "calibrated_R12_18",
+      "settlement": "N0",
+      "updates": "[12, 18]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13676953.76954974,
+      "plan_cost": 13109670.349950653,
+      "up_cost": 195800.1290923308,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 371483.2905067561,
+      "emergency_kwh": 66730.34264088431,
+      "emergency_days": 168,
+      "emergency_events": 286,
+      "emergency_slots": 727,
+      "unused_kwh": 1136444.447951248,
+      "spill_kwh": 1352547.8435987905,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0661148000217508,
+      "mean_seconds": 0.034608408682882
+    },
+    {
+      "label": "calibrated_Rall",
+      "settlement": "N0",
+      "updates": "[6, 12, 18]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13669905.305916533,
+      "plan_cost": 13109743.14662993,
+      "up_cost": 283737.7789049038,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 276424.38038169686,
+      "emergency_kwh": 47809.208179664536,
+      "emergency_days": 158,
+      "emergency_events": 261,
+      "emergency_slots": 613,
+      "unused_kwh": 1186638.5569921972,
+      "spill_kwh": 1384283.4485946633,
+      "final_soc": 6000.0,
+      "max_lp_gap": 7.275957614183426e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0838497999939136,
+      "mean_seconds": 0.0497320299401034
+    },
+    {
+      "label": "D0_uncalibrated",
+      "settlement": "N0",
+      "updates": "[]",
+      "risk_pair": NaN,
+      "days": 334,
+      "cost": 16308743.014572922,
+      "plan_cost": 12573891.252920363,
+      "up_cost": 0.0,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 3734851.7616525576,
+      "emergency_kwh": 705588.596465053,
+      "emergency_days": 324,
+      "emergency_events": 795,
+      "emergency_slots": 3953,
+      "unused_kwh": 844172.1579876263,
+      "spill_kwh": 1037615.2215878837,
+      "final_soc": 6000.0,
+      "max_lp_gap": 8.003553375601767e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0433268999913707,
+      "mean_seconds": 0.0156501661668061
+    },
+    {
+      "label": "Dall_uncalibrated",
+      "settlement": "N0",
+      "updates": "[6, 12, 18]",
+      "risk_pair": NaN,
+      "days": 334,
+      "cost": 15685275.996314043,
+      "plan_cost": 12571079.9507315,
+      "up_cost": 662922.8117400942,
+      "down_fee": 0.0,
+      "refund": 0.0,
+      "emergency_cost": 2451273.2338424493,
+      "emergency_kwh": 487189.33769861015,
+      "emergency_days": 322,
+      "emergency_events": 786,
+      "emergency_slots": 3489,
+      "unused_kwh": 1261946.7518372857,
+      "spill_kwh": 1061533.3347560256,
+      "final_soc": 6000.0,
+      "max_lp_gap": 8.003553375601767e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0948401000059675,
+      "mean_seconds": 0.04667759640639
+    },
+    {
+      "label": "N1_Rall",
+      "settlement": "N1",
+      "updates": "[6, 12, 18]",
+      "risk_pair": "{'alpha0': 0.7, 'alpha_update': 0.65}",
+      "days": 334,
+      "cost": 13492611.130418347,
+      "plan_cost": 13125270.323342968,
+      "up_cost": 339019.51268484903,
+      "down_fee": 295819.87708569545,
+      "refund": 591639.7541713909,
+      "emergency_cost": 324141.1714762249,
+      "emergency_kwh": 56916.14145416475,
+      "emergency_days": 172,
+      "emergency_events": 310,
+      "emergency_slots": 754,
+      "unused_kwh": 493201.544612907,
+      "spill_kwh": 1189133.3962752756,
+      "final_soc": 6000.0,
+      "max_lp_gap": 8.003553375601767e-11,
+      "max_mip_gap": 0.0,
+      "milp_solves": 0,
+      "max_seconds": 0.0945240999863017,
+      "mean_seconds": 0.049246967664636
+    }
+  ]
+}
