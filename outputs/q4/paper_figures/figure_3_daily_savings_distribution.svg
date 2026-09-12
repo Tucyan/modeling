@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620">
+<title>Daily savings distribution</title>
+<rect width="100%" height="100%" fill="white"/>
+<text x="600.00" y="35.00" text-anchor="middle" font-family="Microsoft YaHei,Arial,sans-serif" font-size="23" font-weight="700" fill="#334155">每日节省金额分布（334天）</text>
+<line x1="90.00" y1="520.00" x2="1160.00" y2="520.00" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="80.00" y="524.00" text-anchor="end" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400" fill="#334155">0</text>
+<line x1="90.00" y1="431.60" x2="1160.00" y2="431.60" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="80.00" y="435.60" text-anchor="end" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400" fill="#334155">41</text>
+<line x1="90.00" y1="343.20" x2="1160.00" y2="343.20" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="80.00" y="347.20" text-anchor="end" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400" fill="#334155">82</text>
+<line x1="90.00" y1="254.80" x2="1160.00" y2="254.80" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="80.00" y="258.80" text-anchor="end" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400" fill="#334155">123</text>
+<line x1="90.00" y1="166.40" x2="1160.00" y2="166.40" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="80.00" y="170.40" text-anchor="end" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400" fill="#334155">164</text>
+<line x1="90.00" y1="78.00" x2="1160.00" y2="78.00" stroke="#CBD5E1" stroke-width="1.0"/>
+<text x="80.00" y="82.00" text-anchor="end" font-family="Microsoft YaHei,Arial,sans-serif" font-size="10" font-weight="400" fill="#334155">205</text>
+<rect x="91.00" y="515.68" width="42.58" height="4.32" fill="#C2413B" opacity="0.88"/>
+<rect x="135.58" y="517.84" width="42.58" height="2.16" fill="#C2413B" opacity="0.88"/>
+<rect x="180.17" y="489.77" width="42.58" height="30.23" fill="#C2413B" opacity="0.88"/>
+<rect x="224.75" y="429.31" width="42.58" height="90.69" fill="#C2413B" opacity="0.88"/>
+<rect x="269.33" y="135.65" width="42.58" height="384.35" fill="#C2413B" opacity="0.88"/>
+<rect x="313.92" y="375.33" width="42.58" height="144.67" fill="#16856B" opacity="0.88"/>
+<rect x="358.50" y="489.77" width="42.58" height="30.23" fill="#16856B" opacity="0.88"/>
+<rect x="403.08" y="513.52" width="42.58" height="6.48" fill="#16856B" opacity="0.88"/>
+<rect x="447.67" y="511.36" width="42.58" height="8.64" fill="#16856B" opacity="0.88"/>
+<rect x="492.25" y="517.84" width="42.58" height="2.16" fill="#16856B" opacity="0.88"/>
+<rect x="536.83" y="517.84" width="42.58" height="2.16" fill="#16856B" opacity="0.88"/>
+<rect x="581.42" y="513.52" width="42.58" height="6.48" fill="#16856B" opacity="0.88"/>
+<rect x="626.00" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="670.58" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="715.17" y="517.84" width="42.58" height="2.16" fill="#16856B" opacity="0.88"/>
+<rect x="759.75" y="517.84" width="42.58" height="2.16" fill="#16856B" opacity="0.88"/>
+<rect x="804.33" y="517.84" width="42.58" height="2.16" fill="#16856B" opacity="0.88"/>
+<rect x="848.92" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="893.50" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="938.08" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="982.67" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="1027.25" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="1071.83" y="520.00" width="42.58" height="0.00" fill="#16856B" opacity="0.88"/>
+<rect x="1116.42" y="517.84" width="42.58" height="2.16" fill="#16856B" opacity="0.88"/>
+<line x1="295.94" y1="78.00" x2="295.94" y2="520.00" stroke="#334155" stroke-width="1.4"/>
+<line x1="299.42" y1="78.00" x2="299.42" y2="520.00" stroke="#D97706" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="304.42" y="98.00" text-anchor="start" font-family="Microsoft YaHei,Arial,sans-serif" font-size="11" font-weight="600" fill="#D97706">中位数 0.185千元</text>
+<text x="600.00" y="590.00" text-anchor="middle" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="400" fill="#334155">每日节省 = Q4-2成本 − Q4-3成本（千元）</text>
+<text x="22.00" y="299.00" text-anchor="middle" font-family="Microsoft YaHei,Arial,sans-serif" font-size="12" font-weight="400" fill="#334155" transform="rotate(-90 22.00 299.00)">天数</text>
+</svg>

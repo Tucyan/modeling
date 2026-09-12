@@ -1,0 +1,10 @@
+{
+  "annual_q4_2_cost_yuan": 14654856.782340743,
+  "annual_q4_3_cost_yuan": 14432049.316081068,
+  "annual_savings_yuan": 222807.4662596751,
+  "annual_savings_pct": 1.5203660436187985,
+  "accounting_attribution_gap_yuan": -1.6880221664905548e-09,
+  "formal_price_gamma": 0,
+  "dynamic_price_correction_direct_contribution_yuan": 0.0,
+  "annual_orthogonal_information_and_adjustment_ablation_available": false
+}

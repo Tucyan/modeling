@@ -1,0 +1,23 @@
+{
+  "plan_execution_deviation_identifiable": false,
+  "modes": {
+    "q4-2": {
+      "rows": 48096,
+      "mean_absolute_error": 4.2689123877413924e-14,
+      "max_absolute_error": 5.4569682106375694e-12,
+      "std_error": 2.663316334785926e-13,
+      "max_charge_error": 2.1032064978498966e-12,
+      "max_discharge_error": 1.7053025658242404e-12,
+      "max_soc_end_error": 5.4569682106375694e-12
+    },
+    "q4-3": {
+      "rows": 48096,
+      "mean_absolute_error": 4.421570161647959e-14,
+      "max_absolute_error": 5.4569682106375694e-12,
+      "std_error": 2.7074836730258286e-13,
+      "max_charge_error": 2.1032064978498966e-12,
+      "max_discharge_error": 1.7053025658242404e-12,
+      "max_soc_end_error": 5.4569682106375694e-12
+    }
+  }
+}

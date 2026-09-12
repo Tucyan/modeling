@@ -1,0 +1,67 @@
+{
+  "days": 334,
+  "total_savings_yuan": 222807.4662596737,
+  "mean_daily_savings_yuan": 667.0882223343524,
+  "median_daily_savings_yuan": 184.72312855927157,
+  "std_daily_savings_yuan": 4584.2828100156985,
+  "positive_days": 187,
+  "loss_days": 147,
+  "zero_days": 0,
+  "positive_day_pct": 55.98802395209581,
+  "loss_day_pct": 44.01197604790419,
+  "p05_yuan": -3877.9167212964007,
+  "p25_yuan": -957.8857329719795,
+  "p75_yuan": 1144.7780937674697,
+  "p95_yuan": 5271.0663136607045,
+  "positive_months": 6,
+  "loss_months": 5,
+  "months_in_formal_evaluation": 11,
+  "months_not_in_formal_evaluation": 1,
+  "top5_gain_sum_yuan": 140482.99736490805,
+  "top5_gain_share_of_total_pct": 63.051297033816816,
+  "savings_excluding_top5_gains_yuan": 82324.46889476565,
+  "top5_gain_dates": [
+    {
+      "date": "2025-06-01",
+      "delta_cost": 45920.19620466317
+    },
+    {
+      "date": "2025-06-02",
+      "delta_cost": 27938.43332579345
+    },
+    {
+      "date": "2025-09-08",
+      "delta_cost": 25780.225202456713
+    },
+    {
+      "date": "2025-12-31",
+      "delta_cost": 24338.211215146017
+    },
+    {
+      "date": "2025-04-28",
+      "delta_cost": 16505.93141684871
+    }
+  ],
+  "top5_loss_dates": [
+    {
+      "date": "2025-08-25",
+      "delta_cost": -10944.91076985716
+    },
+    {
+      "date": "2025-06-04",
+      "delta_cost": -10563.080216134673
+    },
+    {
+      "date": "2025-02-11",
+      "delta_cost": -8060.954945153659
+    },
+    {
+      "date": "2025-10-09",
+      "delta_cost": -5933.177879441297
+    },
+    {
+      "date": "2025-03-25",
+      "delta_cost": -5596.83967758184
+    }
+  ]
+}

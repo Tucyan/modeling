@@ -1,0 +1,5 @@
+label,scope,days,cost_yuan,savings_vs_B0_yuan,updates,price_gamma,note
+B0_Q4-2_selected,2025-01-15/2025-01-31,17,1014909.5611065214,0.0,,0,January-selected Q4-2 baseline
+B1_Q4-3_R0,2025-01-15/2025-01-31,17,1065790.7924330141,-50881.231326492736,,0,No intraday contract update; January evidence only
+B2_Q4-3_Rall_gamma0,2025-01-15/2025-01-31,17,977900.6342492505,37008.92685727088,6|12|18,0,Complete frozen update set; selected
+Price_correction_candidate_gamma1,2025-01-15/2025-01-31,17,982550.3562718333,32359.204834688106,6|12|18,1,Existing January candidate; not the frozen formal strategy

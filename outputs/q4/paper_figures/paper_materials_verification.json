@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "report": "docs\\q4\\Q4_final_review_report.md",
+  "figure_count": 5,
+  "typical_dates": {
+    "maximum_gain": "2025-06-01",
+    "maximum_loss": "2025-08-25"
+  },
+  "annual_savings_yuan": 222807.46625967696,
+  "protected_files": {
+    "src/q4_solver.py": {
+      "expected": "45144C1861D25D7967F892A7249DE6B6435D105D213F83FDA540F7B251EE22CC",
+      "actual": "45144C1861D25D7967F892A7249DE6B6435D105D213F83FDA540F7B251EE22CC",
+      "unchanged": true
+    },
+    "src/q4_experiments.py": {
+      "expected": "B1BE3B15B2FEFC06B8592A5D116B7C6B08E94913923AF4FF0FCF2E39BE56D2F2",
+      "actual": "B1BE3B15B2FEFC06B8592A5D116B7C6B08E94913923AF4FF0FCF2E39BE56D2F2",
+      "unchanged": true
+    },
+    "src/q4_forecast.py": {
+      "expected": "3C6C86714B2F911E2D2F09190A32D5BE541D77165F72383A3836AC3A23D0D23F",
+      "actual": "3C6C86714B2F911E2D2F09190A32D5BE541D77165F72383A3836AC3A23D0D23F",
+      "unchanged": true
+    },
+    "src/dispatch_control.py": {
+      "expected": "46D1F176F4B7B6E065E4A9F38B38831ACD8D676CEB1C2108E33B6CB4C5FD8C9E",
+      "actual": "46D1F176F4B7B6E065E4A9F38B38831ACD8D676CEB1C2108E33B6CB4C5FD8C9E",
+      "unchanged": true
+    },
+    "outputs/q4_final/N0/q4-2_dispatch_10min.csv": {
+      "expected": "3343F44B2F265E69ACB5D0A41A1458A7F616D29DABA1D854B5CA4DCC1F812C75",
+      "actual": "3343F44B2F265E69ACB5D0A41A1458A7F616D29DABA1D854B5CA4DCC1F812C75",
+      "unchanged": true
+    },
+    "outputs/q4_final/N0/q4-3_dispatch_10min.csv": {
+      "expected": "0211A576FB6EE5E17CC54C026CD93E9CFB9BEE511E95FAC6B270BA49BCC0D7D1",
+      "actual": "0211A576FB6EE5E17CC54C026CD93E9CFB9BEE511E95FAC6B270BA49BCC0D7D1",
+      "unchanged": true
+    },
+    "outputs/q4_final/result4-2.xlsx": {
+      "expected": "83B18F8AD095D81C0AE85F5FF326CCC274C56CA04BF5AA2E8100712123E0F669",
+      "actual": "83B18F8AD095D81C0AE85F5FF326CCC274C56CA04BF5AA2E8100712123E0F669",
+      "unchanged": true
+    },
+    "outputs/q4_final/result4-3.xlsx": {
+      "expected": "9D44EC88FD8DDC3BFD553AFFC59267551A07B966E6FBEB7AA434C97F41263B33",
+      "actual": "9D44EC88FD8DDC3BFD553AFFC59267551A07B966E6FBEB7AA434C97F41263B33",
+      "unchanged": true
+    }
+  }
+}
