@@ -1,0 +1,33 @@
+{
+  "label": "q4-3",
+  "mode": "q4-3",
+  "settlement": "N0",
+  "price_model": "P2p",
+  "updates": [
+    6,
+    12,
+    18
+  ],
+  "price_gamma": 1,
+  "alpha0": 0.8,
+  "alpha_update": 0.7,
+  "days": 7,
+  "cost": 441065.8507722069,
+  "plan_cost": 409746.22353470844,
+  "up_cost": 15458.84456618992,
+  "down_fee": 0.0,
+  "refund": 0.0,
+  "emergency_cost": 15860.782671308563,
+  "emergency_kwh": 2366.7943409567115,
+  "emergency_days": 2,
+  "emergency_events": 4,
+  "emergency_slots": 9,
+  "unused_kwh": 43649.9048406449,
+  "spill_kwh": 2808.533066666691,
+  "final_soc": 6000.0,
+  "max_lp_gap": 5.820766091346741e-11,
+  "max_mip_gap": 0.0,
+  "milp_solves": 0,
+  "max_seconds": 0.07789389998652041,
+  "mean_seconds": 0.06407012857380323
+}

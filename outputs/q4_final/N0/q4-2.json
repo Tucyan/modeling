@@ -4,6 +4,7 @@
   "settlement": "N0",
   "price_model": "P2p",
   "updates": [],
+  "price_gamma": 0,
   "alpha0": 0.8,
   "alpha_update": 0.8,
   "days": 334,
@@ -23,6 +24,6 @@
   "max_lp_gap": 8.003553375601768e-11,
   "max_mip_gap": 0.0,
   "milp_solves": 0,
-  "max_seconds": 0.039889900013804436,
-  "mean_seconds": 0.023132700299579947
+  "max_seconds": 0.08548709997558035,
+  "mean_seconds": 0.03278631616793685
 }

@@ -51,7 +51,8 @@ def _base_forecast(values, day, model):
     return 0.55 * recent28.mean(axis=0) + 0.45 * seasonal
 
 
-def forecast_price(prices, day, issue_hour=0, model="P0p", observed_prefix=None):
+def forecast_price(prices, day, issue_hour=0, model="P0p", observed_prefix=None,
+                   correction_gamma=0, correction_window=6, decay_slots=36):
     """Forecast remaining prices at a release time.
 
     ``observed_prefix`` may contain the current day's completed prices.  Values
@@ -61,6 +62,12 @@ def forecast_price(prices, day, issue_hour=0, model="P0p", observed_prefix=None)
     values = _validate(prices)
     if issue_hour not in RELEASE_HOURS:
         raise ValueError("issue_hour must be one of 0, 6, 12, 18")
+    if correction_gamma not in (0, 1):
+        raise ValueError("correction_gamma must be 0 or 1")
+    if not isinstance(correction_window, (int, np.integer)) or correction_window <= 0:
+        raise ValueError("correction_window must be a positive integer")
+    if not isinstance(decay_slots, (int, np.integer)) or decay_slots <= 0:
+        raise ValueError("decay_slots must be a positive integer")
     if not 0 <= day < len(values):
         raise ValueError("day outside price matrix")
     if day == 0:
@@ -74,9 +81,16 @@ def forecast_price(prices, day, issue_hour=0, model="P0p", observed_prefix=None)
         observed = observed[:start]
         if not np.isfinite(observed).all() or np.any(observed <= 0):
             raise ValueError("observed_prefix must be finite and positive")
-        # Level correction uses only completed current-day intervals.
-        correction = float(np.mean(observed - base[:start]))
-        base = base + 0.5 * correction
+        if correction_window > start:
+            raise ValueError("correction_window exceeds completed slots")
+        # Equation (15): use only the most recent completed intervals.
+        correction = float(np.mean(
+            observed[-correction_window:]
+            - base[start-correction_window:start]))
+        # Equation (16): decay the correction over the remaining horizon.
+        offsets = np.arange(len(base) - start, dtype=float)
+        base[start:] = base[start:] + correction_gamma * correction * np.exp(
+            -offsets / decay_slots)
     result = np.maximum(base[start:], 1e-6)
     if not np.isfinite(result).all():
         raise ValueError("price forecast became non-finite")

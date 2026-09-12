@@ -8,12 +8,13 @@
     12,
     18
   ],
+  "price_gamma": 0,
   "alpha0": 0.7,
   "alpha_update": 0.65,
   "days": 334,
-  "cost": 14432178.603594404,
+  "cost": 14432049.316081066,
   "plan_cost": 13830458.73988473,
-  "up_cost": 308961.2042511323,
+  "up_cost": 308831.9167377968,
   "down_fee": 0.0,
   "refund": 0.0,
   "emergency_cost": 292758.65945854044,
@@ -21,12 +22,12 @@
   "emergency_days": 153,
   "emergency_events": 252,
   "emergency_slots": 605,
-  "unused_kwh": 1177755.9736189118,
+  "unused_kwh": 1177724.134007378,
   "spill_kwh": 1386960.5577456616,
   "final_soc": 6000.0,
   "max_lp_gap": 1.0186340659856796e-10,
   "max_mip_gap": 0.0,
   "milp_solves": 0,
-  "max_seconds": 0.11191010000766255,
-  "mean_seconds": 0.06630379700547706
+  "max_seconds": 0.11590060000889935,
+  "mean_seconds": 0.05901934999939818
 }

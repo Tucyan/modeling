@@ -1,0 +1,27 @@
+{
+  "base_commit": "f87f4ec",
+  "source_branch": "main",
+  "evaluation_period": "2025-02-01/2025-12-31",
+  "old_protocol": {
+    "price_model": "P2p",
+    "q4_2": {"alpha0": 0.8, "updates": []},
+    "q4_3": {"alpha0": 0.7, "alpha_update": 0.65, "updates": [6, 12, 18]}
+  },
+  "old_costs_yuan": {
+    "N0/q4-2": 14654856.78234074,
+    "N0/q4-3": 14432178.603594404,
+    "N1/q4-2": 14654856.78234074,
+    "N1/q4-3": 14238366.975460954
+  },
+  "sha256": {
+    "outputs/q4_final/N0/q4-2.json": "7C159642ABF07466BFDFE61154619CD1ED0B098242A9FDF9938E72CAA89C78D4",
+    "outputs/q4_final/N0/q4-3.json": "17AAAE27D354AFC5DD3112677A240201557FB31714C77A801D9A501435354C6E",
+    "outputs/q4_final/N1/q4-2.json": "43737C149296BEEB57315754B8C2F6F403626379E65B7C2139DD083044B3BD27",
+    "outputs/q4_final/N1/q4-3.json": "05EC37D9A58455491542E97ED91B4E403010E5E2D583F544758A4ACA6E218E53",
+    "outputs/q4_final/result4-2.xlsx": "B6C12B105DC78EF44AE16951621E5CB3E091690C585748C45E6220FEB4789716",
+    "outputs/q4_final/result4-3.xlsx": "F1571AC6FABC615D71CAB93156CBF05A3036D8E8D4CDFCEEDCEB13525C012F97",
+    "outputs/q4_final/N0/selection_protocol.json": "50BEC51DD6163F929AEFDDBEACDC342A6603EAC65C5D2947B13DDD81A55CED96",
+    "outputs/q4_final/N1/selection_protocol.json": "1E4384C6559A98C0B56075A25D495353E053017AC74379F8AE7248448482EE24"
+  },
+  "note": "Old outputs are committed at base_commit and remain the comparison baseline until P0 rerun is verified."
+}

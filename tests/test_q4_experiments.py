@@ -26,3 +26,12 @@ def test_short_q4_policy_has_actual_price_and_plan_price_columns():
     assert {'price', 'plan_price', 'g', 'q'} <= set(dispatch.columns)
     assert np.isfinite(dispatch[['price', 'plan_price']].to_numpy()).all()
     assert len(versions) == 0
+
+
+def test_short_q4_3_policy_records_price_correction_gamma():
+    inputs = load_inputs()
+    for gamma in (0, 1):
+        daily, _, _ = simulate_policy(
+            inputs, 'q4-3', 'P2p', (6,), 0.8, 0.7, 'N0',
+            start=31, end=32, price_gamma=gamma)
+        assert daily.iloc[0].price_gamma == gamma

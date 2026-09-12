@@ -26,6 +26,7 @@ RELEASE_SETS = {
 Q42_ALPHAS = (0.5, 0.7, 0.8, 0.9)
 Q43_RISK_PAIRS = ((0.5, 0.5), (0.7, 0.65), (0.8, 0.65),
                   (0.8, 0.75), (0.85, 0.75), (0.9, 0.8))
+PRICE_CORRECTION_GAMMAS = (0, 1)
 EPS = 1e-7
 
 
@@ -127,11 +128,14 @@ def _summary(daily, dispatch):
 
 
 def simulate_policy(inputs, mode, price_model, updates=(), alpha0=0.8,
-                    alpha_update=0.7, settlement='N0', start=31, end=365):
+                    alpha_update=0.7, settlement='N0', start=31, end=365,
+                    price_gamma=0):
     if mode not in ('q4-2', 'q4-3'):
         raise ValueError('unknown Q4 mode')
     if mode == 'q4-2' and updates:
         raise ValueError('Q4-2 cannot contain updates')
+    if price_gamma not in PRICE_CORRECTION_GAMMAS:
+        raise ValueError('price_gamma must be 0 or 1')
     state = 6000.0
     days, chunks, versions = [], [], []
     for day in range(start, end):
@@ -148,7 +152,8 @@ def simulate_policy(inputs, mode, price_model, updates=(), alpha0=0.8,
                 inputs.hourly_pv, updates, alpha0, alpha_update)
             issue_prices = {
                 hour: forecast_price(inputs.price, day, hour, price_model,
-                                     observed_prefix=inputs.price[day, :hour * 6])
+                                     observed_prefix=inputs.price[day, :hour * 6],
+                                     correction_gamma=price_gamma)
                 for hour in updates
             }
         result = simulate_q4_day(
@@ -170,7 +175,8 @@ def simulate_policy(inputs, mode, price_model, updates=(), alpha0=0.8,
         days.append(dict(
             day=day, date=_date(day), mode=mode, settlement=settlement,
             price_model=price_model, updates='|'.join(map(str, updates)),
-            alpha0=alpha0, alpha_update=alpha_update, cost=result['cost'],
+            price_gamma=price_gamma, alpha0=alpha0,
+            alpha_update=alpha_update, cost=result['cost'],
             plan_cost=plan_cost, up_cost=up, down_fee=down, refund=refund,
             emergency_cost=emergency_cost,
             emergency_kwh=float(result['e'].sum()),
@@ -211,17 +217,18 @@ def simulate_policy(inputs, mode, price_model, updates=(), alpha0=0.8,
 
 def save_policy(folder, label, inputs, mode, price_model, updates=(),
                 alpha0=0.8, alpha_update=0.7, settlement='N0',
-                start=31, end=365):
+                start=31, end=365, price_gamma=0):
     folder = Path(folder)
     folder.mkdir(parents=True, exist_ok=True)
     daily, dispatch, versions = simulate_policy(
         inputs, mode, price_model, updates, alpha0, alpha_update,
-        settlement, start, end)
+        settlement, start, end, price_gamma)
     daily.to_csv(folder / f'{label}_daily.csv', index=False)
     dispatch.to_csv(folder / f'{label}_dispatch.csv', index=False)
     versions.to_csv(folder / f'{label}_versions.csv', index=False)
     summary = dict(label=label, mode=mode, settlement=settlement,
                    price_model=price_model, updates=list(updates),
+                   price_gamma=price_gamma,
                    alpha0=alpha0, alpha_update=alpha_update,
                    **_summary(daily, dispatch))
     (folder / f'{label}.json').write_text(
@@ -230,7 +237,7 @@ def save_policy(folder, label, inputs, mode, price_model, updates=(),
 
 
 def write_forecast_records(inputs, mode, price_model, updates, output_path,
-                           start=31, end=365):
+                           start=31, end=365, price_gamma=0):
     """Persist every causal price forecast used by the selected replay."""
     issues = (0,) if mode == 'q4-2' else (0,) + tuple(updates)
     rows = []
@@ -238,13 +245,16 @@ def write_forecast_records(inputs, mode, price_model, updates, output_path,
         for hour in issues:
             values = forecast_price(
                 inputs.price, day, hour, price_model,
-                observed_prefix=inputs.price[day, :hour * 6])
+                observed_prefix=inputs.price[day, :hour * 6],
+                correction_gamma=price_gamma)
             for offset, forecast in enumerate(values):
                 interval = hour * 6 + offset
                 rows.append(dict(
                     date=_date(day), day=day, issue_hour=hour,
                     interval_id=interval, forecast_price=float(forecast),
                     actual_price=float(inputs.price[day, interval]),
+                    price_gamma=price_gamma,
+                    correction_window=6, decay_slots=36,
                     history_start_day=max(7, day - 56),
                     history_end_exclusive=day,
                     observed_prefix_slots=hour * 6))
@@ -270,19 +280,23 @@ def select_protocol(inputs, settlement):
             settlement, 14, 31)
         q42_scores.append(dict(label=f'a{alpha:.2f}', mode='q4-2',
                                price_model=price_model, updates=[],
+                               price_gamma=0,
                                alpha0=alpha, alpha_update=alpha,
                                **_summary(daily, dispatch)))
     for alpha0, alpha_update in Q43_RISK_PAIRS:
         for release_name, updates in RELEASE_SETS.items():
-            daily, dispatch, _ = simulate_policy(
-                inputs, 'q4-3', price_model, updates, alpha0, alpha_update,
-                settlement, 14, 31)
-            q43_scores.append(dict(
-                label=f'a0_{alpha0:.2f}_au_{alpha_update:.2f}__{release_name}',
-                mode='q4-3', price_model=price_model,
-                updates=list(updates), alpha0=alpha0,
-                alpha_update=alpha_update, release_name=release_name,
-                **_summary(daily, dispatch)))
+            for price_gamma in ((0,) if not updates else PRICE_CORRECTION_GAMMAS):
+                daily, dispatch, _ = simulate_policy(
+                    inputs, 'q4-3', price_model, updates, alpha0, alpha_update,
+                    settlement, 14, 31, price_gamma)
+                q43_scores.append(dict(
+                    label=(f'a0_{alpha0:.2f}_au_{alpha_update:.2f}'
+                           f'__{release_name}__gamma_{price_gamma}'),
+                    mode='q4-3', price_model=price_model,
+                    updates=list(updates), price_gamma=price_gamma,
+                    alpha0=alpha0, alpha_update=alpha_update,
+                    release_name=release_name,
+                    **_summary(daily, dispatch)))
     q42 = _choose(q42_scores)
     q43 = _choose(q43_scores)
     return dict(
@@ -290,6 +304,7 @@ def select_protocol(inputs, settlement):
         last_history_day=30, decision_day=31, settlement=settlement,
         price_models=list(PRICE_MODELS), price_metrics=price_metrics.to_dict('records'),
         selected_price_model=price_model, q42_alphas=list(Q42_ALPHAS),
+        price_correction_gammas=list(PRICE_CORRECTION_GAMMAS),
         q43_risk_pairs=[dict(alpha0=a, alpha_update=b) for a, b in Q43_RISK_PAIRS],
         release_sets={name: list(value) for name, value in RELEASE_SETS.items()},
         q42_scores=q42_scores, q43_scores=q43_scores,
@@ -315,12 +330,17 @@ def run_smoke(output):
         folder = output / 'smoke' / window
         for settlement in ('N0', 'N1'):
             candidates = (('q4-2', (), .8, .8),
-                          ('q4-3', (6, 12, 18), .8, .7))
-            for mode, updates, alpha0, alpha_update in candidates:
+                          ('q4-3', (6, 12, 18), .8, .7, 1))
+            for candidate in candidates:
+                if len(candidate) == 4:
+                    mode, updates, alpha0, alpha_update = candidate
+                    price_gamma = 0
+                else:
+                    mode, updates, alpha0, alpha_update, price_gamma = candidate
                 summary, _, _, _ = save_policy(
                     folder / settlement, mode, inputs, mode,
                     price_model, updates, alpha0, alpha_update, settlement,
-                    start, end)
+                    start, end, price_gamma)
                 summary.update(window=window, start=start, end=end)
                 rows.append(summary)
     (output / 'smoke_summary.json').write_text(
@@ -345,13 +365,14 @@ def run_formal(output):
             summary, daily, dispatch, versions = save_policy(
                 folder, mode, inputs, mode, protocol['selected_price_model'],
                 tuple(selected['updates']), selected['alpha0'], selected['alpha_update'],
-                settlement, 31, 365)
+                settlement, 31, 365, selected.get('price_gamma', 0))
             daily.to_csv(folder / f'{mode}_daily_summary.csv', index=False)
             dispatch.to_csv(folder / f'{mode}_dispatch_10min.csv', index=False)
             versions.to_csv(folder / f'{mode}_contract_versions.csv', index=False)
             write_forecast_records(
                 inputs, mode, protocol['selected_price_model'],
-                tuple(selected['updates']), folder / f'{mode}_forecast_records.csv')
+                tuple(selected['updates']), folder / f'{mode}_forecast_records.csv',
+                price_gamma=selected.get('price_gamma', 0))
             summaries.append(summary)
         (folder / 'summary.json').write_text(
             json.dumps(summaries, ensure_ascii=False, indent=2), encoding='utf-8')
